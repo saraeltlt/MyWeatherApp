@@ -5,28 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import com.example.myweatherapp.databinding.FragmentFavoriteBinding
+import com.example.myweatherapp.databinding.FragmentHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
 
+class HomeFragment : Fragment() {
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bottomNav=requireActivity().findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.visibility= View.VISIBLE
+        val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
+        viewLine.visibility= View.VISIBLE
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding  = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false) as FragmentHomeBinding
+        binding.lifecycleOwner=this
+        val view = binding.root
+
+        return view
     }
 
 

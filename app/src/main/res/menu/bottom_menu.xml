@@ -16,7 +16,6 @@
         android:id="@+id/notificationFragment"
         android:title="@string/notifications"
         android:icon="@drawable/notifications_w"
-        android:iconTint="?attr/colorOnPrimary"
         />
 
     <item

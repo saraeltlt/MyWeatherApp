@@ -21,6 +21,8 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val bottomNav=requireActivity().findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.visibility= View.GONE
+        val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
+        viewLine.visibility= View.GONE
     }
 
     override fun onCreateView(
