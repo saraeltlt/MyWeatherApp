@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:visibility="visible">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,7 +14,7 @@
 
 
         <ScrollView
-            android:id="@+id/scrollView2"
+            android:id="@+id/scrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,35 +26,334 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
 
-                <androidx.cardview.widget.CardView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/days_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/time_recycler" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/obsrvationCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="64dp"
+                    app:cardCornerRadius="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/days_recycler">
 
-                    <androidx.gridlayout.widget.GridLayout
+                    <LinearLayout
+                        android:id="@+id/outerLinear"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimaryDark"
+                        android:orientation="vertical"
+                        android:weightSum="2">
 
-                    </androidx.gridlayout.widget.GridLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/inner1"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="?android:attr/colorPrimaryDark"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/pressureCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+                                    <TextView
+                                        android:id="@+id/text_pressure"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:textStyle="bold"
+                                        android:gravity="center"
+                                        android:text="@string/pressure"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_prssure"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/pressure" />
+
+                                    <TextView
+                                        android:id="@+id/pressure"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="1004 hba" />
+
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/humadityCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+                                    <TextView
+                                        android:id="@+id/text_humadity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:textStyle="bold"
+                                        android:gravity="center"
+                                        android:text="@string/humidity"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_humaidity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/humidity" />
+
+                                    <TextView
+                                        android:id="@+id/humadity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="93%" />
+
+
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+                                    <TextView
+                                        android:id="@+id/text_wind"
+                                        android:textStyle="bold"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="@string/wind"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_wind"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/wind" />
+
+                                    <TextView
+                                        android:id="@+id/wind"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="93%" />
+
+
+
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/inner2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="?android:attr/colorPrimaryDark"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cloudCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+
+
+                                    <TextView
+                                        android:id="@+id/text_cloud"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:textStyle="bold"
+                                        android:gravity="center"
+                                        android:text="@string/cloud"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_cloud"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/cloud" />
+
+                                    <TextView
+                                        android:id="@+id/cloud"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="75%" />
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/violetCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+
+                                    <TextView
+                                        android:id="@+id/text_violet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:textStyle="bold"
+                                        android:gravity="center"
+                                        android:text="@string/violet"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_violet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/violet" />
+
+                                    <TextView
+                                        android:id="@+id/violet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="00" />
+
+
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                app:cardBackgroundColor="?android:attr/colorPrimaryDark">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:weightSum="3">
+
+                                    <TextView
+                                        android:textStyle="bold"
+                                        android:id="@+id/text_visibility"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+
+                                        android:gravity="center"
+                                        android:text="@string/visibility"
+                                        android:textColor="?attr/colorOnSecondary" />
+
+                                    <ImageView
+                                        android:id="@+id/image_visibility"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        app:srcCompat="@drawable/visibility" />
+
+                                    <TextView
+                                        android:id="@+id/visibility"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="1000m" />
+
+
+
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/time_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -89,16 +387,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textLocation" />
 
+
         <androidx.cardview.widget.CardView
+            app:cardBackgroundColor="@android:color/transparent"
             android:id="@+id/card_main"
             android:layout_width="0dp"
             android:layout_height="160dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@drawable/gradient_card_bg"
             app:cardCornerRadius="32dp"
-            app:cardElevation="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,8 +404,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/gradient_card_bg">
+                android:background="@drawable/gradient_card_bg"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/image_desc"
@@ -121,13 +419,12 @@
                     app:srcCompat="@drawable/rain" />
 
                 <TextView
-                    android:id="@+id/text_tempUnit"
+                    android:id="@+id/text_tempUnits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-4dp"
-                    android:fontFamily="sans-serif"
+                    android:layout_marginStart="0dp"
                     android:text="C"
-                    android:textColor="@color/material_dynamic_primary90"
+                    android:textColor="@color/light_xl_blue"
                     android:textSize="40sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/text_tempNum"
@@ -139,9 +436,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-15dp"
                     android:layout_marginTop="-32dp"
-                    android:inputType="textMultiLine"
                     android:text="Mostly Clear"
-                    android:textColor="@color/material_dynamic_primary90"
+                    android:textColor="@color/light_xl_blue"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -153,14 +449,14 @@
                     android:id="@+id/text_tempNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-14dp"
+                    android:layout_marginTop="0dp"
                     android:fontFamily="sans-serif"
                     android:text="22"
-                    android:textColor="@color/material_dynamic_primary90"
+                    android:textColor="@color/light_xl_blue"
                     android:textSize="100sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/text_desc"
-                    app:layout_constraintEnd_toStartOf="@+id/text_tempUnit"
+                    app:layout_constraintEnd_toStartOf="@+id/text_tempUnits"
                     app:layout_constraintStart_toStartOf="@+id/text_desc"
                     app:layout_constraintTop_toTopOf="parent" />
 
