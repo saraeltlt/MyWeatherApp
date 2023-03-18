@@ -25,6 +25,9 @@ class FavoriteFragment : Fragment() {
         binding  = DataBindingUtil.inflate(inflater,R.layout.fragment_favorite,container,false) as FragmentFavoriteBinding
         binding.lifecycleOwner=this
         val view = binding.root
+        binding.favFab.setOnClickListener {
+
+        }
 
         return view
     }

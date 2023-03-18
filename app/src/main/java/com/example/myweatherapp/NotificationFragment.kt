@@ -32,6 +32,9 @@ class NotificationFragment : Fragment() {
         binding.lifecycleOwner=this
         val view = binding.root
 
+
+
+
         return view
     }
 

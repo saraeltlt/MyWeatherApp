@@ -12,6 +12,9 @@
         <item name="android:statusBarColor">?attr/colorPrimary</item>
 
         <item name="android:textColor">@color/light_blue</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:colorPrimaryDark">@color/light_navy</item>
 
     </style>
 </resources>
