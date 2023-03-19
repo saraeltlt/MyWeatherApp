@@ -40,7 +40,7 @@
         android:id="@+id/viewLine"
         android:layout_width="wrap_content"
         android:layout_height="2dp"
-        android:background="?attr/colorOnSecondary"
+        android:background="?attr/colorSecondary"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
