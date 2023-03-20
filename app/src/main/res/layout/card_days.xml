@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@android:color/transparent">
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="10dp">
 
         <LinearLayout
-            android:id="@+id/day_layout"
+            android:id="@+id/layout_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/solid_card_bg"
+            android:elevation="10dp"
             android:orientation="horizontal"
             android:weightSum="3">
 

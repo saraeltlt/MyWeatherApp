@@ -7,12 +7,13 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardBackgroundColor="@android:color/transparent">
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="10dp">
 
         <LinearLayout
-            android:id="@+id/timeLayout"
+            android:id="@+id/layout_time"
             android:layout_width="55dp"
             android:layout_height="100dp"
             android:layout_marginRight="10dp"
@@ -21,10 +22,10 @@
             android:weightSum="3">
 
             <TextView
-                android:layout_marginTop="5dp"
                 android:id="@+id/text_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="12 AM"
@@ -39,10 +40,10 @@
                 app:srcCompat="@drawable/cloud" />
 
             <TextView
-                android:layout_marginBottom="5dp"
                 android:id="@+id/text_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="30°C" />

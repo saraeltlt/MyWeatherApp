@@ -1,4 +1,4 @@
-package com.example.myweatherapp.model
+package com.example.myweatherapp.notifications.notificationmodel
 
 import androidx.room.*
 

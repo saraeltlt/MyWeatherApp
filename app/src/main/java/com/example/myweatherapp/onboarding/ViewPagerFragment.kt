@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
 import com.example.myweatherapp.onboarding.screens.OnBoarding1Fragment
 import com.example.myweatherapp.onboarding.screens.OnBoarding2Fragment
+import com.example.myweatherapp.onboarding.screens.OnBoarding3Fragment
 
 
 class ViewPagerFragment : Fragment() {
@@ -24,7 +25,8 @@ class ViewPagerFragment : Fragment() {
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
         val fragmentList = arrayListOf<Fragment>(
             OnBoarding1Fragment(),
-            OnBoarding2Fragment()
+            OnBoarding2Fragment(),
+            OnBoarding3Fragment()
         )
         val adapter = ViewPagerAdapter(fragmentList,
             requireActivity().supportFragmentManager,

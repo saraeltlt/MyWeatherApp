@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.myweatherapp.NotificationFragment"
+        android:name="com.example.myweatherapp.notifications.notificationview.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment

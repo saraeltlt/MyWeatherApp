@@ -11,13 +11,23 @@
     <string name="notifications">Notifications</string>
     <string name="settings">Settings</string>
     <string name="location">Location</string>
-
+    <string name="alarm">Alarm</string>
     <string name="pressure">Pressure</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
     <string name="cloud">Cloud</string>
     <string name="violet">Ultra Violet</string>
     <string name="visibility">Visibility</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alert_description">Description..</string>
+    <string name="to">To</string>
+    <string name="from">From</string>
+    <string name="dd_mm_yy" >dd_mm_yy</string>
+    <string name="_00_00" >00:00</string>
+    <string name="events">Event</string>
+    <string name="rain">Rain</string>
+    <string name="snow">Snow</string>
+    <string name="fog">Fog</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="sound_type">Sound Type</string>
+    <string name="add_alert">Add Alert</string>
 </resources>

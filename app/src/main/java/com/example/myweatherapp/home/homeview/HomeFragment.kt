@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner=this
         val view = binding.root
 
-        factory = HomeViewModelFactory(
+      /*  factory = HomeViewModelFactory(
             Repository.getInstance(
                 ApiClient.getInstance(),
                 localSource
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this,factory).get(HomeViewModel::class.java)
         viewModel.weather.observe(viewLifecycleOwner, Observer {
            Log.d("yarab", it.timezone)
-        })
+        })*/
 
 
 

@@ -2,6 +2,7 @@ package com.example.myweatherapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.myweatherapp.notifications.notificationmodel.Alert
 
 @Entity(tableName = "favorites")
 data class Forecast(
