@@ -21,6 +21,7 @@
     <string name="to">إلي</string>
     <string name="from">من</string>
     <string name="dd_mm_yy" >يوم، شهر، سنة</string>
+    <string name="add">إضافة</string>
     <string name="_00_00" >00:00</string>
     <string name="events">الحدث</string>
     <string name="rain">مطر</string>
