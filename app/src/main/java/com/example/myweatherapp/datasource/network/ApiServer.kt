@@ -14,8 +14,8 @@ interface ApiServer {
     suspend fun getCurrentWeatherByLatAndLon(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("lang") lang: String="en",
-        @Query("units") units: String="metric",
+        @Query("lang") lang: String,
+        @Query("units") units: String,
         @Query("exclude") exclude: String = "minutely",
         @Query("appid") appid: String = Constant.API_KEY
     ): Forecast

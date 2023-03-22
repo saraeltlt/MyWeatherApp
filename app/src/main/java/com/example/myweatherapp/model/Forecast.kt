@@ -28,6 +28,7 @@ data class Current(
     val rain: Rain,
     val sunrise: Int,
     val sunset: Int,
+
     val temp: Double,//need
     val uvi: Double,
     val visibility: Int,
@@ -81,9 +82,7 @@ data class Hourly(
     val wind_gust: Double,
     val wind_speed: Double
 )
-data class Hours(val tempretur: Int,
-                 val icon: Int,
-                 val hour: String)
+
 data class Minutely(
     val dt: Int,
     val precipitation: Double

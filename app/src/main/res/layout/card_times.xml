@@ -3,20 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="hourly"
+            type="com.example.myweatherapp.model.Hourly" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="55dp"
         android:layout_height="100dp"
+        android:layout_margin="5dp"
         app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="36dp"
         app:cardElevation="10dp">
 
         <LinearLayout
             android:id="@+id/layout_time"
             android:layout_width="55dp"
             android:layout_height="100dp"
-            android:layout_marginRight="10dp"
             android:background="@drawable/solid_card_bg"
             android:orientation="vertical"
             android:weightSum="3">
@@ -37,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                app:myImageUrl="@{hourly.weather.get(0).icon}"
                 app:srcCompat="@drawable/cloud" />
 
             <TextView
@@ -46,7 +50,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="30°C" />
+                android:text="30°C"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

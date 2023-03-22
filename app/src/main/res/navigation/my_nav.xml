@@ -39,7 +39,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.myweatherapp.FavoriteFragment"
+        android:name="com.example.myweatherapp.favourite.favView.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment

@@ -9,8 +9,8 @@ data class Alert(
     val endDate: String,
     val startTime: String,
     val endTime: String,
-    val event: String="Rain",
-    val sender_name: String="Azza",
+    val event: String,
+    val type: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

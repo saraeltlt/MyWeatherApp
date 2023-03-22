@@ -6,7 +6,6 @@ interface RepoInterface {
     suspend fun getCurrentWeather(lat: Double,
                                   lon: Double,
                                   lang: String="en",
-                                  units: String="metric",
-                                  exclude: String = "minutely"): Forecast
+                                  units: String="metric"): Forecast
 
 }

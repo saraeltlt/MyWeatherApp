@@ -5,7 +5,12 @@
     android:elevation="10dp">
 
     <data>
-
+        <variable
+            name="forecast"
+            type="com.example.myweatherapp.model.Forecast" />
+        <variable
+            name="action"
+            type="com.example.myweatherapp.favourite.favView.OnFavClickListner" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -27,7 +32,21 @@
             android:id="@+id/layout_fav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="@{()->action.onFavClick(forecast)}"
             android:background="@drawable/gradient_card_bg">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/cloud"
+                app:myImageUrl="@{forecast.current.weather.get(0).icon}"
+                />
 
             <ImageButton
                 android:id="@+id/btn_delete"
@@ -35,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="12dp"
+                android:onClick="@{()->action.onDeleteClick(forecast)}"
                 android:background="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,6 +64,7 @@
                 android:id="@+id/text_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:drawableLeft="@drawable/location_navy"
                 android:text="Alexandria"
@@ -85,6 +106,7 @@
                 android:id="@+id/text_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:text="Mostly Clear"
                 android:textColor="@color/light_xl_blue"
                 android:textSize="20sp"

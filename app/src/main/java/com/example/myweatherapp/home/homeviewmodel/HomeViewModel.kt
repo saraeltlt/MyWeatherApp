@@ -9,20 +9,20 @@ import com.example.myweatherapp.model.Forecast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val _repo : RepoInterface): ViewModel() {
+class HomeViewModel(private val _repo : RepoInterface, lat: Double, lon: Double,lang: String,units: String): ViewModel() {
     private var _weather : MutableLiveData<Forecast> = MutableLiveData<Forecast>()
     val weather: LiveData<Forecast> = _weather
 
 
     init {
-        getCurrentWeather(33.44,-94.04)
+        getCurrentWeather(lat,lon,lang,units)
     }
     fun  getCurrentWeather(lat: Double,
                            lon: Double,
                            lang: String="en",
-                           units: String="metric",exclude: String = "minutely"){
+                           units: String="metric"){
         viewModelScope.launch(Dispatchers.IO) {
-            _weather.postValue(_repo.getCurrentWeather(lat,lon))
+            _weather.postValue(_repo.getCurrentWeather(lat,lon,lang,units))
         }
     }
 

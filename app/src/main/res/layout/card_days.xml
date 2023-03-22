@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="daily"
+            type="com.example.myweatherapp.model.Daily" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -11,6 +13,7 @@
         android:layout_height="50dp"
         android:layout_margin="5dp"
         app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="36dp"
         app:cardElevation="10dp">
 
         <LinearLayout
@@ -27,8 +30,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:gravity="center|center_horizontal|center_vertical"
+                android:gravity="center_vertical"
                 android:text="sun"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="16sp"
@@ -44,12 +48,13 @@
                 android:weightSum="2">
 
                 <ImageView
+
                     android:id="@+id/image_weather"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/cloud" />
+                    app:myImageUrl="@{daily.weather.get(0).icon}" />
 
                 <TextView
 
@@ -67,8 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="right"
                 android:text="-4/2 °C"
                 android:textSize="16sp" />
         </LinearLayout>

@@ -4,7 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="alert"
+            type="com.example.myweatherapp.notifications.notificationmodel.Alert" />
+        <variable
+            name="action"
+            type="com.example.myweatherapp.notifications.notificationview.OnNotifClickListner" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -56,6 +61,7 @@
                     android:background="@android:color/transparent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{()->action.onDeleteClick(alert)}"
                     app:srcCompat="@drawable/delete" />
             </LinearLayout>
 

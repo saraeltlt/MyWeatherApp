@@ -23,9 +23,8 @@ class Repository private constructor(
     override suspend fun getCurrentWeather(lat: Double,
                                            lon: Double,
                                            lang: String,
-                                           units: String,
-                                           exclude: String): Forecast {
-        return remoteSource.getCurrentWeather(33.44,-94.04)
+                                           units: String): Forecast {
+        return remoteSource.getCurrentWeather(lat,lon,lang,units)
     }
 
 

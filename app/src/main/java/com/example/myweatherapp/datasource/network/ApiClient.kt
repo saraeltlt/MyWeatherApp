@@ -23,10 +23,8 @@ companion object{
         lon: Double,
         lang: String,
         units: String,
-        exclude: String,
-        appid: String
     ): Forecast {
         val obj= RetrofitHelper.retrofit.create(ApiServer::class.java)
-        return obj.getCurrentWeatherByLatAndLon(lat,lon,lang,units,exclude,appid)
+        return obj.getCurrentWeatherByLatAndLon(lat,lon,lang,units)
     }
 }
