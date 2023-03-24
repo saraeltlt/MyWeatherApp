@@ -22,8 +22,8 @@
     <string name="to">To</string>
     <string name="from">From</string>
     <string name="add">Add</string>
-    <string name="dd_mm_yy" >dd_mm_yy</string>
-    <string name="_00_00" >00:00</string>
+    <string name="dd_mm_yy">dd_mm_yy</string>
+    <string name="_00_00">00:00</string>
     <string name="events">Event</string>
     <string name="rain">Rain</string>
     <string name="snow">Snow</string>
@@ -31,4 +31,21 @@
     <string name="thunderstorm">Thunderstorm</string>
     <string name="sound_type">Sound Type</string>
     <string name="add_alert">Add Alert / Notification: </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="map">Map</string>
+    <string name="search_map">Search In map</string>
+    <string name="savePreferences">Save Preferences</string>
+    <string name="gps">GPS</string>
+    <string name="internetDisconnected">Check Your Internet Connection</string>
+    <string name="turnOnLocation">Turn On Location</string>
+    <string name="addedToFavorites">Added To Favorites</string>
+    <string name="removedFromFavorites">Remove From Favorites</string>
+    <string name="locationAlreadyInFavorites">"Location Already In Favorites "</string>
+    <string name="locationSelected">Location Selected</string>
+    <string name="locationIsAlreadySelected">Location Is Already Selected</string>
+
 </resources>

@@ -9,14 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
-import com.example.myweatherapp.datasource.Repository
-import com.example.myweatherapp.datasource.db.ConcreteLocalSource
-import com.example.myweatherapp.datasource.network.ApiClient
-import com.example.myweatherapp.favourite.favView.FavAdapter
-import com.example.myweatherapp.favourite.favViewModel.FavViewModel
-import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
 import com.example.myweatherapp.notifications.notificationmodel.Alert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModelFactory
@@ -30,7 +25,6 @@ class NotificationFragment : Fragment() , OnNotifClickListner{
     private lateinit var dialog: Dialoge
     lateinit var viewModel: NotificationViewModel
     lateinit var factory: NotificationViewModelFactory
-    var localSource = ConcreteLocalSource()
     lateinit var adapter: NotificationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,10 +43,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner{
         binding.lifecycleOwner=this
         val view = binding.root
         factory = NotificationViewModelFactory(
-            Repository.getInstance(
-                ApiClient.getInstance(),
-                localSource
-            )
+            MyApp.getInstanceRepository()
         )
         adapter= NotificationAdapter(this)
         binding.notifRecycler.adapter=adapter

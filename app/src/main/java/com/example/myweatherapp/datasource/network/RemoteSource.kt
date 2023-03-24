@@ -6,6 +6,7 @@ import retrofit2.http.Query
 
 
 interface RemoteSource {
+
     suspend fun getCurrentWeather( lat: Double,
                                    lon: Double,
                                    lang: String,

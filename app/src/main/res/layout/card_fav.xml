@@ -37,16 +37,15 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="50dp"
+                android:layout_width="70dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/cloud"
                 app:myImageUrl="@{forecast.current.weather.get(0).icon}"
-                />
+                app:srcCompat="@drawable/cloud" />
 
             <ImageButton
                 android:id="@+id/btn_delete"
@@ -96,7 +95,7 @@
                 android:fontFamily="sans-serif"
                 android:text="22"
                 android:textColor="@color/light_xl_blue"
-                android:textSize="80sp"
+                android:textSize="60sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_tempUnits"
@@ -106,7 +105,7 @@
                 android:id="@+id/text_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="46dp"
                 android:text="Mostly Clear"
                 android:textColor="@color/light_xl_blue"
                 android:textSize="20sp"

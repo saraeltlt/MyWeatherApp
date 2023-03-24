@@ -30,4 +30,12 @@
     <string name="thunderstorm">عاصفة جوية</string>
     <string name="sound_type">نوع التنبيه</string>
     <string name="add_alert">اضف تنبيه</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="map">Map</string>
+    <string name="search_map">Search In map</string>
+    <string name="savePreferences">Save Preferences</string>
+    <string name="gps">GPS</string>
+    <string name="internetDisconnected">Internet Disconnected</string>
 </resources>

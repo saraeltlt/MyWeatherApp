@@ -27,7 +27,7 @@ class OnBoarding3Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =inflater.inflate(R.layout.fragment_on_boarding2, container, false)
+        val view =inflater.inflate(R.layout.fragment_on_boarding3, container, false)
         val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
         val button = view.findViewById<Button>(R.id.finish)
         button.setOnClickListener {

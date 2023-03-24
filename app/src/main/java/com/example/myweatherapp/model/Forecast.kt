@@ -3,19 +3,20 @@ package com.example.myweatherapp.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "favorites")
+
+@Entity(tableName = "favorites", primaryKeys = ["timezone","currentWeather"])
 data class Forecast(
-    @PrimaryKey val place: String,
-    val alerts: List<Alert>,
+   // val alerts: List<Alert>,
     val current: Current,
     val daily: List<Daily>,
     val hourly: List<Hourly>,
     val lat: Double,
     val lon: Double,
-    val minutely: List<Minutely>,
     val timezone: String,
-    val timezone_offset: Int
+    val timezone_offset: Int,
+    var currentWeather: Int =0
 )
 
 data class Current(
@@ -83,10 +84,7 @@ data class Hourly(
     val wind_speed: Double
 )
 
-data class Minutely(
-    val dt: Int,
-    val precipitation: Double
-)
+
 data class Rain(
     val `1h`: Double
 )

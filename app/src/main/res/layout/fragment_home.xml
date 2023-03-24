@@ -426,6 +426,7 @@
                     android:id="@+id/text_tempUnits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="-5dp"
                     android:text="°C"
                     android:textColor="@color/light_xl_blue"
                     android:textSize="40sp"

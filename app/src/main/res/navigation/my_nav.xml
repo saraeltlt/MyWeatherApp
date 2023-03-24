@@ -29,7 +29,7 @@
         <action
             android:id="@+id/action_viewPagerFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/viewPagerFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -52,4 +52,15 @@
         android:name="com.example.myweatherapp.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/startPrefFragment"
+        android:name="com.example.myweatherapp.startPref.StartPrefFragment"
+        android:label="fragment_start_pref"
+        tools:layout="@layout/fragment_start_pref" >
+        <action
+            android:id="@+id/action_startPrefFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

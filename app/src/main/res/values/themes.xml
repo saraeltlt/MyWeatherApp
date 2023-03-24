@@ -17,12 +17,14 @@
         <item name="android:datePickerDialogTheme">@style/MyDatePickerDialogTheme</item>
 
 
+
     </style>
     <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
         <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
         <item name="android:colorControlActivated">@color/dark_orange</item>
         <item name="android:textColorPrimaryInverse">@color/white</item>
         <item name="android:windowBackground">@color/light_xl_blue</item>
+
 
 
     </style>
@@ -44,5 +46,6 @@
         <item name="colorAccent">@color/dark_blue</item>
         <item name="android:windowBackground">@color/light_xl_blue</item>
     </style>
+
 
 </resources>

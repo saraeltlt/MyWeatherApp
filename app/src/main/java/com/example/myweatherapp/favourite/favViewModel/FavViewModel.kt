@@ -12,6 +12,22 @@ import kotlinx.coroutines.launch
 class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     private var _weather : MutableLiveData<List<Forecast>> =MutableLiveData<List<Forecast>>()
     val weather: LiveData<List<Forecast>> = _weather
+    init{
+        getAllFav()
+    }
+    fun  getAllFav(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _weather.postValue(_repo.getAllFav())
+        }
+    }
+
+    fun deleteFav(forecast: Forecast){
+        viewModelScope.launch(Dispatchers.IO) {
+            _repo.deleteFav(forecast)
+           getAllFav()
+        }
+
+    }
 
 
 }

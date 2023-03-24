@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".startPref.StartPrefFragment">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/imageViewDummy"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
+        />
+
+    <TextView
+        android:id="@+id/tv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/language"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDummy"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewPreferencesLanguage"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="50dp"
+        app:cardCornerRadius="400dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_language"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_language"
+        app:layout_constraintTop_toTopOf="@+id/tv_language">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutPreferencesLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEnglish"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@color/light_blue"
+                android:text="@string/english"
+                android:textAllCaps="false"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnArabic"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@color/light_blue"
+                android:text="@string/arabic"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/location"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        app:layout_constraintStart_toStartOf="@+id/tv_language"
+        app:layout_constraintTop_toBottomOf="@+id/tv_language"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSettingsLocation"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="400dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_location"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewPreferencesLanguage"
+        app:layout_constraintStart_toStartOf="@+id/cardViewPreferencesLanguage"
+        app:layout_constraintTop_toTopOf="@+id/tv_location">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutSettingsLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnGPS"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:background="@color/light_blue"
+                android:text="@string/location"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnMap"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@color/light_blue"
+                android:text="@string/map"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/img_search_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_searchMap"
+        app:layout_constraintStart_toStartOf="@+id/et_searchMap"
+        app:layout_constraintTop_toTopOf="@+id/et_searchMap"
+        app:srcCompat="@drawable/search"
+
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btn_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="15dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_searchMap"
+        app:layout_constraintEnd_toEndOf="@+id/et_searchMap"
+        app:layout_constraintTop_toTopOf="@+id/et_searchMap"
+        app:srcCompat="@drawable/close"
+
+        />
+
+    <EditText
+        android:id="@+id/et_searchMap"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/search_map"
+        android:paddingStart="60dp"
+        android:paddingEnd="70dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewSettingsLocation" />
+
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_search_suggestions"
+        tools:layout="@android:layout/activity_list_item"
+
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_searchMap" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSavePreferences"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:cardCornerRadius="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:text="@string/savePreferences"
+            android:textAllCaps="false"
+            android:textColor="@color/navy" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imgCurrentLocation"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardViewSavePreferences"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintTop_toTopOf="@+id/cardViewSavePreferences"
+        app:srcCompat="@drawable/location" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
