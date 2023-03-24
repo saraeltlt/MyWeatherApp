@@ -9,8 +9,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavAction
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myweatherapp.DetailsFragment
 import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentFavoriteBinding
@@ -43,6 +47,7 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
            MyApp.getInstanceRepository()
         )
 
+
         adapter= FavAdapter(this)
         binding.favRecycler.adapter=adapter
         binding.favRecycler.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
@@ -59,6 +64,11 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
     }
 
     override fun onFavClick(forecast: Forecast) {
+       val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(forecast)
+        findNavController().navigate(action)
+
+
+
 
     }
 

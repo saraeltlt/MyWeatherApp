@@ -30,7 +30,7 @@ data class Current(
     val feels_like: Double,
     val humidity: Int,//need
     val pressure: Int,//need
-    val rain: Rain,
+    //val rain: Rain,
     val sunrise: Int,
     val sunset: Int,
 
@@ -80,8 +80,8 @@ data class Hourly(
     val humidity: Int,
     val pop: Double,
     val pressure: Int,
-    val rain: RainX,
-    val snow: Snow,
+ //   val rain: RainX,
+   // val snow: Snow,
     val temp: Double,//need
     val uvi: Double,
     val visibility: Int,
@@ -91,7 +91,7 @@ data class Hourly(
     val wind_speed: Double
 ): Parcelable
 
-@Parcelize
+/*@Parcelize
 data class Rain(
     val `1h`: Double
 ): Parcelable
@@ -102,7 +102,7 @@ data class RainX(
 @Parcelize
 data class Snow(
     val `1h`: Double
-): Parcelable
+): Parcelable*/
 @Parcelize
 data class Temp(
     val day: Double,
