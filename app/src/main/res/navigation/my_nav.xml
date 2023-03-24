@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_favoriteFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
@@ -76,4 +79,8 @@
             android:name="currentWeather"
             app:argType="com.example.myweatherapp.model.Forecast" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.myweatherapp.map.MapsFragment"
+        android:label="MapsFragment" />
 </navigation>
