@@ -1,12 +1,15 @@
 package com.example.myweatherapp.model
 
+import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.example.myweatherapp.notifications.notificationmodel.Alert
-import org.jetbrains.annotations.NotNull
+
+import kotlinx.parcelize.Parcelize
+
 
 
 @Entity(tableName = "favorites", primaryKeys = ["timezone","currentWeather"])
+
+@Parcelize
 data class Forecast(
    // val alerts: List<Alert>,
     val current: Current,
@@ -17,8 +20,9 @@ data class Forecast(
     val timezone: String,
     val timezone_offset: Int,
     var currentWeather: Int =0
-)
+): Parcelable
 
+@Parcelize
 data class Current(
     val clouds: Int,//need
     val dew_point: Double,
@@ -36,7 +40,8 @@ data class Current(
     val weather: List<Weather>,
     val wind_deg: Int,
     val wind_speed: Double//need
-)
+): Parcelable
+@Parcelize
 data class Daily(
     val clouds: Int,//need
     val dew_point: Double,
@@ -58,13 +63,15 @@ data class Daily(
     val wind_deg: Int,
     val wind_gust: Double,
     val wind_speed: Double//need
-)
+): Parcelable
+@Parcelize
 data class FeelsLike(
     val day: Double,
     val eve: Double,
     val morn: Double,
     val night: Double
-)
+): Parcelable
+@Parcelize
 data class Hourly(
     val clouds: Int,
     val dew_point: Double,
@@ -82,18 +89,21 @@ data class Hourly(
     val wind_deg: Int,
     val wind_gust: Double,
     val wind_speed: Double
-)
+): Parcelable
 
-
+@Parcelize
 data class Rain(
     val `1h`: Double
-)
+): Parcelable
+@Parcelize
 data class RainX(
     val `1h`: Double
-)
+): Parcelable
+@Parcelize
 data class Snow(
     val `1h`: Double
-)
+): Parcelable
+@Parcelize
 data class Temp(
     val day: Double,
     val eve: Double,
@@ -101,10 +111,11 @@ data class Temp(
     val min: Double,
     val morn: Double,
     val night: Double
-)
+): Parcelable
+@Parcelize
 data class Weather(
     val description: String,
     val icon: String,
     val id: Int,
     val main: String
-)
+): Parcelable

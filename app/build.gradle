@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin' version '2.5.3'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -51,6 +53,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 
     //work
     implementation 'androidx.work:work-runtime-ktx:2.8.0'

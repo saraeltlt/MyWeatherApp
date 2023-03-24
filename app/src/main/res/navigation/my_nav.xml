@@ -41,7 +41,11 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.myweatherapp.favourite.favView.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.myweatherapp.notifications.notificationview.NotificationFragment"
@@ -62,5 +66,14 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.myweatherapp.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="currentWeather"
+            app:argType="com.example.myweatherapp.model.Forecast" />
     </fragment>
 </navigation>
