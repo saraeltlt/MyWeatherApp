@@ -47,5 +47,9 @@
     <string name="locationAlreadyInFavorites">"Location Already In Favorites "</string>
     <string name="locationSelected">Location Selected</string>
     <string name="locationIsAlreadySelected">Location Is Already Selected</string>
+    <string name="locationNotFound">Current Location Not Found</string>
+    <string name="search_your_location">Search your location..</string>
+    <string name="add_fav">Add To Favorite</string>
+    <string name="set_loc">Set Location</string>
 
 </resources>

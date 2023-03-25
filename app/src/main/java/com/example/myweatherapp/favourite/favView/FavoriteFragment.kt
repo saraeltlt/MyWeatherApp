@@ -57,7 +57,8 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
             adapter.submitList(it)
         })
         binding.favFab.setOnClickListener {
-            findNavController().navigate(R.id.action_favoriteFragment_to_mapsFragment)
+            val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
+            findNavController().navigate(action)
 
         }
 

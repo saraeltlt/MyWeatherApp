@@ -1,18 +1,11 @@
 package com.example.myweatherapp.home.homeview
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,8 +16,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentHomeBinding
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
-import com.example.myweatherapp.provider.GPSProvider
-import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.location.GPSProvider
 import com.example.myweatherapp.utils.NetworkManager
 import com.example.myweatherapp.utils.loadImage
 import com.google.android.material.bottomnavigation.BottomNavigationView

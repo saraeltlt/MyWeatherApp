@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         val languageKey=sp.getString("language","")
         setLocale(languageKey!!)
         Constant.appDefaultLanguage = languageKey
-        Constant.api_lang=languageKey
     }
 
 }

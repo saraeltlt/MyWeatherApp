@@ -81,6 +81,10 @@
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.example.myweatherapp.map.MapsFragment"
-        android:label="MapsFragment" />
+        android:name="com.example.myweatherapp.location.MapsFragment"
+        android:label="MapsFragment" >
+        <argument
+            android:name="from"
+            app:argType="string" />
+    </fragment>
 </navigation>

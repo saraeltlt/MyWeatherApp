@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.provider.GPSProvider
+import com.example.myweatherapp.location.GPSProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val _repo : RepoInterface, val context: Context, val myGps: GPSProvider,val lang: String,val units: String): ViewModel() {
+class HomeViewModel(private val _repo : RepoInterface, val context: Context, val myGps: GPSProvider, val lang: String, val units: String): ViewModel() {
     private var _weather : MutableLiveData<Forecast> = MutableLiveData<Forecast>()
     val weather: LiveData<Forecast> = _weather
 
@@ -46,7 +46,7 @@ class HomeViewModel(private val _repo : RepoInterface, val context: Context, val
         myGps.getCurrentLocation()
         myGps.data.observe(context as LifecycleOwner){
 
-                getCurrentWeatherRemote(it.lat, it.long, lang, units)
+                getCurrentWeatherRemote(it.latitude, it.longitude, lang, units)
             }
 
         }
