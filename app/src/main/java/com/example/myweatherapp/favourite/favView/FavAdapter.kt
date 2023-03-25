@@ -2,6 +2,7 @@ package com.example.myweatherapp.favourite.favView
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -31,8 +32,9 @@ class FavAdapter (
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val favItem=getItem(position)
-
-        holder.binding.textLocation.text=favItem.timezone
+        val geocoder= Geocoder(context)
+        val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
+        holder.binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
         holder.binding.textDesc.text=favItem.current.weather[0].description
         holder.binding.textTempNum.text= Math.ceil(favItem.current.temp).toInt().toString()
         holder.binding.textTempUnits.text="°C" //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.

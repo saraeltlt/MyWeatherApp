@@ -1,5 +1,6 @@
 package com.example.myweatherapp
 
+import android.location.Geocoder
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,7 +44,9 @@ fun setUI(it:Forecast){
     var simpleDate = SimpleDateFormat("dd/M/yyyy")
     var currentDate = simpleDate.format(it.current.dt * 1000L)
 
-    binding.textLocation.text = it.timezone
+    val geocoder= Geocoder(requireContext())
+    val address=geocoder.getFromLocation(it.lat,it.lon,1)
+    binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
     binding.textDate.text = currentDate.toString()
     loadImage(binding.imageDesc, it.current.weather[0].icon)
     binding.textTempNum.text = ceil(it.current.temp).toInt().toString()

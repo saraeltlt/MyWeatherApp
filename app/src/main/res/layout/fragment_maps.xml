@@ -18,58 +18,56 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button2"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="64dp"
                 android:background="@drawable/gradient_button_o"
-                android:text="Button"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:singleLine="true"
                 android:id="@+id/txt_address"
-                android:imeOptions="actionSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/search_bg"
                 android:drawableStart="@drawable/search"
                 android:elevation="10dp"
                 android:hint="@string/search_your_location"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
                 android:textAlignment="center"
-                android:textSize="20dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <RelativeLayout
-                android:id="@+id/relativeLayout"
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mapPins"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="305dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_address">
+                app:layout_constraintTop_toTopOf="@+id/txt_address"
+                app:srcCompat="@drawable/map_pin" />
 
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <ImageView
-                    android:id="@+id/mapPins"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/map_pin" />
-
-            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

@@ -50,6 +50,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     ): View? {
         MapsInitializer.initialize(requireContext())
 
+
+        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_maps,container,false) as FragmentMapsBinding
+        binding.lifecycleOwner=this
         //---------------------FROM--------------------------------
         val args by navArgs<MapsFragmentArgs>()
         destination=args.from
@@ -58,9 +61,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         }else {
             binding.button2.setText(getString(R.string.set_loc))
         }
-       //---------------------------------------------------------
-        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_maps,container,false) as FragmentMapsBinding
-        binding.lifecycleOwner=this
+        //---------------------------------------------------------
         var mapViewBundle:Bundle?=null
         if (savedInstanceState!=null){
             mapViewBundle=savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY)
@@ -90,13 +91,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     private fun goToSearchLocation() {
         val searchLocation = binding.txtAddress.text.toString()
         val geocoder = Geocoder(requireContext())
-        var list : List<Address> = ArrayList<Address>()
+        var list : List<Address> = ArrayList()
         try{
             list = geocoder.getFromLocationName(searchLocation,1) as List<Address>
         }catch (e:IOException){
             e.printStackTrace()
         }
-        if (list.size>0){
+        if (list.isNotEmpty()){
             goToLatLng(list[0].latitude,list[0].longitude, 12f)
         }
 
@@ -165,39 +166,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         mMap!!.setOnCameraIdleListener(this)
         getCurrentLocation()
     }
-    override fun onLocationChanged(location: Location) {
-        val geocoder= Geocoder(requireContext(), Locale.getDefault())
-        var addresses: List<Address>? = null
-        try {
-            addresses=geocoder.getFromLocation(location.latitude, location.longitude,1)
 
-            
-        }catch (e: IOException){
-            e.printStackTrace()
-        }
-        setAddress(addresses!![0])
-        
 
-    }
-    private fun setAddress(address: Address) {
-        if (address!=null){
-            if (address.getAddressLine(0)!=null){
-                binding.txtAddress.setText(address.getAddressLine(0))
-            }
-            if (address.getAddressLine(1)!=null){
-                binding.txtAddress.append(address.getAddressLine(1))
-            }
-        }
-
-    }
     override fun onCameraIdle() {
          var addresses: List<Address>?=null
-        val geocoder=Geocoder(requireContext(), Locale.getDefault())
+        val geocoder=Geocoder(requireContext())
         try{
             addresses=geocoder.getFromLocation(mMap!!.cameraPosition.target.latitude,mMap!!.cameraPosition.target.longitude,1)
             myLocation = LatLng(mMap!!.cameraPosition.target.latitude,mMap!!.cameraPosition.target.longitude)
             Log.e("location",myLocation.latitude.toString())
-            binding.txtAddress.setText(addresses?.get(0)?.adminArea)
+            binding.txtAddress.getText().clear()
+            binding.txtAddress.setHint(addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName )
         }catch (e:java.lang.IndexOutOfBoundsException){
             e.printStackTrace()
         }catch (e:IOException){
@@ -208,6 +187,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     }
     override fun onCameraMoveStarted(p0: Int) {
 
+    }
+    override fun onLocationChanged(location: Location) {
     }
 
 }
