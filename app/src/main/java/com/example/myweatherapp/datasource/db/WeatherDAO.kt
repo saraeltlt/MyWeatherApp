@@ -17,7 +17,7 @@ interface WeatherDAO {
     fun insertFavOrCurrent(forecast: Forecast)
     @Delete
     fun deleteFav(forecast:Forecast)
-    @Query("select* from favorites") //where currentWeather LIKE:currentWeather 0
+    @Query("select* from favorites where currentWeather LIKE:currentWeather 1")
     fun getAllFav():List<Forecast>
 
 

@@ -1,6 +1,7 @@
 package com.example.myweatherapp.favourite.favView
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavAction
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.DetailsFragment
@@ -20,6 +22,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentFavoriteBinding
 import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
+import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -46,13 +49,14 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
         factory = FavViewModelFactory(
            MyApp.getInstanceRepository()
         )
-
-
         adapter= FavAdapter(this)
         binding.favRecycler.adapter=adapter
         binding.favRecycler.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
-
         viewModel = ViewModelProvider(this,factory).get(FavViewModel::class.java)
+        val args by navArgs<FavoriteFragmentArgs>()
+        if (args.myLocation !=null){
+            viewModel.getFavRemote(args.myLocation?.latitude!!, args.myLocation?.longitude!!)
+        }
         viewModel.weather.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })

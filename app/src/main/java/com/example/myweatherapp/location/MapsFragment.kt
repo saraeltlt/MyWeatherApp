@@ -17,9 +17,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentMapsBinding
+import com.example.myweatherapp.favourite.favView.FavoriteFragmentDirections
 import com.example.myweatherapp.utils.Constant
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -68,6 +70,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         }
         binding.map.onCreate(mapViewBundle)
         binding.map.getMapAsync(this)
+
         binding.txtAddress.setOnEditorActionListener { v, actionId, event ->
             if (actionId==EditorInfo.IME_ACTION_SEARCH
                 || actionId==EditorInfo.IME_ACTION_DONE
@@ -77,6 +80,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
                 goToSearchLocation()
             }
              false
+
+        }
+
+
+        binding.button2.setOnClickListener {
+            if (destination=="fav"){
+                val action = MapsFragmentDirections.actionMapsFragmentToFavoriteFragment(myLocation)
+                findNavController().navigate(action)
+            }
 
         }
 
@@ -98,13 +110,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
             e.printStackTrace()
         }
         if (list.isNotEmpty()){
-            goToLatLng(list[0].latitude,list[0].longitude, 12f)
-        }
+            val update = CameraUpdateFactory.newLatLngZoom(LatLng(list[0].latitude,list[0].longitude),DEFAULT_ZOOM)
+            mMap?.animateCamera(update)
 
-    }
-    private fun goToLatLng(latitude: Double, longitude: Double, z:Float) {
-        val update = CameraUpdateFactory.newLatLngZoom(LatLng(latitude,longitude),z)
-        mMap?.animateCamera(update)
+        }
 
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -166,8 +175,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         mMap!!.setOnCameraIdleListener(this)
         getCurrentLocation()
     }
-
-
     override fun onCameraIdle() {
          var addresses: List<Address>?=null
         val geocoder=Geocoder(requireContext())
@@ -186,7 +193,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     override fun onCameraMove() {
     }
     override fun onCameraMoveStarted(p0: Int) {
-
     }
     override fun onLocationChanged(location: Location) {
     }
