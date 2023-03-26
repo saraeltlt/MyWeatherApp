@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     private var _weather : MutableLiveData<List<Forecast>> =MutableLiveData<List<Forecast>>()
     val weather: LiveData<List<Forecast>> = _weather
+    lateinit var favItem:Forecast
     init{
         getAllFav()
     }
@@ -38,14 +39,12 @@ class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     fun  getFavRemote(lat: Double,
                       lon: Double,
                       lang: String = Constant.myPref.appLanguage,
-                      units: String= Constant.myPref.appUnit) : Forecast{
-        var favItem: Forecast? =null
-        viewModelScope.launch(Dispatchers.IO) {
-          favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
-            addFav(favItem!!)
+                      units: String= Constant.myPref.appUnit) {
 
+        viewModelScope.launch(Dispatchers.IO) {
+           favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
+            addFav(favItem)
         }
-        return favItem!!
 
     }
 

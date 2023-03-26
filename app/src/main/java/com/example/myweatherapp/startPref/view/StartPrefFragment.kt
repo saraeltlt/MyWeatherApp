@@ -48,7 +48,7 @@ class StartPrefFragment : Fragment() {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_start_pref,container,false) as FragmentStartPrefBinding
         binding.lifecycleOwner=this
         val view = binding.root
-        val factory = StartPrefViewModelFactory(requireContext())
+        val factory = StartPrefViewModelFactory(requireContext(),  GPSProvider(requireContext()))
         val viewModel =
             ViewModelProvider(this, factory).get(StartPrefViewModel::class.java)
 
@@ -65,12 +65,14 @@ class StartPrefFragment : Fragment() {
                 binding.btnGps.isChecked=false
             }
             else {
-              val myGps=  GPSProvider(requireContext())
+             /*   viewModel.location.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    myLocation=it
+                })*/
+             val myGps=  GPSProvider(requireContext())
                 myGps.getCurrentLocation()
                 myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                     myLocation=it
                 })
-
 
             }
         }

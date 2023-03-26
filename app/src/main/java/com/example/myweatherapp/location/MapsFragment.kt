@@ -175,16 +175,23 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
 
 
     }
+
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
+
+
         binding.map.onResume()
         mMap=p0
+        if (!checkPremission()) {
+            requestPermission()
+        }
         mMap!!.setMyLocationEnabled(true)
         mMap!!.setOnCameraMoveListener (this)
         mMap!!.setOnCameraMoveStartedListener(this)
         mMap!!.setOnCameraIdleListener(this)
         getCurrentLocation()
     }
+
     override fun onCameraIdle() {
          var addresses: List<Address>?=null
         val geocoder=Geocoder(requireContext())

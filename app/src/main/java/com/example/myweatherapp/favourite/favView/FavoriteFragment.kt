@@ -84,7 +84,8 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
     override fun onFavClick(forecast: Forecast) {
         var favItem=forecast
         if (NetworkManager.isInternetConnected()){
-            favItem= viewModel.getFavRemote(forecast.lat,forecast.lon)
+            viewModel.getFavRemote(forecast.lat,forecast.lon)
+            favItem=viewModel.favItem
         }
        val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(favItem)
         findNavController().navigate(action)
