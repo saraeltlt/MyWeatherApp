@@ -13,16 +13,16 @@ interface WeatherDAO {
     @Query("DELETE  from favorites where currentWeather LIKE:currentWeather")
     fun deleteWeather(currentWeather:Int=1)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavOrCurrent(forecast: Forecast)
     @Delete
     fun deleteFav(forecast:Forecast)
-    @Query("select* from favorites where currentWeather LIKE:currentWeather 1")
-    fun getAllFav():List<Forecast>
+    @Query("select* from favorites where currentWeather LIKE:currentWeather")
+    fun getAllFav(currentWeather:Int=0):List<Forecast>
 
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAlert(alert: Alert)
     @Delete
     fun deleteAlert(alert: Alert)

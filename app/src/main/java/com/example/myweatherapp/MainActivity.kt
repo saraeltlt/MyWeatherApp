@@ -4,16 +4,11 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.View
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.example.myweatherapp.databinding.ActivityMainBinding
 import com.example.myweatherapp.utils.Constant
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,18 +26,9 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
-        /*navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.mapsFragment ||
-                destination.id == R.id.nextDaysFragment ||
-                destination.id == R.id.splashFragment ||
-                destination.id == R.id.favNextDaysFragment ||
-                destination.id == R.id.favWeatherFragment
-            ) {
-                binding.bottomNav.visibility = View.GONE
-            } else {
-                binding.bottomNav.visibility = View.VISIBLE
-            }
-        }*/
+
+
+
 
 
     }
@@ -60,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         val sp= PreferenceManager.getDefaultSharedPreferences(this)
         val languageKey=sp.getString("language","")
         setLocale(languageKey!!)
-        Constant.appDefaultLanguage = languageKey
+        Constant.myPref.appLanguage = languageKey
     }
 
 }

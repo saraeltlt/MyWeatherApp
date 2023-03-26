@@ -35,9 +35,6 @@ class FavAdapter (
         val geocoder= Geocoder(context)
         val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
         holder.binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
-        holder.binding.textDesc.text=favItem.current.weather[0].description
-        holder.binding.textTempNum.text= Math.ceil(favItem.current.temp).toInt().toString()
-        holder.binding.textTempUnits.text="°C" //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
         holder.binding.forecast=favItem
         holder.binding.action=action
     }

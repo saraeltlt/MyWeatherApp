@@ -1,7 +1,9 @@
 package com.example.myweatherapp.location
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -51,8 +53,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         savedInstanceState: Bundle?
     ): View? {
         MapsInitializer.initialize(requireContext())
-
-
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_maps,container,false) as FragmentMapsBinding
         binding.lifecycleOwner=this
         //---------------------FROM--------------------------------
@@ -60,37 +60,47 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         destination=args.from
         if (args.from=="fav"){
             binding.button2.setText(getString(R.string.add_fav))
-        }else {
+        }else if (args.from=="start") {
             binding.button2.setText(getString(R.string.set_loc))
         }
         //---------------------------------------------------------
-        var mapViewBundle:Bundle?=null
-        if (savedInstanceState!=null){
-            mapViewBundle=savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY)
+        if (!checkPremission()) {
+            requestPermission()
         }
-        binding.map.onCreate(mapViewBundle)
-        binding.map.getMapAsync(this)
 
-        binding.txtAddress.setOnEditorActionListener { v, actionId, event ->
-            if (actionId==EditorInfo.IME_ACTION_SEARCH
-                || actionId==EditorInfo.IME_ACTION_DONE
-                || event.action == KeyEvent.ACTION_DOWN
-                || event.action == KeyEvent.KEYCODE_ENTER
-            ){
-                goToSearchLocation()
+            var mapViewBundle: Bundle? = null
+            if (savedInstanceState != null) {
+                mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY)
             }
-             false
+            binding.map.onCreate(mapViewBundle)
+            binding.map.getMapAsync(this)
 
-        }
+            binding.txtAddress.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || event.action == KeyEvent.ACTION_DOWN
+                    || event.action == KeyEvent.KEYCODE_ENTER
+                ) {
+                    goToSearchLocation()
+                }
+                false
 
-
-        binding.button2.setOnClickListener {
-            if (destination=="fav"){
-                val action = MapsFragmentDirections.actionMapsFragmentToFavoriteFragment(myLocation)
-                findNavController().navigate(action)
             }
 
-        }
+
+            binding.button2.setOnClickListener {
+                if (destination == "fav") {
+                    val action =
+                        MapsFragmentDirections.actionMapsFragmentToFavoriteFragment(myLocation)
+                    findNavController().navigate(action)
+                } else if (args.from == "start") {
+                    val action =
+                        MapsFragmentDirections.actionMapsFragmentToStartPrefFragment(myLocation)
+                    findNavController().navigate(action)
+                }
+
+            }
+
 
         return binding.root
     }
@@ -195,6 +205,23 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     override fun onCameraMoveStarted(p0: Int) {
     }
     override fun onLocationChanged(location: Location) {
+    }
+    private fun checkPremission():Boolean{
+        val result = ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+        return result
+    }
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(context as Activity, arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
     }
 
 }

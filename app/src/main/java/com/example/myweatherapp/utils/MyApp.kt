@@ -17,7 +17,7 @@ class MyApp : Application() {
         private var remoteDataSource: ClientRemoteSource? = null
         private var sharedPreferences : SharedPreferences? = null
         private val repository by lazy { Repository( remoteDataSource!!,
-            localDataSource!!, sharedPreferences!!) }
+            localDataSource!!) }
 
 
         @Synchronized
@@ -46,6 +46,6 @@ class MyApp : Application() {
         remoteDataSource = ClientRemoteSource.getInstance(this)
         NetworkManager.init(this)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
     }
 }

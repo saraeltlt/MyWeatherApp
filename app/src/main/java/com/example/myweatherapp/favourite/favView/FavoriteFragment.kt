@@ -24,6 +24,7 @@ import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
 import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.utils.NetworkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class FavoriteFragment : Fragment(),OnFavClickListner {
@@ -58,7 +59,18 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
             viewModel.getFavRemote(args.myLocation?.latitude!!, args.myLocation?.longitude!!)
         }
         viewModel.weather.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+            if (it.isEmpty()){
+                binding.favRecycler.visibility= View.GONE
+                binding.animationView.visibility= View.VISIBLE
+                binding.txtFav.visibility=View.VISIBLE
+
+            }
+            else {
+                binding.animationView.visibility= View.GONE
+                binding.txtFav.visibility=View.GONE
+                binding.favRecycler.visibility= View.VISIBLE
+                adapter.submitList(it)
+            }
         })
         binding.favFab.setOnClickListener {
             val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
@@ -70,7 +82,11 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
     }
 
     override fun onFavClick(forecast: Forecast) {
-       val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(forecast)
+        var favItem=forecast
+        if (NetworkManager.isInternetConnected()){
+            favItem= viewModel.getFavRemote(forecast.lat,forecast.lon)
+        }
+       val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(favItem)
         findNavController().navigate(action)
 
 

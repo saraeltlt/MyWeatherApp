@@ -36,13 +36,17 @@ class FavViewModel(private val _repo : RepoInterface): ViewModel() {
         }
     }
     fun  getFavRemote(lat: Double,
-                                 lon: Double,
-                                 lang: String = Constant.appDefaultLanguage,
-                                 units: String= Constant.appDefaultUnit){
+                      lon: Double,
+                      lang: String = Constant.myPref.appLanguage,
+                      units: String= Constant.myPref.appUnit) : Forecast{
+        var favItem: Forecast? =null
         viewModelScope.launch(Dispatchers.IO) {
-          val favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
-            addFav(favItem)
+          favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
+            addFav(favItem!!)
+
         }
+        return favItem!!
+
     }
 
 

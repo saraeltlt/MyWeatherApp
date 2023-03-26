@@ -9,9 +9,7 @@ import com.example.myweatherapp.notifications.notificationmodel.Alert
 class Repository (
     var remoteSource: RemoteSource,
      var localSource: LocalSource,
-    val sharedPreferences : SharedPreferences
 ) : RepoInterface{
-    private val sharedPreferencesEditor = sharedPreferences.edit()
 
 
     override suspend fun getCurrentWeather(lat: Double, lon: Double, lang: String, units: String): Forecast {
@@ -58,21 +56,7 @@ class Repository (
         localSource.deleteAlert(alert)
     }
 
-    override fun putStringInSharedPreferences(key: String, stringInput: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun getStringFromSharedPreferences(key: String, stringDefault: String): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun putBooleanInSharedPreferences(key: String, booleanInput: Boolean) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getBooleanFromSharedPreferences(key: String, booleanDefault: Boolean): Boolean {
-        TODO("Not yet implemented")
-    }
 
 
 

@@ -1,14 +1,26 @@
 package com.example.myweatherapp.utils
 
 import android.content.Context
-import android.preference.PreferenceManager
+import com.example.myweatherapp.startPref.model.MyPref
+import com.google.gson.Gson
 
-class Preferences(var context: Context) {
+object Preferences{
 
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+   fun saveMyPref(myPref: MyPref, context: Context) {
+        val mPrefs = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val prefsEditor = mPrefs.edit()
+        val json = Gson().toJson(myPref)
+        prefsEditor.putString("MyPref", json)
+        prefsEditor.commit()
+    }
 
-    val units = sharedPreferences.getString("unit", "")!!
-    val language = sharedPreferences.getString("language", "ar")!!
-    val locationUsingGps = sharedPreferences.getBoolean("USE_DEVICE_LOCATION", true)
+    fun getMyPref(context: Context): MyPref {
+        val mPrefs = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val jsonDefault = Gson().toJson(Constant.myPref)
+        val json = mPrefs.getString("MyPref", jsonDefault).toString()
+        val obj: MyPref = Gson().fromJson(json, MyPref::class.java)
+        return obj;
+    }
+
 
 }

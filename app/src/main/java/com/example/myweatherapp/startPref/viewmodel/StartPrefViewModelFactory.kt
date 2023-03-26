@@ -1,14 +1,14 @@
-package com.example.myweatherapp.startPref
+package com.example.myweatherapp.startPref.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myweatherapp.datasource.Repository
 
 
-class StartPrefViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {
+class StartPrefViewModelFactory (val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(StartPrefViewModel::class.java)){
-            StartPrefViewModel(repository) as T
+            StartPrefViewModel(context) as T
         } else{
             throw java.lang.IllegalArgumentException("InitialPreferencesViewModel class not found")
         }

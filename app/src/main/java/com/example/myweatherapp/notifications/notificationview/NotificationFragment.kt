@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,9 +50,20 @@ class NotificationFragment : Fragment() , OnNotifClickListner{
         binding.notifRecycler.adapter=adapter
         binding.notifRecycler.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         viewModel = ViewModelProvider(this,factory).get(NotificationViewModel::class.java)
-        /* viewModel.weather.observe(viewLifecycleOwner, Observer {
-          adapter.submitList(it)
-      } */
+        viewModel.alert.observe(viewLifecycleOwner, Observer{
+            if (it.isEmpty()){
+                binding.notifRecycler.visibility= View.GONE
+                binding.animationView.visibility= View.VISIBLE
+                binding.txtAlert.visibility=View.VISIBLE
+
+            }
+            else {
+                binding.animationView.visibility= View.GONE
+                binding.txtAlert.visibility=View.GONE
+                binding.notifRecycler.visibility= View.VISIBLE
+                adapter.submitList(it)
+            }
+        })
 
         binding.notifFab.setOnClickListener {
             showAlertDialog()

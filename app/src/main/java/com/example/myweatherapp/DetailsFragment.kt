@@ -16,7 +16,9 @@ import com.example.myweatherapp.databinding.FragmentSettingBinding
 import com.example.myweatherapp.home.homeview.DaysAdapter
 import com.example.myweatherapp.home.homeview.TimeAdapter
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.utils.NetworkManager
 import com.example.myweatherapp.utils.loadImage
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import kotlin.math.ceil
 
@@ -30,10 +32,16 @@ class DetailsFragment : Fragment() {
     ): View? {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_details,container,false) as FragmentDetailsBinding
         binding.lifecycleOwner=this
+        val view = binding.root
+        if (!NetworkManager.isInternetConnected()){
+            Snackbar.make(view, R.string.internetDisconnectedFav,
+                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
+        }
 
         val args by navArgs<DetailsFragmentArgs>()
         setUI(args.currentWeather)
-        return binding.root
+        return view
     }
 
 fun setUI(it:Forecast){
@@ -50,8 +58,7 @@ fun setUI(it:Forecast){
     binding.textDate.text = currentDate.toString()
     loadImage(binding.imageDesc, it.current.weather[0].icon)
     binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
-    binding.textTempUnits.text =
-        "°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+    binding.textTempUnits.text = "°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
     binding.textDesc.text = it.current.weather[0].description
 
     binding.pressure.text = "${it.current.pressure} hPa"

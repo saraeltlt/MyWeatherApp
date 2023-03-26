@@ -28,22 +28,14 @@ class OnBoarding3Fragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view =inflater.inflate(R.layout.fragment_on_boarding3, container, false)
-        val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
         val button = view.findViewById<Button>(R.id.finish)
         button.setOnClickListener {
-            findNavController().navigate(R.id.action_viewPagerFragment_to_homeFragment)
-            onBoardingFinished()
-
+            findNavController().navigate(R.id.action_viewPagerFragment_to_startPrefFragment2)
         }
 
         return view
     }
-    private fun onBoardingFinished(){
-        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putBoolean("finished",true)
-        editor.apply()
-    }
+
 
 
 }

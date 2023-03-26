@@ -8,18 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentHomeBinding
+import com.example.myweatherapp.favourite.favView.FavoriteFragmentArgs
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
 import com.example.myweatherapp.location.GPSProvider
-import com.example.myweatherapp.utils.NetworkManager
-import com.example.myweatherapp.utils.loadImage
+import com.example.myweatherapp.utils.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
@@ -30,8 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     lateinit var viewModel:HomeViewModel
     lateinit var factory: HomeViewModelFactory
-    var lat: Double =0.0
-    var long: Double =0.0
+
 
 
 
@@ -53,23 +54,15 @@ class HomeFragment : Fragment() {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false) as FragmentHomeBinding
         binding.lifecycleOwner=this.viewLifecycleOwner
         val view = binding.root
+        Constant.myPref=Preferences.getMyPref(requireContext())
+        val myLocation= Constant.myPref.myLocation
 
-            factory = HomeViewModelFactory(
-                MyApp.getInstanceRepository(),
-                GPSProvider(requireContext()),
-                requireContext()
-            )
-
-
+        factory = HomeViewModelFactory(
+            MyApp.getInstanceRepository(),
+            myLocation
+        )
         viewModel = ViewModelProvider(this,factory).get(HomeViewModel::class.java)
-        if (NetworkManager.isInternetConnected()){
 
-            viewModel.getMyGpsLocation()
-        }else{
-            viewModel.getCurrentWeatherFromDB()
-            Snackbar.make(view, R.string.internetDisconnected,
-                Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        }
         viewModel.weather.observe(viewLifecycleOwner, Observer {
             if (it==null){
                 hideUI()
@@ -83,9 +76,10 @@ class HomeFragment : Fragment() {
                 timeAdapter.submitList(it.hourly)
                 var simpleDate = SimpleDateFormat("dd/M/yyyy")
                 var currentDate = simpleDate.format(it.current.dt * 1000L)
-                val geocoder= Geocoder(requireContext())
-                val address=geocoder.getFromLocation(it.lat,it.lon,1)
-                binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
+              //  val geocoder= Geocoder(requireContext())
+              //  val address=geocoder.getFromLocation(it.lat,it.lon,1)
+              //  binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
+                binding.textLocation.text=it.timezone
                 binding.textDate.text = currentDate.toString()
                 loadImage(binding.imageDesc, it.current.weather[0].icon)
                 binding.textTempNum.text = ceil(it.current.temp).toInt().toString()

@@ -1,223 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".startPref.StartPrefFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/imageViewDummy"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/language"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDummy"
-        />
+    </data>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewPreferencesLanguage"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="50dp"
-        app:cardCornerRadius="400dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_language"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_language"
-        app:layout_constraintTop_toTopOf="@+id/tv_language">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayoutPreferencesLanguages"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEnglish"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:background="@color/light_blue"
-                android:text="@string/english"
-                android:textAllCaps="false"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnArabic"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:background="@color/light_blue"
-                android:text="@string/arabic"
-                android:textAllCaps="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/location"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="@+id/tv_language"
-        app:layout_constraintTop_toBottomOf="@+id/tv_language"
-        />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSettingsLocation"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="400dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_location"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewPreferencesLanguage"
-        app:layout_constraintStart_toStartOf="@+id/cardViewPreferencesLanguage"
-        app:layout_constraintTop_toTopOf="@+id/tv_location">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayoutSettingsLocation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnGPS"
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:background="@color/light_blue"
-                android:text="@string/location"
-                android:textAllCaps="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnMap"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:background="@color/light_blue"
-                android:text="@string/map"
-                android:textAllCaps="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/img_search_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="15dp"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_searchMap"
-        app:layout_constraintStart_toStartOf="@+id/et_searchMap"
-        app:layout_constraintTop_toTopOf="@+id/et_searchMap"
-        app:srcCompat="@drawable/search"
-
-        />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/btn_close"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="15dp"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_searchMap"
-        app:layout_constraintEnd_toEndOf="@+id/et_searchMap"
-        app:layout_constraintTop_toTopOf="@+id/et_searchMap"
-        app:srcCompat="@drawable/close"
-
-        />
-
-    <EditText
-        android:id="@+id/et_searchMap"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/search_map"
-        android:paddingStart="60dp"
-        android:paddingEnd="70dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewSettingsLocation" />
+        android:layout_height="match_parent"
+        tools:context=".startPref.view.StartPrefFragment"
+        android:background="?android:attr/colorPrimary">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_language" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/imageViewDummy"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/setting2"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/language"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewDummy" />
 
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_search_suggestions"
-        tools:layout="@android:layout/activity_list_item"
+        <RadioGroup
+            android:id="@+id/radioGroupLang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:outlineProvider="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_language">
 
-        />
+            <RadioButton
+                android:id="@+id/btn_en"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTintMode="screen"
+                android:buttonTint="@color/dark_orange"
+                android:checked="false"
+                android:drawableLeft="@drawable/en"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:text="English" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_search_suggestions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_searchMap" />
+            <RadioButton
+                android:id="@+id/btn_ar"
+                android:layout_width="match_parent"
+                android:backgroundTintMode="?android:attr/colorPrimaryDark"
+                android:buttonTint="@color/dark_orange"
 
+                android:drawableLeft="@drawable/language"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingTop="6dp"
+                android:text="العربية"  android:layout_height="wrap_content"/>
+        </RadioGroup>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSavePreferences"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        app:cardCornerRadius="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/location"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupLang" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupLoc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location">
+
+            <RadioButton
+                android:id="@+id/btn_gps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:buttonTint="@color/dark_orange"
+                android:buttonTintMode="src_in"
+                android:checked="false"
+                android:clickable="false"
+                android:drawableLeft="@drawable/gps"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:text="@string/gps" />
+
+            <RadioButton
+                android:id="@+id/btn_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTintMode="?android:attr/colorPrimaryDark"
+                android:buttonTint="@color/dark_orange"
+                android:drawableLeft="@drawable/map"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:text="@string/map" />
+        </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_save_preferences"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/gradient_button_o"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="@string/savePreferences"
             android:textAllCaps="false"
-            android:textColor="@color/navy" />
-    </androidx.cardview.widget.CardView>
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgCurrentLocation"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewSavePreferences"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/cardViewSavePreferences"
-        app:srcCompat="@drawable/location" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
