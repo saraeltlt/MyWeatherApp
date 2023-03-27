@@ -102,10 +102,10 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         if (!NetworkManager.isInternetConnected()) {
             viewModel.getCurrentWeatherFromDB()
-            Snackbar.make(
+/*            Snackbar.make(
                 binding.root, R.string.internetDisconnectedFav,
                 Snackbar.LENGTH_LONG
-            ).setAction("Action", null).show()
+            ).setAction("Action", null).show()*/
         }
         viewModel.weather.observe(viewLifecycleOwner, Observer {
             viewModel.addWeather(it)

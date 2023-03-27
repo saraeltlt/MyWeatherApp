@@ -59,6 +59,8 @@ class StartPrefFragment : Fragment() {
 
         binding.btnEn.setOnClickListener {
             Constant.myPref.appLanguage="en"
+
+
         }
         binding.btnAr.setOnClickListener {
             Constant.myPref.appLanguage="ar"
@@ -76,7 +78,7 @@ class StartPrefFragment : Fragment() {
              val myGps=  GPSProvider(requireContext())
                 myGps.getCurrentLocation()
                 myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                    myLocation=it
+                   myLocation=it
                 })
 
             }
@@ -122,6 +124,7 @@ class StartPrefFragment : Fragment() {
            else {
                Constant.myPref.myLocation = myLocation ?: LatLng(0.0,0.0)
                Preferences.saveMyPref(Constant.myPref,requireContext())
+               Preferences.setLocale(Constant.myPref.appLanguage, requireContext())
                findNavController().navigate(R.id.action_startPrefFragment_to_homeFragment)
                onBoardingFinished()
 

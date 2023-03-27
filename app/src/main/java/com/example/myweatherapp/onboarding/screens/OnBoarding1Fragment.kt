@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
+import com.example.myweatherapp.startPref.model.MyPref
+import com.example.myweatherapp.utils.Preferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -28,7 +30,8 @@ class OnBoarding1Fragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_on_boarding1, container, false)
         val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
-
+        val myPref = MyPref()
+        Preferences.saveMyPref(myPref,requireContext())
         val button = view.findViewById<Button>(R.id.next)
         button.setOnClickListener {
             viewPager?.currentItem=1

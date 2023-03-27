@@ -11,6 +11,7 @@ import com.example.myweatherapp.datasource.network.ClientRemoteSource
 
 
 class MyApp : Application() {
+
     companion object {
 
         private var localDataSource: ConcreteLocalSource? = null

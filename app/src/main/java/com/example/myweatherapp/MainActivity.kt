@@ -1,14 +1,20 @@
 package com.example.myweatherapp
 
 import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.DisplayMetrics
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.myweatherapp.databinding.ActivityMainBinding
+import com.example.myweatherapp.startPref.model.MyPref
 import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.Preferences
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadSettings()
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -27,26 +32,27 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
+        var mypref = Preferences.getMyPref(this)
+        Constant.myPref=mypref
+        Preferences.setLocale(Constant.myPref.appLanguage, this)
+        //setMood(mypref.appMode)
 
 
 
 
     }
-    private fun setLocale(lng: String) {
-        val locale = Locale(lng)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.locale = locale
-        baseContext.resources
-            .updateConfiguration(config, baseContext.resources.displayMetrics)
+
+
+    private fun setMood(mood:String){
+        if (mood=="dark") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
-    private fun loadSettings()
-    {
-        val sp= PreferenceManager.getDefaultSharedPreferences(this)
-        val languageKey=sp.getString("language","")
-        setLocale(languageKey!!)
-        Constant.myPref.appLanguage = languageKey
-    }
 
-}
+
+
+    }

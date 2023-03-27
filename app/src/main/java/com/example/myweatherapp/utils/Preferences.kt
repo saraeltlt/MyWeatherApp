@@ -3,6 +3,7 @@ package com.example.myweatherapp.utils
 import android.content.Context
 import com.example.myweatherapp.startPref.model.MyPref
 import com.google.gson.Gson
+import java.util.*
 
 object Preferences{
 
@@ -20,6 +21,14 @@ object Preferences{
         val json = mPrefs.getString("MyPref", jsonDefault).toString()
         val obj: MyPref = Gson().fromJson(json, MyPref::class.java)
         return obj;
+    }
+     fun setLocale(lng: String, context: Context) {
+        val res = context.resources
+        val metric = res.displayMetrics
+        val config = res.configuration
+        config.locale = Locale(lng)
+        res.updateConfiguration(config,metric)
+       // onConfigurationChanged(config)
     }
 
 
