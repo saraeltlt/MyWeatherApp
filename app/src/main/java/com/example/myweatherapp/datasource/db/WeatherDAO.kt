@@ -3,6 +3,7 @@ package com.example.myweatherapp.datasource.db
 import androidx.room.*
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -18,7 +19,7 @@ interface WeatherDAO {
     @Delete
     fun deleteFav(forecast:Forecast)
     @Query("select* from favorites where currentWeather LIKE:currentWeather")
-    fun getAllFav(currentWeather:Int=0):List<Forecast>
+    fun getAllFav(currentWeather:Int=0): Flow<List<Forecast>>
 
 
 
@@ -27,5 +28,5 @@ interface WeatherDAO {
     @Delete
     fun deleteAlert(alert: Alert)
     @Query("select* from alerts")
-    fun getAllAlerts(): List<Alert>
+    fun getAllAlerts(): Flow<List<Alert>>
 }

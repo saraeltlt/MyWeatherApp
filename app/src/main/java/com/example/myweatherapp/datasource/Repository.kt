@@ -5,6 +5,7 @@ import com.example.myweatherapp.datasource.db.LocalSource
 import com.example.myweatherapp.datasource.network.RemoteSource
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import kotlinx.coroutines.flow.Flow
 
 class Repository (
     var remoteSource: RemoteSource,
@@ -23,7 +24,7 @@ class Repository (
         localSource.deleteCurrentWeather()
     }
 
-    override suspend fun getAllFav(): List<Forecast> {
+    override suspend fun getAllFav(): Flow<List<Forecast>> {
         return localSource.getAllFav()
     }
 
@@ -44,7 +45,7 @@ class Repository (
 
 
 
-    override suspend fun getAllAlerts(): List<Alert> {
+    override suspend fun getAllAlerts(): Flow<List<Alert>> {
       return localSource.getAllAlerts()
     }
 

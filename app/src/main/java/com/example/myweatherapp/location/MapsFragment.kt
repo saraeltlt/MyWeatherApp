@@ -199,8 +199,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
             addresses=geocoder.getFromLocation(mMap!!.cameraPosition.target.latitude,mMap!!.cameraPosition.target.longitude,1)
             myLocation = LatLng(mMap!!.cameraPosition.target.latitude,mMap!!.cameraPosition.target.longitude)
             Log.e("location",myLocation.latitude.toString())
-            binding.txtAddress.getText().clear()
-            binding.txtAddress.setHint(addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName )
+            binding.txtAddress.text.clear()
+            binding.txtAddress.hint = addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
         }catch (e:java.lang.IndexOutOfBoundsException){
             e.printStackTrace()
         }catch (e:IOException){

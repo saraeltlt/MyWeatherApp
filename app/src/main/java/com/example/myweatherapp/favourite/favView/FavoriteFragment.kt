@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.NavAction
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.utils.NetworkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment(),OnFavClickListner {
     private lateinit var binding:FragmentFavoriteBinding
@@ -58,20 +60,22 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
         if (args.myLocation !=null){
             viewModel.getFavRemote(args.myLocation?.latitude!!, args.myLocation?.longitude!!)
         }
-        viewModel.weather.observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()){
-                binding.favRecycler.visibility= View.GONE
-                binding.animationView.visibility= View.VISIBLE
-                binding.txtFav.visibility=View.VISIBLE
 
-            }
-            else {
-                binding.animationView.visibility= View.GONE
-                binding.txtFav.visibility=View.GONE
-                binding.favRecycler.visibility= View.VISIBLE
-                adapter.submitList(it)
-            }
-        })
+        lifecycle.coroutineScope.launch {
+            viewModel.getAllFav().collect() {
+                if (it.isEmpty()){
+                    binding.favRecycler.visibility= View.GONE
+                    binding.animationView.visibility= View.VISIBLE
+                    binding.txtFav.visibility=View.VISIBLE
+
+                }
+                else {
+                    binding.animationView.visibility= View.GONE
+                    binding.txtFav.visibility=View.GONE
+                    binding.favRecycler.visibility= View.VISIBLE
+                    adapter.submitList(it)
+                }
+        }}
         binding.favFab.setOnClickListener {
             val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
             findNavController().navigate(action)

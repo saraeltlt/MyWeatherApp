@@ -2,6 +2,7 @@ package com.example.myweatherapp.datasource
 
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import kotlinx.coroutines.flow.Flow
 
 interface RepoInterface {
     //Retrofit (remote source)
@@ -17,11 +18,11 @@ interface RepoInterface {
     suspend fun insertWeatherData(forecast: Forecast)
     suspend fun deleteCurrentWeather()
 
-    suspend fun getAllFav(): List<Forecast>
+    suspend fun getAllFav(): Flow<List<Forecast>>
     suspend fun insertFav(forecast: Forecast)
     suspend fun deleteFav(forecast: Forecast)
 
-    suspend fun getAllAlerts(): List<Alert>
+    suspend fun getAllAlerts(): Flow<List<Alert>>
     suspend fun insertAlert(alert: Alert)
     suspend fun deleteAlert(alert: Alert)
 

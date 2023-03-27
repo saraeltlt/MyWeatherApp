@@ -33,7 +33,7 @@ class FavAdapter (
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val favItem=getItem(position)
         val geocoder= Geocoder(context)
-        val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
+       val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
         holder.binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
         holder.binding.forecast=favItem
         holder.binding.action=action

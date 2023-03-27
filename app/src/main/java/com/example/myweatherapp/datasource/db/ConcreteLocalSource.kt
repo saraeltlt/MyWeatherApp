@@ -3,6 +3,7 @@ package com.example.myweatherapp.datasource.db
 import android.content.Context
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource private constructor(context: Context) : LocalSource{
 
@@ -30,7 +31,7 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource{
         dao.deleteWeather(1)
     }
 
-    override suspend fun getAllFav(): List<Forecast> {
+    override suspend fun getAllFav(): Flow<List<Forecast>> {
         return dao.getAllFav()
     }
 
@@ -44,7 +45,7 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource{
 
 
 
-    override suspend fun getAllAlerts(): List<Alert> {
+    override suspend fun getAllAlerts(): Flow<List<Alert> >{
         return dao.getAllAlerts()
     }
 

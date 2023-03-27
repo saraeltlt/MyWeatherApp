@@ -37,6 +37,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/language"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewDummy" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupLang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:outlineProvider="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_language">
+
+            <RadioButton
+                android:id="@+id/btn_en"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTintMode="screen"
+                android:buttonTint="@color/dark_orange"
+                android:checked="false"
+                android:drawableLeft="@drawable/en"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="5dp"
+                android:text="English" />
+
+            <RadioButton
+                android:id="@+id/btn_ar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTintMode="?android:attr/colorPrimaryDark"
+
+                android:buttonTint="@color/dark_orange"
+                android:drawableLeft="@drawable/language"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="5dp"
+                android:paddingTop="6dp"
+                android:text="العربية" />
+        </RadioGroup>
+
         <View
             android:id="@+id/view4"
             android:layout_width="0dp"
@@ -74,57 +128,6 @@
             app:lottie_rawRes="@raw/setting2"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tv_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/language"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewDummy" />
-
-
-        <RadioGroup
-            android:id="@+id/radioGroupLang"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
-            android:elevation="2dp"
-            android:outlineProvider="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_language">
-
-            <RadioButton
-                android:id="@+id/btn_en"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTintMode="screen"
-                android:buttonTint="@color/dark_orange"
-                android:checked="false"
-                android:drawableLeft="@drawable/en"
-                android:drawablePadding="5dp"
-                android:layoutDirection="rtl"
-                android:text="English" />
-
-            <RadioButton
-                android:id="@+id/btn_ar"
-                android:layout_width="match_parent"
-                android:backgroundTintMode="?android:attr/colorPrimaryDark"
-                android:buttonTint="@color/dark_orange"
-
-                android:drawableLeft="@drawable/language"
-                android:drawablePadding="5dp"
-                android:layoutDirection="rtl"
-                android:paddingTop="6dp"
-                android:text="العربية"  android:layout_height="wrap_content"/>
-        </RadioGroup>
 
         <TextView
             android:id="@+id/tv_location"
@@ -161,6 +164,7 @@
                 android:drawableLeft="@drawable/gps"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
+                android:paddingLeft="5dp"
                 android:text="@string/gps" />
 
             <RadioButton
@@ -172,13 +176,16 @@
                 android:drawableLeft="@drawable/map"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
+                android:paddingLeft="5dp"
                 android:text="@string/map" />
         </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_save_preferences"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/gradient_button_o"
             android:paddingLeft="15dp"
@@ -186,6 +193,7 @@
             android:text="@string/savePreferences"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -55,5 +55,12 @@
     <string name="no_alerts">No Alerts / Notifications To show</string>
     <string name="internetDisconnectedFav">Check Your Internet connection (cashed item)</string>
     <string name="select_all">Please Choose An Option</string>
+    <string name="dark">Dark Mood</string>
+    <string name="light_mood">Light Mood</string>
+    <string name="mood">Mood</string>
+    <string name="units">Units</string>
+    <string name="standard">Standard (kelvin - metre/sec)</string>
+    <string name="metric">Metric (Celsius - metre/sec)</string>
+    <string name="imperial">Imperial (Fahrenheit - miles/hour)</string>
 
 </resources>
