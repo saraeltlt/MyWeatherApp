@@ -1,10 +1,13 @@
 package com.example.myweatherapp.startPref.view
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -21,6 +24,7 @@ import com.example.myweatherapp.startPref.viewmodel.StartPrefViewModelFactory
 import com.example.myweatherapp.utils.Constant
 
 import com.example.myweatherapp.utils.NetworkManager
+import com.example.myweatherapp.utils.Permissions
 import com.example.myweatherapp.utils.Preferences
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,6 +44,7 @@ class StartPrefFragment : Fragment() {
         viewLine.visibility= View.GONE
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,9 +89,19 @@ class StartPrefFragment : Fragment() {
                 binding.btnMap.isChecked=false
             }
             else {
-                val action =
-                    StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
-                findNavController().navigate(action)
+                if (!Permissions.checkPremission(requireContext())) {
+                    Permissions.requestPermission(requireContext())
+                    Snackbar.make(
+                        binding.root, R.string.denied_prem,
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null).show()
+                }
+                else {
+                    val action =
+                        StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
+                    findNavController().navigate(action)
+                }
+
             }
 
         }
@@ -105,7 +120,7 @@ class StartPrefFragment : Fragment() {
                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
            }
            else {
-               Constant.myPref.myLocation = myLocation!!
+               Constant.myPref.myLocation = myLocation ?: LatLng(0.0,0.0)
                Preferences.saveMyPref(Constant.myPref,requireContext())
                findNavController().navigate(R.id.action_startPrefFragment_to_homeFragment)
                onBoardingFinished()
@@ -122,7 +137,21 @@ class StartPrefFragment : Fragment() {
         editor.putBoolean("finished",true)
         editor.apply()
     }
-
-
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val action =
+                    StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
+                findNavController().navigate(action)
+            } else {
+                Snackbar.make(
+                    binding.root, R.string.denied_prem,
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+            }
+        }
+    }
 }
+
+

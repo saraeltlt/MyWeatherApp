@@ -1,5 +1,6 @@
 package com.example.myweatherapp.favourite.favView
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,8 +26,12 @@ import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
 import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
+import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.NetworkManager
+import com.example.myweatherapp.utils.Permissions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment(),OnFavClickListner {
@@ -60,9 +65,8 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
         if (args.myLocation !=null){
             viewModel.getFavRemote(args.myLocation?.latitude!!, args.myLocation?.longitude!!)
         }
+        viewModel.favList.observe(viewLifecycleOwner, Observer {
 
-        lifecycle.coroutineScope.launch {
-            viewModel.getAllFav().collect() {
                 if (it.isEmpty()){
                     binding.favRecycler.visibility= View.GONE
                     binding.animationView.visibility= View.VISIBLE
@@ -75,10 +79,20 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
                     binding.favRecycler.visibility= View.VISIBLE
                     adapter.submitList(it)
                 }
-        }}
+        })
         binding.favFab.setOnClickListener {
-            val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
-            findNavController().navigate(action)
+            if (!Permissions.checkPremission(requireContext())) {
+                Permissions.requestPermission(requireContext())
+                Snackbar.make(
+                    binding.root, R.string.denied_prem,
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+            }
+            else {
+                val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
+                findNavController().navigate(action)
+            }
+
 
         }
 
@@ -103,6 +117,17 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
       viewModel.deleteFav(forecast)
         Toast.makeText(requireContext(),R.string.removedFromFavorites,Toast.LENGTH_LONG).show()
     }
-
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
+                findNavController().navigate(action)
+            } else {
+                Toast.makeText(requireContext(), "Location permission denied.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
+
+

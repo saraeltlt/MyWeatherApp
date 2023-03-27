@@ -1,20 +1,30 @@
 package com.example.myweatherapp.favourite.favViewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.notifications.notificationmodel.Alert
 import com.example.myweatherapp.utils.Constant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class FavViewModel(private val _repo : RepoInterface): ViewModel() {
-
+    private var _favList : MutableLiveData<List<Forecast>> =MutableLiveData<List<Forecast>>()
+    val favList: LiveData<List<Forecast>> = _favList
     lateinit var favItem:Forecast
-    suspend fun  getAllFav() : Flow<List<Forecast>> = _repo.getAllFav()
+    init {
+        getAllFav()
+    }
+
+   fun  getAllFav() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _repo.getAllFav().collect(){
+                _favList.postValue(it)
+            }
+        }
+
+    }
 
     fun deleteFav(forecast: Forecast){
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,7 +36,7 @@ class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     fun addFav(forecast: Forecast){
         viewModelScope.launch(Dispatchers.IO) {
             _repo.insertFav(forecast)
-            getAllFav()
+           // getAllFav()
         }
     }
     fun  getFavRemote(lat: Double,

@@ -41,7 +41,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.myweatherapp.home.homeview.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.myweatherapp.favourite.favView.FavoriteFragment"
@@ -63,7 +67,11 @@
         android:id="@+id/notificationFragment"
         android:name="com.example.myweatherapp.notifications.notificationview.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_dialoge"
+            app:destination="@id/dialoge" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.myweatherapp.SettingFragment"
@@ -110,5 +118,16 @@
         <action
             android:id="@+id/action_mapsFragment_to_startPrefFragment"
             app:destination="@id/startPrefFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialoge"
+        android:name="com.example.myweatherapp.notifications.notificationview.Dialoge"
+        android:label="Dialoge" >
+        <argument
+            android:name="string"
+            android:defaultValue='"hi milad"' />
+        <action
+            android:id="@+id/action_dialoge_to_favoriteFragment2"
+            app:destination="@id/favoriteFragment" />
     </fragment>
 </navigation>

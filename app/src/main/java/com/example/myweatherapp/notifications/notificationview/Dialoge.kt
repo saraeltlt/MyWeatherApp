@@ -112,7 +112,6 @@ class Dialoge(private val contextFrag: Context): DialogFragment() {
         }
 
         builder = AlertDialog.Builder(requireContext())
-
         builder.setView(bindingDialog.root)
         dialog = builder.create()
         dialog.show()

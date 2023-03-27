@@ -62,5 +62,7 @@
     <string name="standard">Standard (kelvin - metre/sec)</string>
     <string name="metric">Metric (Celsius - metre/sec)</string>
     <string name="imperial">Imperial (Fahrenheit - miles/hour)</string>
+    <string name="access_Gps">No gps Premission click here to grant</string>
+    <string name="denied_prem">Location permission denied</string>
 
 </resources>

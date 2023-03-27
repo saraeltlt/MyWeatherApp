@@ -34,7 +34,10 @@ class FavAdapter (
         val favItem=getItem(position)
         val geocoder= Geocoder(context)
        val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
-        holder.binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
+        if (address!=null && address.isNotEmpty()) {
+            holder.binding.textLocation.text =
+                address[0].adminArea + " - " + address[0].countryName
+        }
         holder.binding.forecast=favItem
         holder.binding.action=action
     }

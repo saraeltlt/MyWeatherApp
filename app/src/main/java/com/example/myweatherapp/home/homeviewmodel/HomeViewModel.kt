@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.location.GPSProvider
+import com.example.myweatherapp.utils.NetworkManager
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,9 @@ class HomeViewModel(private val _repo : RepoInterface, val myLoc: LatLng, val la
     private var _weather : MutableLiveData<Forecast> = MutableLiveData<Forecast>()
     val weather: LiveData<Forecast> = _weather
     init {
-        getCurrentWeatherRemote(myLoc.latitude,myLoc.longitude,lang,units)
+        if(NetworkManager.isInternetConnected()) {
+            getCurrentWeatherRemote(myLoc.latitude,myLoc.longitude,lang,units)
+        }
     }
 
     fun  getCurrentWeatherRemote(lat: Double,
@@ -42,6 +45,7 @@ class HomeViewModel(private val _repo : RepoInterface, val myLoc: LatLng, val la
         }
 
     }
+
 
 
 
