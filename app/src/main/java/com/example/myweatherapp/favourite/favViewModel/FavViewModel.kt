@@ -36,7 +36,7 @@ class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     fun addFav(forecast: Forecast){
         viewModelScope.launch(Dispatchers.IO) {
             _repo.insertFav(forecast)
-           // getAllFav()
+           getAllFav()
         }
     }
     fun  getFavRemote(lat: Double,
