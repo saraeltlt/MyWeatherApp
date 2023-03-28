@@ -4,15 +4,21 @@ import androidx.lifecycle.*
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.utils.ApiState
 import com.example.myweatherapp.utils.Constant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class FavViewModel(private val _repo : RepoInterface): ViewModel() {
     private var _favList : MutableLiveData<List<Forecast>> =MutableLiveData<List<Forecast>>()
     val favList: LiveData<List<Forecast>> = _favList
-    lateinit var favItem:Forecast
+    private var _stateFlow = MutableStateFlow<ApiState>(ApiState.Loading)
+    val stateFlow: StateFlow<ApiState> = _stateFlow
+     lateinit var favItem:Forecast
     init {
         getAllFav()
     }
@@ -45,8 +51,14 @@ class FavViewModel(private val _repo : RepoInterface): ViewModel() {
                       units: String= Constant.myPref.appUnit) {
 
         viewModelScope.launch(Dispatchers.IO) {
-           favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
-            addFav(favItem)
+          // favItem=  _repo.getCurrentWeather(lat,lon,lang,units)
+             _repo.getCurrentWeather(lat,lon,lang,units).catch { e ->
+                _stateFlow.value = ApiState.Failure(e)
+            }.collect { data ->
+                _stateFlow.value = ApiState.Succcess(data)
+                 addFav(data)
+            }
+
         }
 
     }

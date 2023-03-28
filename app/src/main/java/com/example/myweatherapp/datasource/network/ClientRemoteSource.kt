@@ -2,7 +2,8 @@ package com.example.myweatherapp.datasource.network
 
 import android.content.Context
 import com.example.myweatherapp.model.Forecast
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 class ClientRemoteSource private constructor(context: Context) : RemoteSource {
@@ -26,8 +27,15 @@ class ClientRemoteSource private constructor(context: Context) : RemoteSource {
         lon: Double,
         lang: String,
         units: String,
-    ): Forecast {
+    ): StateFlow<Forecast>{
+         var forecast : Forecast? = null
+
         val obj= RetrofitHelper.retrofit.create(ApiServer::class.java)
-        return obj.getCurrentWeatherByLatAndLon(lat,lon,lang,units)
+         val response = obj.getCurrentWeatherByLatAndLon(lat,lon,lang,units)
+        if (response.isSuccessful){
+            forecast= response.body()!!
+        }
+        var stateFlow= MutableStateFlow(forecast) as StateFlow<Forecast>
+        return stateFlow
     }
 }

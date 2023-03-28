@@ -182,7 +182,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
     private fun moveCamera(latLng: LatLng, defaultZoom: Float) {
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, defaultZoom))
 
-
     }
 
     @SuppressLint("MissingPermission")

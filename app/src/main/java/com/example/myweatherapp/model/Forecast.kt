@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 
 
-@Entity(tableName = "favorites", primaryKeys = ["timezone","currentWeather"])
+@Entity(tableName = "favorites", primaryKeys = ["lat","lon","currentWeather"])
 
 @Parcelize
 data class Forecast(

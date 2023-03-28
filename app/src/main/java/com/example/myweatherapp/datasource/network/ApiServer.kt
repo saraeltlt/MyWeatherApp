@@ -18,5 +18,5 @@ interface ApiServer {
         @Query("units") units: String,
         @Query("exclude") exclude: String = "minutely",
         @Query("appid") appid: String = Constant.API_KEY
-    ): Forecast
+    ): Response<Forecast>
 }

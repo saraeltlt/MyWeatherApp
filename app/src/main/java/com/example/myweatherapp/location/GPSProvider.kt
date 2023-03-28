@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Looper
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
@@ -28,9 +29,9 @@ class GPSProvider(var context: Context) {
                 requestNewLocationData()
             }
             else{
-
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                ContextCompat.startActivity(context, intent, null)
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.fromParts("package", context.packageName, null)
+                context.startActivity(intent)
             }
         }
         else{

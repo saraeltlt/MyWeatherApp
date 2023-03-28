@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,8 @@ import com.example.myweatherapp.utils.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import kotlin.math.ceil
 
@@ -52,6 +55,8 @@ class HomeFragment : Fragment() {
         bottomNav.visibility= View.VISIBLE
         val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
         viewLine.visibility= View.VISIBLE
+      //  hideUI()
+
 
     }
 
@@ -68,23 +73,32 @@ class HomeFragment : Fragment() {
         myLocation = Constant.myPref.myLocation
         if(!Permissions.checkPremission(requireContext())){
             hideUI()
+            binding.txtGps.visibility=View.VISIBLE
+            binding.animationView.visibility=View.VISIBLE
         }
         else {
-            setUiData()
+            hideUI()
+           getData()
         }
         binding.txtGps.setOnClickListener {
             val myGps=  GPSProvider(requireContext())
             myGps.getCurrentLocation()
             myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                myLocation=it
-                Constant.myPref.myLocation = myLocation
-                Preferences.saveMyPref(Constant.myPref,requireContext())
-                setUiData()
                 if(!Permissions.checkPremission(requireContext())) {
                     Snackbar.make(
                         binding.root, R.string.denied_prem,
                         Snackbar.LENGTH_LONG
                     ).setAction("Action", null).show()
+                    hideUI()
+                    binding.txtGps.visibility=View.VISIBLE
+                    binding.animationView.visibility=View.VISIBLE
+                }
+                else{
+                    myLocation=it
+                    Constant.myPref.myLocation = myLocation
+                    Preferences.saveMyPref(Constant.myPref,requireContext())
+                    hideUI()
+                    getData()
                 }
             })
 
@@ -92,22 +106,61 @@ class HomeFragment : Fragment() {
         }
         return view
     }
-
-    private fun setUiData() {
-        showUI()
+    private fun getData(){
         factory = HomeViewModelFactory(
             MyApp.getInstanceRepository(),
             myLocation
         )
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+
+
         if (!NetworkManager.isInternetConnected()) {
             viewModel.getCurrentWeatherFromDB()
+            viewModel.weather.observe(viewLifecycleOwner, Observer {
+                if (it==null){
+                    hideUI()
+                    Toast.makeText(requireContext(),"NO INTRnet wlaa room",Toast.LENGTH_LONG).show()
+
+                }
+                else {
+                    setUiData(it)
+                    Toast.makeText(requireContext(),"NO INTRnet elawla",Toast.LENGTH_LONG).show()
+                }
+            })
+
 /*            Snackbar.make(
                 binding.root, R.string.internetDisconnectedFav,
                 Snackbar.LENGTH_LONG
             ).setAction("Action", null).show()*/
         }
-        viewModel.weather.observe(viewLifecycleOwner, Observer {
+        else{
+            lifecycleScope.launch {
+                viewModel.stateFlow.collectLatest {result ->
+                    when (result) {
+                        is ApiState.Loading -> {
+                            hideUI()
+                            binding.progressLayout.visibility = View.VISIBLE
+                            binding.obaqueBG.visibility=View.VISIBLE
+
+                        }
+                        is ApiState.Failure -> {
+                            hideUI() //mo2ktan
+                            Toast.makeText(requireContext(),"NO INTRnet gwa (mfrod ashof elroom)",Toast.LENGTH_LONG).show()
+                        }
+                        is ApiState.Succcess -> {
+                            hideUI()
+                            setUiData(result.data)
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private fun setUiData(it: Forecast) {
+        showUI()
             viewModel.addWeather(it)
             val timeAdapter = TimeAdapter(it.current.dt)
             val dayAdapter = DaysAdapter(it.current.dt)
@@ -115,15 +168,15 @@ class HomeFragment : Fragment() {
             timeAdapter.submitList(it.hourly)
             var simpleDate = SimpleDateFormat("dd/M/yyyy")
             var currentDate = simpleDate.format(it.current.dt * 1000L)
-           // val geocoder = Geocoder(requireContext())
-            //val address = geocoder.getFromLocation(it.lat, it.lon, 1)
-           // if (address != null && address.isNotEmpty()) {
-             //   binding.textLocation.text =
-                //    address[0].adminArea + " - " + address[0].countryName
-          //  } else {
+            val geocoder = Geocoder(requireContext())
+            val address = geocoder.getFromLocation(it.lat, it.lon, 1)
+            if (address != null && address.isNotEmpty()) {
+               binding.textLocation.text =
+                   address[0].adminArea + " - " + address[0].countryName
+             } else {
                 binding.textLocation.text = it.timezone
-          //  }
-            binding.textLocation.text = it.timezone
+            }
+           // binding.textLocation.text = it.timezone
             binding.textDate.text = currentDate.toString()
             loadImage(binding.imageDesc, it.current.weather[0].icon)
             binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
@@ -145,15 +198,16 @@ class HomeFragment : Fragment() {
             binding.timeRecycler.adapter = timeAdapter
             binding.timeRecycler.layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        })
     }
     private fun hideUI(){
-    binding.txtGps.visibility=View.VISIBLE
-    binding.animationView.visibility=View.VISIBLE
+    binding.txtGps.visibility=View.GONE
+    binding.animationView.visibility=View.GONE
     binding.cardMain.visibility=View.GONE
     binding.textLocation.visibility=View.GONE
     binding.textDate.visibility=View.GONE
     binding.scrollView.visibility=View.GONE
+        binding.progressLayout.visibility = View.GONE
+        binding.obaqueBG.visibility=View.GONE
 }
     private fun showUI(){
         binding.cardMain.visibility=View.VISIBLE
@@ -162,6 +216,8 @@ class HomeFragment : Fragment() {
         binding.scrollView.visibility=View.VISIBLE
         binding.txtGps.visibility=View.GONE
         binding.animationView.visibility=View.GONE
+        binding.progressLayout.visibility = View.GONE
+        binding.obaqueBG.visibility=View.GONE
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

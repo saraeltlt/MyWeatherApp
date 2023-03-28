@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavAction
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -19,7 +20,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.DetailsFragment
-import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentFavoriteBinding
 import com.example.myweatherapp.favourite.favViewModel.FavViewModel
@@ -27,11 +27,10 @@ import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
 import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
-import com.example.myweatherapp.utils.Constant
-import com.example.myweatherapp.utils.NetworkManager
-import com.example.myweatherapp.utils.Permissions
+import com.example.myweatherapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment(),OnFavClickListner {
@@ -45,6 +44,8 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
         bottomNav.visibility= View.VISIBLE
         val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
         viewLine.visibility= View.VISIBLE
+        binding.progressLayout.visibility = View.GONE
+        binding.obaqueBG.visibility=View.GONE
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,15 +101,32 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
     }
 
     override fun onFavClick(forecast: Forecast) {
-        var favItem=forecast
+        var favItem = forecast
         if (NetworkManager.isInternetConnected()){
             viewModel.getFavRemote(forecast.lat,forecast.lon)
-            favItem=viewModel.favItem
+            lifecycleScope.launch {
+                viewModel.stateFlow.collectLatest { result ->
+                    when (result) {
+                        is ApiState.Loading -> {
+                            binding.progressLayout.visibility = View.VISIBLE
+                            binding.obaqueBG.visibility=View.VISIBLE
+
+                        }
+                        is ApiState.Failure -> {
+                            favItem=forecast
+                        }
+                        is ApiState.Succcess -> {
+                            favItem=result.data
+
+
+                        }
+                    }
+                }
+            }
         }
-       val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(favItem)
+
+        val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(favItem)
         findNavController().navigate(action)
-
-
 
 
     }

@@ -16,7 +16,7 @@
 
         <item name="android:datePickerDialogTheme">@style/MyDatePickerDialogTheme</item>
 
-
+        <item name="colorAccent">@color/light_blue</item>
 
     </style>
     <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
@@ -28,6 +28,7 @@
 
 
     </style>
+
 
     <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
         <item name="android:headerBackground">@color/dark_blue</item>     <!-- on primary. -->

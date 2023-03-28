@@ -6,6 +6,7 @@ import com.example.myweatherapp.datasource.network.RemoteSource
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class Repository (
     var remoteSource: RemoteSource,
@@ -13,7 +14,7 @@ class Repository (
 ) : RepoInterface{
 
 
-    override suspend fun getCurrentWeather(lat: Double, lon: Double, lang: String, units: String): Forecast {
+    override suspend fun getCurrentWeather(lat: Double, lon: Double, lang: String, units: String): StateFlow<Forecast> {
         return remoteSource.getCurrentWeather(lat,lon,lang,units)
     }
 
