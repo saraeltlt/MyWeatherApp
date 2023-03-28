@@ -37,6 +37,20 @@ class GPSProvider(var context: Context) {
             requestPermission()
 
         }
+
+
+        /*if (checkPremission()) {
+            requestNewLocationData()
+        }
+        else if (shouldShowRequestPermissionRationale(context as Activity,  Manifest.permission.ACCESS_FINE_LOCATION)
+            || shouldShowRequestPermissionRationale(context as Activity,     Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.fromParts("package", context.packageName, null)
+                    context.startActivity(intent)
+        } else {
+                    requestPermission()
+        }*/
     }
 
     private fun checkPremission():Boolean{

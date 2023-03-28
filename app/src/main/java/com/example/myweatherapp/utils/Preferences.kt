@@ -1,6 +1,7 @@
 package com.example.myweatherapp.utils
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.myweatherapp.startPref.model.MyPref
 import com.google.gson.Gson
 import java.util.*
@@ -28,7 +29,14 @@ object Preferences{
         val config = res.configuration
         config.locale = Locale(lng)
         res.updateConfiguration(config,metric)
-       // onConfigurationChanged(config)
+    }
+    fun setMood(mood:String){
+        if (mood=="dark") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
 

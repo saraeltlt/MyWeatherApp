@@ -22,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var mypref = Preferences.getMyPref(this)
+        Constant.myPref=mypref
+        Preferences.setLocale(Constant.myPref.appLanguage, this)
+        Preferences.setMood(mypref.appMode)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -32,25 +37,13 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
-        var mypref = Preferences.getMyPref(this)
-        Constant.myPref=mypref
-        Preferences.setLocale(Constant.myPref.appLanguage, this)
-        //setMood(mypref.appMode)
+
 
 
 
 
     }
 
-
-    private fun setMood(mood:String){
-        if (mood=="dark") {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-    }
 
 
 
