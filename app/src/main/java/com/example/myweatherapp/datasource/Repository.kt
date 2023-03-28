@@ -18,7 +18,7 @@ class Repository (
         return remoteSource.getCurrentWeather(lat,lon,lang,units)
     }
 
-    override suspend fun getWeatherDataFromDB(): Forecast? {
+    override suspend fun getWeatherDataFromDB(): Flow<Forecast> {
       return localSource.getWeatherDataFromDB()
     }
     override suspend fun deleteCurrentWeather(){

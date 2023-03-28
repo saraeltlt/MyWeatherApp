@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
         bottomNav.visibility= View.VISIBLE
         val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
         viewLine.visibility= View.VISIBLE
-      //  hideUI()
+
 
 
     }
@@ -69,16 +69,24 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner=this.viewLifecycleOwner
         val view = binding.root
 
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+          binding.swipeRefreshLayout.isRefreshing=false
+            fragmentManager?.beginTransaction()?.detach(this)?.attach(this)?.commit()
+        }
+
+
+
         Constant.myPref=Preferences.getMyPref(requireContext())
         myLocation = Constant.myPref.myLocation
-        if(!Permissions.checkPremission(requireContext())){
+        if(!Permissions.checkPremission(requireContext()) || myLocation==LatLng(0.0,0.0)){
             hideUI()
             binding.txtGps.visibility=View.VISIBLE
             binding.animationView.visibility=View.VISIBLE
         }
         else {
             hideUI()
-           getData()
+           getData(view)
         }
         binding.txtGps.setOnClickListener {
             val myGps=  GPSProvider(requireContext())
@@ -98,7 +106,7 @@ class HomeFragment : Fragment() {
                     Constant.myPref.myLocation = myLocation
                     Preferences.saveMyPref(Constant.myPref,requireContext())
                     hideUI()
-                    getData()
+                    getData(view)
                 }
             })
 
@@ -106,7 +114,7 @@ class HomeFragment : Fragment() {
         }
         return view
     }
-    private fun getData(){
+    private fun getData(view:View){
         factory = HomeViewModelFactory(
             MyApp.getInstanceRepository(),
             myLocation
@@ -117,21 +125,22 @@ class HomeFragment : Fragment() {
         if (!NetworkManager.isInternetConnected()) {
             viewModel.getCurrentWeatherFromDB()
             viewModel.weather.observe(viewLifecycleOwner, Observer {
-                if (it==null){
+               if (it==null){ //empty room
                     hideUI()
-                    Toast.makeText(requireContext(),"NO INTRnet wlaa room",Toast.LENGTH_LONG).show()
+                    binding.animationViewWifi.visibility=View.VISIBLE
 
                 }
                 else {
                     setUiData(it)
-                    Toast.makeText(requireContext(),"NO INTRnet elawla",Toast.LENGTH_LONG).show()
-                }
+                    Snackbar.make(
+                       view, R.string.internetDisconnectedFav,
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null).show()
+               }
             })
 
-/*            Snackbar.make(
-                binding.root, R.string.internetDisconnectedFav,
-                Snackbar.LENGTH_LONG
-            ).setAction("Action", null).show()*/
+
+
         }
         else{
             lifecycleScope.launch {
@@ -144,11 +153,11 @@ class HomeFragment : Fragment() {
 
                         }
                         is ApiState.Failure -> {
-                            hideUI() //mo2ktan
-                            Toast.makeText(requireContext(),"NO INTRnet gwa (mfrod ashof elroom)",Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),getString(R.string.wentWrong),Toast.LENGTH_LONG).show()
                         }
                         is ApiState.Succcess -> {
                             hideUI()
+                            viewModel.addWeather(result.data)
                             setUiData(result.data)
                         }
                     }
@@ -161,7 +170,6 @@ class HomeFragment : Fragment() {
 
     private fun setUiData(it: Forecast) {
         showUI()
-            viewModel.addWeather(it)
             val timeAdapter = TimeAdapter(it.current.dt)
             val dayAdapter = DaysAdapter(it.current.dt)
             dayAdapter.submitList(it.daily)
@@ -199,7 +207,7 @@ class HomeFragment : Fragment() {
             binding.timeRecycler.layoutManager =
                 LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
     }
-    private fun hideUI(){
+    private fun hideUI(){ binding.animationViewWifi.visibility=View.GONE
     binding.txtGps.visibility=View.GONE
     binding.animationView.visibility=View.GONE
     binding.cardMain.visibility=View.GONE

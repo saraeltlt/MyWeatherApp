@@ -38,7 +38,11 @@ class DetailsFragment : Fragment() {
                 Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
         }
-
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing=false
+          //  fragmentManager?.beginTransaction()?.detach(this)?.attach(this)?.commit()
+            onCreateView(inflater,container, savedInstanceState)
+        }
         val args by navArgs<DetailsFragmentArgs>()
         setUI(args.currentWeather)
         return view

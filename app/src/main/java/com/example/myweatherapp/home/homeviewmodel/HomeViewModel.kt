@@ -40,7 +40,7 @@ class HomeViewModel(private val _repo : RepoInterface, val myLoc: LatLng, val la
                 _stateFlow.value = ApiState.Failure(e)
             }.collect { data ->
                 _stateFlow.value = ApiState.Succcess(data)
-              //  _weather.postValue(data)
+                _weather.postValue(data)
             }
 
         }
@@ -52,7 +52,9 @@ class HomeViewModel(private val _repo : RepoInterface, val myLoc: LatLng, val la
 
     fun  getCurrentWeatherFromDB(){
         viewModelScope.launch(Dispatchers.IO) {
-            _weather.postValue(_repo.getWeatherDataFromDB())
+            _repo.getWeatherDataFromDB().collect(){
+            _weather.postValue(it)
+                }
         }
     }
 

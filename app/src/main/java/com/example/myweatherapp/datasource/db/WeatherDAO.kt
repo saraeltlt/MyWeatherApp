@@ -4,13 +4,14 @@ import androidx.room.*
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.notifications.notificationmodel.Alert
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Dao
 interface WeatherDAO {
 
     @Query("select* from favorites where currentWeather LIKE:currentWeather")
-    fun getWeatherDataFromDB(currentWeather:Int=1): Forecast
+    fun getWeatherDataFromDB(currentWeather:Int=1): Flow<Forecast>
     @Query("DELETE  from favorites where currentWeather LIKE:currentWeather")
     fun deleteWeather(currentWeather:Int=1)
 

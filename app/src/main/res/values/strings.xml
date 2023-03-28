@@ -65,5 +65,6 @@
     <string name="access_Gps">No gps Premission click here to grant</string>
     <string name="denied_prem">Location permission denied</string>
     <string name="loading">Please wait, loading....</string>
+    <string name="wentWrong">Something went wring, please restart the app</string>
 
 </resources>

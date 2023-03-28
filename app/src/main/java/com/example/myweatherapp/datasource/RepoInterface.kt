@@ -15,7 +15,7 @@ interface RepoInterface {
 
 
     //Room (local source)
-    suspend fun getWeatherDataFromDB(): Forecast?
+    suspend fun getWeatherDataFromDB(): Flow<Forecast>
     suspend fun insertWeatherData(forecast: Forecast)
     suspend fun deleteCurrentWeather()
 

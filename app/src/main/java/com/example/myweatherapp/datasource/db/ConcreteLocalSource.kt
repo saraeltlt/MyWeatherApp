@@ -22,13 +22,13 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource{
             return instance!!
         }
     }
-    override suspend fun getWeatherDataFromDB(): Forecast {
-        return dao.getWeatherDataFromDB(1)
+    override suspend fun getWeatherDataFromDB(): Flow<Forecast>{
+        return dao.getWeatherDataFromDB()
     }
 
 
     override suspend fun deleteCurrentWeather() {
-        dao.deleteWeather(1)
+        dao.deleteWeather()
     }
 
     override suspend fun getAllFav(): Flow<List<Forecast>> {
