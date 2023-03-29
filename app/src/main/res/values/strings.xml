@@ -68,6 +68,7 @@
     <string name="get_location">Getting your Current Location…</string>
 
     <string name="metreـsec">metre/sec</string>
+    <string name="milesـhour">miles/hour</string>
     <string name="hpa">hPa</string>
     <string name="uv">UV</string>
     <string name="km">km</string>

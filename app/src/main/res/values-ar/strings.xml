@@ -66,6 +66,7 @@
     <string name="get_location">جاري الحصول على موقعك الحالي ..</string>
 
     <string name="metreـsec">متر/ثانية</string>
+    <string name="milesـhour">ميل/ساعة</string>
     <string name="hpa">باسكال</string>
     <string name="uv">ف.ب</string>
     <string name="km">كم</string>

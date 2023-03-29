@@ -125,7 +125,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
     private fun goToSearchLocation() {
         val searchLocation = binding.txtAddress.text.toString()
-        val geocoder = Geocoder(requireContext())
+        val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
         var list: List<Address> = ArrayList()
         try {
             list = geocoder.getFromLocationName(searchLocation, 1) as List<Address>
@@ -195,7 +195,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
     override fun onCameraIdle() {
         var addresses: List<Address>? = null
-        val geocoder = Geocoder(requireContext())
+        val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
         try {
             addresses = geocoder.getFromLocation(
                 mMap!!.cameraPosition.target.latitude,

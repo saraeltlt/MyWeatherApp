@@ -12,6 +12,7 @@ import com.example.myweatherapp.databinding.CardTimesBinding
 import com.example.myweatherapp.model.Hourly
 
 import com.example.myweatherapp.favourite.favView.HoursDiffUtil
+import com.example.myweatherapp.utils.Constant
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +34,15 @@ var dtToday:Int
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val hour=getItem(position)
         holder.binding.hourly=hour
-        holder.binding.textTemp.text= "${Math.ceil(hour.temp).toInt()}°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+        //units
+        if(Constant.myPref.appUnit=="metric") {
+            holder.binding.textTemp.text= "${Math.ceil(hour.temp).toInt()} ${context.getResources().getString(R.string.c)}"
+        }else if(Constant.myPref.appUnit=="standard"){
+            holder.binding.textTemp.text= "${Math.ceil(hour.temp).toInt()} ${context.getResources().getString(R.string.k)}"
+        }else if(Constant.myPref.appUnit=="imperial"){
+            holder.binding.textTemp.text= "${Math.ceil(hour.temp).toInt()} ${context.getResources().getString(R.string.f)}"
+        }
+
         holder.binding.textTime.text=getCurrentTime(hour.dt)
     }
 

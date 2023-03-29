@@ -1,30 +1,23 @@
 package com.example.myweatherapp.home.homeview
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentHomeBinding
-import com.example.myweatherapp.favourite.favView.FavoriteFragmentArgs
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
 import com.example.myweatherapp.location.GPSProvider
@@ -36,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.ceil
 
 
@@ -173,6 +167,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUiData(it: Forecast) {
         showUI()
             val timeAdapter = TimeAdapter(it.current.dt)
@@ -181,7 +176,7 @@ class HomeFragment : Fragment() {
             timeAdapter.submitList(it.hourly)
             var simpleDate = SimpleDateFormat("dd/M/yyyy")
             var currentDate = simpleDate.format(it.current.dt * 1000L)
-            val geocoder = Geocoder(requireContext())
+            val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
             val address = geocoder.getFromLocation(it.lat, it.lon, 1)
             if (address != null && address.isNotEmpty()) {
                binding.textLocation.text =
@@ -189,21 +184,32 @@ class HomeFragment : Fragment() {
              } else {
                 binding.textLocation.text = it.timezone
             }
-           // binding.textLocation.text = it.timezone
             binding.textDate.text = currentDate.toString()
             loadImage(binding.imageDesc, it.current.weather[0].icon)
             binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
-            binding.textTempUnits.text =
-                "°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+
+        //units
+             if(Constant.myPref.appUnit=="metric") {
+                 binding.textTempUnits.text=getString(R.string.c)
+                 binding.wind.text =  "${it.current.wind_speed}  ${getString(R.string.metreـsec)}"
+             }else if(Constant.myPref.appUnit=="standard"){
+                 binding.textTempUnits.text = getString(R.string.k)
+                 binding.wind.text =
+                     "${it.current.wind_speed}  ${getString(R.string.metreـsec)}"
+             }else if(Constant.myPref.appUnit=="imperial"){
+                 binding.textTempUnits.text = getString(R.string.f)
+                 binding.wind.text =
+                     "${it.current.wind_speed}  ${getString(R.string.milesـhour)}"
+             }
+
+
             binding.textDesc.text = it.current.weather[0].description
 
-            binding.pressure.text = "${it.current.pressure} hPa"
-            binding.humadity.text = "${it.current.humidity}%"
-            binding.wind.text =
-                "${it.current.wind_speed} metre/sec" //if Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-            binding.cloud.text = "${it.current.clouds}%"
-            binding.violet.text = "${it.current.uvi} UV"
-            binding.visibility.text = "${it.current.visibility} km"
+            binding.pressure.text = "${it.current.pressure} ${getString(R.string.hpa)}"
+            binding.humadity.text = "${it.current.humidity} %"
+            binding.cloud.text = "${it.current.clouds} %"
+            binding.violet.text = "${it.current.uvi}  ${getString(R.string.uv)}"
+            binding.visibility.text = "${it.current.visibility}  ${getString(R.string.km)}"
 
             binding.daysRecycler.adapter = dayAdapter
             binding.daysRecycler.layoutManager =

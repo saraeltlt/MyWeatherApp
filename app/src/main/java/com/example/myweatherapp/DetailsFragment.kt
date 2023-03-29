@@ -1,5 +1,6 @@
 package com.example.myweatherapp
 
+import android.annotation.SuppressLint
 import android.location.Geocoder
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,10 +18,12 @@ import com.example.myweatherapp.databinding.FragmentSettingBinding
 import com.example.myweatherapp.home.homeview.DaysAdapter
 import com.example.myweatherapp.home.homeview.TimeAdapter
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.NetworkManager
 import com.example.myweatherapp.utils.loadImage
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.ceil
 
 class DetailsFragment : Fragment() {
@@ -48,6 +51,7 @@ class DetailsFragment : Fragment() {
         return view
     }
 
+@SuppressLint("SetTextI18n")
 fun setUI(it:Forecast){
     val timeAdapter = TimeAdapter(it.current.dt)
     val dayAdapter = DaysAdapter(it.current.dt)
@@ -56,7 +60,7 @@ fun setUI(it:Forecast){
     var simpleDate = SimpleDateFormat("dd/M/yyyy")
     var currentDate = simpleDate.format(it.current.dt * 1000L)
 
-    val geocoder= Geocoder(requireContext())
+    val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
     val address=geocoder.getFromLocation(it.lat,it.lon,1)
     binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
     binding.textDate.text = currentDate.toString()
@@ -64,14 +68,27 @@ fun setUI(it:Forecast){
     binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
     binding.textTempUnits.text = "°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
     binding.textDesc.text = it.current.weather[0].description
+    if(Constant.myPref.appUnit=="metric") {
+        binding.textTempUnits.text=getString(R.string.c)
+        binding.wind.text =  "${it.current.wind_speed}  ${getString(R.string.metreـsec)}"
+    }else if(Constant.myPref.appUnit=="standard"){
+        binding.textTempUnits.text = getString(R.string.k)
+        binding.wind.text =
+            "${it.current.wind_speed}  ${getString(R.string.metreـsec)}"
+    }else if(Constant.myPref.appUnit=="imperial"){
+        binding.textTempUnits.text = getString(R.string.f)
+        binding.wind.text =
+            "${it.current.wind_speed}  ${getString(R.string.milesـhour)}"
+    }
 
-    binding.pressure.text = "${it.current.pressure} hPa"
-    binding.humadity.text = "${it.current.humidity}%"
-    binding.wind.text =
-        "${it.current.wind_speed} metre/sec" //if Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-    binding.cloud.text = "${it.current.clouds}%"
-    binding.violet.text = "${it.current.uvi} UV"
-    binding.visibility.text = "${it.current.visibility} km"
+
+    binding.textDesc.text = it.current.weather[0].description
+
+    binding.pressure.text = "${it.current.pressure} ${getString(R.string.hpa)}"
+    binding.humadity.text = "${it.current.humidity} %"
+    binding.cloud.text = "${it.current.clouds} %"
+    binding.violet.text = "${it.current.uvi}  ${getString(R.string.uv)}"
+    binding.visibility.text = "${it.current.visibility}  ${getString(R.string.km)}"
 
     binding.daysRecycler.adapter = dayAdapter
     binding.daysRecycler.layoutManager =

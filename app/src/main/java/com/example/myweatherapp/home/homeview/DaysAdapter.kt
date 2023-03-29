@@ -13,6 +13,7 @@ import com.example.myweatherapp.databinding.CardDaysBinding
 
 import com.example.myweatherapp.model.Daily
 import com.example.myweatherapp.model.DailyDiffUtil
+import com.example.myweatherapp.utils.Constant
 import java.lang.Math.ceil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,7 +46,13 @@ class DaysAdapter (
         }
 
         holder.binding.daily=day
-        holder.binding.textTemp.text= "${ceil(day.temp.min).toInt()}°C - ${ceil(day.temp.max).toInt()}°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+        if(Constant.myPref.appUnit=="metric") {
+            holder.binding.textTemp.text= "${ceil(day.temp.min).toInt()} - ${ceil(day.temp.max).toInt()} ${context.getResources().getString(R.string.c)}"
+        }else if(Constant.myPref.appUnit=="standard"){
+            holder.binding.textTemp.text= "${ceil(day.temp.min).toInt()} - ${ceil(day.temp.max).toInt()} ${context.getResources().getString(R.string.k)}"
+        }else if(Constant.myPref.appUnit=="imperial"){
+            holder.binding.textTemp.text= "${ceil(day.temp.min).toInt()} - ${ceil(day.temp.max).toInt()} ${context.getResources().getString(R.string.f)}"
+        }
         holder.binding.textWeather.text= day.weather[0].description
         holder.binding.textDay.text=getCurrentDay(day.dt)
     }
