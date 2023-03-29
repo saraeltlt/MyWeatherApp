@@ -61,7 +61,7 @@
     <string name="imperial">الوحدات الإمبراطورية (فهرنهايت - ميل/ساعة)</string>
     <string name="access_Gps"> لا يوجدإذن للموقع الجغرافي، انقر هنا للحصول</string>
     <string name="denied_prem">تم رفض إذن الموقع الجغرافي</string>
-    <string name="loading">الرجا الانتظار، جاري التحميل...</string>
+    <string name="loading">الرجاء الانتظار، جاري التحميل...</string>
     <string name="wentWrong">حدث خطأ ما، يرجى إعادة تشغيل التطبيق</string>
     <string name="get_location">جاري الحصول على موقعك الحالي ..</string>
 
@@ -73,4 +73,8 @@
     <string name="c">م°</string>
     <string name="k">ك°</string>
     <string name="f">ف°</string>
+    <string name="are_you_sure">هل انت متآكد؟</string>
+    <string name="delete">نعم، حذف</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete_ex">هل تريد حقًا حذف هذا العنصر؟ لا يمكنك التراجع عن هذا الإجراء</string>
 </resources>

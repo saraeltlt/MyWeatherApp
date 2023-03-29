@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myweatherapp.ConfirmDeleteInterface
+import com.example.myweatherapp.ConfirmDialogFragment
 import com.example.myweatherapp.DetailsFragment
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentFavoriteBinding
@@ -26,6 +28,7 @@ import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
 import com.example.myweatherapp.location.MapsFragmentArgs
 import com.example.myweatherapp.model.Forecast
+import com.example.myweatherapp.notifications.notificationview.Dialoge
 import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
 import com.example.myweatherapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,7 +36,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class FavoriteFragment : Fragment(),OnFavClickListner {
+class FavoriteFragment : Fragment(),OnFavClickListner,ConfirmDeleteInterface {
     private lateinit var binding:FragmentFavoriteBinding
     lateinit var viewModel: FavViewModel
     lateinit var factory: FavViewModelFactory
@@ -46,6 +49,9 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
         viewLine.visibility= View.VISIBLE
         binding.progressLayout.visibility = View.GONE
         binding.obaqueBG.visibility=View.GONE
+    }
+    companion object{
+        var forecastRemove:Forecast?=null
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,8 +145,12 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
     }
 
     override fun onDeleteClick(forecast: Forecast) {
-      viewModel.deleteFav(forecast)
-        Toast.makeText(requireContext(),R.string.removedFromFavorites,Toast.LENGTH_LONG).show()
+        forecastRemove=forecast
+        var dialog= ConfirmDialogFragment(this)
+        dialog.show(parentFragmentManager, "alertDialog")
+
+
+
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -151,6 +161,13 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
             } else {
                 Toast.makeText(requireContext(), "Location permission denied.", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onClick(confirmDelete: Boolean) {
+        if (confirmDelete){
+            viewModel.deleteFav(forecastRemove!!)
+            Toast.makeText(requireContext(),R.string.removedFromFavorites,Toast.LENGTH_LONG).show()
         }
     }
 }

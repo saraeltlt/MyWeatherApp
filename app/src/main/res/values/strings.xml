@@ -75,5 +75,9 @@
     <string name="c">°C</string>
     <string name="k">°K</string>
     <string name="f">°F</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_ex">Do you really want to delete this item? You can\'t undo this action</string>
 
 </resources>

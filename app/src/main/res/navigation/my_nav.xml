@@ -62,15 +62,20 @@
             app:argType="com.google.android.gms.maps.model.LatLng"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="confirmFlag"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.myweatherapp.notifications.notificationview.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" >
-        <action
-            android:id="@+id/action_notificationFragment_to_dialoge"
-            app:destination="@id/dialoge" />
+        <argument
+            android:name="confirmFlag"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -133,16 +138,5 @@
         <action
             android:id="@+id/action_mapsFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/dialoge"
-        android:name="com.example.myweatherapp.notifications.notificationview.Dialoge"
-        android:label="Dialoge" >
-        <argument
-            android:name="string"
-            android:defaultValue='"hi milad"' />
-        <action
-            android:id="@+id/action_dialoge_to_favoriteFragment2"
-            app:destination="@id/favoriteFragment" />
     </fragment>
 </navigation>
