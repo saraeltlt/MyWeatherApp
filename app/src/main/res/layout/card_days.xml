@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
@@ -16,7 +17,7 @@
         app:cardCornerRadius="36dp"
         app:cardElevation="10dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,54 +30,58 @@
                 android:id="@+id/text_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
+                android:layout_marginStart="16dp"
                 android:gravity="center_vertical"
                 android:text="sun"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="22dp"
+                tools:layout_conversion_absoluteWidth="70dp" />
 
-            <LinearLayout
+            <ImageView
+
+                android:id="@+id/image_weather"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="98dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:myImageUrl="@{daily.weather.get(0).icon}"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_conversion_absoluteWidth="101dp" />
 
-                <ImageView
+            <TextView
 
-                    android:id="@+id/image_weather"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:myImageUrl="@{daily.weather.get(0).icon}" />
-
-                <TextView
-
-                    android:id="@+id/text_weather"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="Light Snow"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                android:id="@+id/text_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Light Snow"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_weather"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="22dp"
+                tools:layout_conversion_absoluteWidth="100dp" />
 
             <TextView
                 android:id="@+id/text_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
                 android:gravity="right"
                 android:text="-4/2 °C"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="71dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
