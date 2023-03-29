@@ -89,6 +89,13 @@ class FavoriteFragment : Fragment(),OnFavClickListner {
                     Snackbar.LENGTH_LONG
                 ).setAction("Action", null).show()
             }
+            else if (!NetworkManager.isInternetConnected()){
+                Snackbar.make(
+                    view, R.string.internetDisconnectedFav,
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+            }
+
             else {
                 val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
                 findNavController().navigate(action)

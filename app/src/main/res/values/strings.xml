@@ -32,7 +32,6 @@
     <string name="sound_type">Sound Type</string>
     <string name="add_alert">Add Alert / Notification: </string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
@@ -43,7 +42,7 @@
     <string name="internetDisconnected">Check Your Internet Connection</string>
     <string name="turnOnLocation">Turn On Location</string>
     <string name="addedToFavorites">Added To Favorites</string>
-    <string name="removedFromFavorites">Remove From Favorites</string>
+    <string name="removedFromFavorites">Removed From Favorites</string>
     <string name="locationAlreadyInFavorites">"Location Already In Favorites "</string>
     <string name="locationSelected">Location Selected</string>
     <string name="locationIsAlreadySelected">Location Is Already Selected</string>
@@ -62,9 +61,18 @@
     <string name="standard">Standard (kelvin - metre/sec)</string>
     <string name="metric">Metric (Celsius - metre/sec)</string>
     <string name="imperial">Imperial (Fahrenheit - miles/hour)</string>
-    <string name="access_Gps">No gps Premission click here to grant</string>
+    <string name="access_Gps">No Location Permission, click here to grant</string>
     <string name="denied_prem">Location permission denied</string>
     <string name="loading">Please wait, loading....</string>
-    <string name="wentWrong">Something went wring, please restart the app</string>
+    <string name="wentWrong">Something went wrong, please restart the app</string>
+    <string name="get_location">Getting your Current Location…</string>
+
+    <string name="metreـsec">metre/sec</string>
+    <string name="hpa">hPa</string>
+    <string name="uv">UV</string>
+    <string name="km">km</string>
+    <string name="c">°C</string>
+    <string name="k">°K</string>
+    <string name="f">°F</string>
 
 </resources>

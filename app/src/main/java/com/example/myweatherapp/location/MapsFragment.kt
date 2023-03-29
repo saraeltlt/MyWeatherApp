@@ -39,7 +39,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener {
+class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleListener {
     private lateinit var binding: FragmentMapsBinding
     private var mMap: GoogleMap? = null
     private val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
@@ -68,21 +68,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         destination = args.from
         if (args.from == "fav") {
             binding.button2.setText(getString(R.string.add_fav))
-        } else if (args.from == "start") {
+        } else if (args.from == "start" || args.from=="sittings") {
             binding.button2.setText(getString(R.string.set_loc))
         }
         //---------------------------------------------------------
 
         if (!checkPremission()) {
             requestPermission()
-        } else {
+        }
+        else {
 
             if (savedInstanceState != null) {
                 mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY)
             }
             initMap()
         }
-
 
         binding.button2.setOnClickListener {
             if (destination == "fav") {
@@ -92,6 +92,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
             } else if (args.from == "start") {
                 val action =
                     MapsFragmentDirections.actionMapsFragmentToStartPrefFragment(myLocation)
+                findNavController().navigate(action)
+            }else if (args.from=="sittings"){
+                val action = MapsFragmentDirections.actionMapsFragmentToSettingFragment(myLocation)
                 findNavController().navigate(action)
             }
 
@@ -119,7 +122,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         }
 
     }
-
 
     private fun goToSearchLocation() {
         val searchLocation = binding.txtAddress.text.toString()
@@ -162,10 +164,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
                 if (it.isSuccessful) {
                     val currentlocation = it.result as Location?
                     if (currentlocation != null) {
-                        moveCamera(
-                            LatLng(currentlocation.latitude, currentlocation.longitude),
-                            DEFAULT_ZOOM
-                        )
+                        mMap!!.moveCamera(CameraUpdateFactory.
+                        newLatLngZoom( LatLng(currentlocation.latitude, currentlocation.longitude),
+                            DEFAULT_ZOOM))
                     }
                 } else {
                     requestPermission()
@@ -179,11 +180,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
 
     }
 
-    private fun moveCamera(latLng: LatLng, defaultZoom: Float) {
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, defaultZoom))
-
-    }
-
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
 
@@ -193,8 +189,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
             requestPermission()
         }
         mMap!!.setMyLocationEnabled(true)
-        mMap!!.setOnCameraMoveListener(this)
-        mMap!!.setOnCameraMoveStartedListener(this)
         mMap!!.setOnCameraIdleListener(this)
         getCurrentLocation()
     }
@@ -212,7 +206,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
                 mMap!!.cameraPosition.target.latitude,
                 mMap!!.cameraPosition.target.longitude
             )
-            Log.e("location", myLocation.latitude.toString())
             binding.txtAddress.text.clear()
             binding.txtAddress.hint =
                 addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
@@ -221,15 +214,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback , LocationListener, GoogleMa
         } catch (e: IOException) {
             e.printStackTrace()
         }
-    }
-
-    override fun onCameraMove() {
-    }
-
-    override fun onCameraMoveStarted(p0: Int) {
-    }
-
-    override fun onLocationChanged(location: Location) {
     }
 
     private fun checkPremission(): Boolean {

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import java.util.*
 
 
@@ -42,6 +45,7 @@ class StartPrefFragment : Fragment() {
         bottomNav.visibility= View.GONE
         val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
         viewLine.visibility= View.GONE
+
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -53,6 +57,8 @@ class StartPrefFragment : Fragment() {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_start_pref,container,false) as FragmentStartPrefBinding
         binding.lifecycleOwner=this
         val view = binding.root
+        binding.progressLayout.visibility= View.GONE
+        binding.obaqueBG.visibility= View.GONE
         val factory = StartPrefViewModelFactory(requireContext(),  GPSProvider(requireContext()))
         val viewModel =
             ViewModelProvider(this, factory).get(StartPrefViewModel::class.java)
@@ -75,11 +81,21 @@ class StartPrefFragment : Fragment() {
              /*   viewModel.location.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                     myLocation=it
                 })*/
+                binding.progressLayout.visibility= View.VISIBLE
+                binding.obaqueBG.visibility= View.VISIBLE
              val myGps=  GPSProvider(requireContext())
                 myGps.getCurrentLocation()
                 myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                    myLocation=it
+
                 })
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                       binding.progressLayout.visibility= View.GONE
+                     binding.obaqueBG.visibility= View.GONE
+                }, 1500)
+
+
 
             }
         }
@@ -111,6 +127,13 @@ class StartPrefFragment : Fragment() {
         if (args.myLoc !=null){
            myLocation= args.myLoc
             binding.btnMap.isChecked=true
+
+            //language
+            if ( Constant.myPref.appLanguage=="ar"){
+                binding.btnAr.isChecked=true
+            }else if (Constant.myPref.appLanguage=="en"){
+                binding.btnEn.isChecked=true
+            }
         }
 
 

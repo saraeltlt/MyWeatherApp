@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
           binding.swipeRefreshLayout.isRefreshing=false
-            fragmentManager?.beginTransaction()?.detach(this)?.attach(this)?.commit()
+            findNavController().navigate(R.id.action_homeFragment_self)
         }
 
 
@@ -88,30 +88,34 @@ class HomeFragment : Fragment() {
             hideUI()
            getData(view)
         }
+
+
         binding.txtGps.setOnClickListener {
             val myGps=  GPSProvider(requireContext())
             myGps.getCurrentLocation()
-            myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                if(!Permissions.checkPremission(requireContext())) {
-                    Snackbar.make(
-                        binding.root, R.string.denied_prem,
-                        Snackbar.LENGTH_LONG
-                    ).setAction("Action", null).show()
-                    hideUI()
-                    binding.txtGps.visibility=View.VISIBLE
-                    binding.animationView.visibility=View.VISIBLE
-                }
-                else{
-                    myLocation=it
+            if(!Permissions.checkPremission(requireContext())) {
+                Snackbar.make(
+                    binding.root, R.string.denied_prem,
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+                hideUI()
+                binding.txtGps.visibility=View.VISIBLE
+                binding.animationView.visibility=View.VISIBLE
+            }
+            else {
+                myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+
+                    myLocation = it
                     Constant.myPref.myLocation = myLocation
-                    Preferences.saveMyPref(Constant.myPref,requireContext())
+                    Preferences.saveMyPref(Constant.myPref, requireContext())
                     hideUI()
                     getData(view)
-                }
-            })
 
-
+                })
+            }
         }
+
         return view
     }
     private fun getData(view:View){
@@ -153,6 +157,7 @@ class HomeFragment : Fragment() {
 
                         }
                         is ApiState.Failure -> {
+                            Log.e("eh ba2a", result.msg.toString())
                             Toast.makeText(requireContext(),getString(R.string.wentWrong),Toast.LENGTH_LONG).show()
                         }
                         is ApiState.Succcess -> {
@@ -227,21 +232,7 @@ class HomeFragment : Fragment() {
         binding.progressLayout.visibility = View.GONE
         binding.obaqueBG.visibility=View.GONE
     }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                findNavController().navigate(R.id.action_homeFragment_self)
-            } else {
-                Snackbar.make(
-                    binding.root, R.string.denied_prem,
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
 
-
-            }
-        }
-    }
 
 
 }

@@ -1,10 +1,14 @@
 package com.example.myweatherapp.utils
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myweatherapp.startPref.model.MyPref
 import com.google.gson.Gson
 import java.util.*
+
 
 object Preferences{
 
@@ -24,11 +28,23 @@ object Preferences{
         return obj;
     }
      fun setLocale(lng: String, context: Context) {
-        val res = context.resources
+      /*  val res = context.resources
         val metric = res.displayMetrics
         val config = res.configuration
         config.locale = Locale(lng)
-        res.updateConfiguration(config,metric)
+        res.updateConfiguration(config,metric)*/
+
+         val localeNew = Locale(lng)
+         Locale.setDefault(localeNew)
+         val res: Resources = context.getResources()
+         val newConfig = Configuration(res.getConfiguration())
+         newConfig.locale = localeNew
+         newConfig.setLayoutDirection(localeNew)
+         res.updateConfiguration(newConfig, res.getDisplayMetrics())
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+             newConfig.setLocale(localeNew)
+             context.createConfigurationContext(newConfig)
+         }
     }
     fun setMood(mood:String){
         if (mood=="dark") {

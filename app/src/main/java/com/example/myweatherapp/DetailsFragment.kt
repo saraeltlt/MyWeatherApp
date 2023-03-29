@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,8 +41,7 @@ class DetailsFragment : Fragment() {
         }
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing=false
-          //  fragmentManager?.beginTransaction()?.detach(this)?.attach(this)?.commit()
-            onCreateView(inflater,container, savedInstanceState)
+            findNavController().navigate(R.id.action_detailsFragment_self)
         }
         val args by navArgs<DetailsFragmentArgs>()
         setUI(args.currentWeather)

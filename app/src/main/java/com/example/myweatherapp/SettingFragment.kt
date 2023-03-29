@@ -1,14 +1,28 @@
 package com.example.myweatherapp
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
 import com.example.myweatherapp.databinding.FragmentSettingBinding
+import com.example.myweatherapp.location.GPSProvider
+import com.example.myweatherapp.startPref.view.StartPrefFragmentArgs
+import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
+import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.NetworkManager
+import com.example.myweatherapp.utils.Permissions
+import com.example.myweatherapp.utils.Preferences
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 
 class SettingFragment : Fragment() {
@@ -27,9 +41,152 @@ class SettingFragment : Fragment() {
     ): View? {
         binding  = DataBindingUtil.inflate(inflater,R.layout.fragment_setting,container,false) as FragmentSettingBinding
         binding.lifecycleOwner=this
-        val view = binding.root
+        binding.progressLayout.visibility= View.GONE
+        binding.obaqueBG.visibility= View.GONE
+        initialChecks()
+        //language
+        binding.btnAr.setOnClickListener {
+            Constant.myPref.appLanguage="ar"
+            Preferences.setMood("ar")
+        }
+        binding.btnEn.setOnClickListener {
+            Constant.myPref.appLanguage="en"
+            Preferences.setMood("en")
+        }
+        //mood
+        binding.btnLight.setOnClickListener {
+            Constant.myPref.appMode="light"
+               Preferences.setMood("light")
 
-        return view
+        }
+        binding.btnDark.setOnClickListener {
+            Constant.myPref.appMode="dark"
+            Preferences.setMood("dark")
+
+        }
+        //unites
+        binding.btnMetric.setOnClickListener {
+            Constant.myPref.appUnit="metric"
+
+        }
+        binding.btnStandard.setOnClickListener {
+            Constant.myPref.appUnit="standard"
+
+        }
+       binding.btnImperia.setOnClickListener {
+            Constant.myPref.appUnit="imperial"
+        }
+
+        //location
+         binding.btnGps.setOnClickListener {
+            if (!NetworkManager.isInternetConnected()){
+                Snackbar.make(binding.root, R.string.internetDisconnected,
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                binding.btnGps.isChecked=false
+            }
+            else {
+
+                /*   viewModel.location.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                       myLocation=it
+                   })*/
+                binding.progressLayout.visibility= View.VISIBLE
+                binding.obaqueBG.visibility= View.VISIBLE
+                val myGps=  GPSProvider(requireContext())
+                myGps.getCurrentLocation()
+                myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    Constant.myPref.myLocation=it
+
+                })
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    binding.progressLayout.visibility= View.GONE
+                    binding.obaqueBG.visibility= View.GONE
+                }, 1500)
+
+
+
+            }
+        }
+        binding.btnMap.setOnClickListener {
+            if (!NetworkManager.isInternetConnected()){
+                Snackbar.make(binding.root, R.string.internetDisconnected,
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                binding.btnMap.isChecked=false
+            }
+            else {
+                if (!Permissions.checkPremission(requireContext())) {
+                    Permissions.requestPermission(requireContext())
+                    Snackbar.make(
+                        binding.root, R.string.denied_prem,
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null).show()
+                }
+                else {
+                    val action = SettingFragmentDirections.actionSettingFragmentToMapsFragment("sittings")
+                    findNavController().navigate(action)
+                }
+
+            }
+        }
+        val args by navArgs<SettingFragmentArgs>()
+        if (args.myLoc !=null){
+            Constant.myPref.myLocation= args.myLoc!!
+            binding.btnMap.isChecked=true
+            initialChecks()
+        }
+
+
+
+
+
+        return binding.root
+    }
+
+
+    fun initialChecks(){
+
+        //language
+        if ( Constant.myPref.appLanguage=="ar"){
+            binding.btnAr.isChecked=true
+        }else if (Constant.myPref.appLanguage=="en"){
+            binding.btnEn.isChecked=true
+        }
+
+        //mood
+        if ( Constant.myPref.appMode=="light"){
+            binding.btnLight.isChecked=true
+        }else if (Constant.myPref.appMode=="dark"){
+            binding.btnDark.isChecked=true
+        }
+
+        //unites
+        if (Constant.myPref.appUnit=="metric"){
+            binding.btnMetric.isChecked=true
+        }else if (Constant.myPref.appUnit=="standard"){
+            binding.btnStandard.isChecked=true
+        }else if(Constant.myPref.appUnit=="imperial"){
+            binding.btnImperia.isChecked=true
+        }
+        //Location
+        //no init check user determin location type on click
+
+    }
+
+
+    //if pressed back button
+    override fun onDestroy() {
+        super.onDestroy()
+        Preferences.saveMyPref(Constant.myPref,requireContext())
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Preferences.saveMyPref(Constant.myPref,requireContext())
+    }
+
+    //if Pressed on another farg
+    override fun onPause() {
+        super.onPause()
+        Preferences.saveMyPref(Constant.myPref,requireContext())
     }
 
 
