@@ -2,38 +2,41 @@ package com.example.myweatherapp.notifications.notificationview
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.AddAlertDialogBinding
+import com.example.myweatherapp.databinding.ConfirmDialogBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class Dialoge(private val contextFrag: Context): DialogFragment() {
-
-    private lateinit var builder: AlertDialog.Builder
-    private lateinit var bindingDialog: AddAlertDialogBinding
+class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface): DialogFragment() {
     private lateinit var dialog: AlertDialog
     private lateinit var mTimePicker: TimePickerDialog
     private var startDate: Long = 0L
     private var endDate: Long = 0L
     private var startTime: Long = 0L
     private var endTime: Long = 0L
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        val bindingDialog = DataBindingUtil.inflate<AddAlertDialogBinding>(
+            LayoutInflater.from(context),
+            R.layout.add_alert_dialog,
+            null,
+            false
+        )
+        builder.setView(bindingDialog.root)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        bindingDialog =
-            AddAlertDialogBinding.inflate(LayoutInflater.from(context), container, false)
+
         bindingDialog.ivClose.setOnClickListener { dialog.dismiss() }
         bindingDialog.tvStartDate.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -88,7 +91,7 @@ class Dialoge(private val contextFrag: Context): DialogFragment() {
         bindingDialog.tvEndTime.setOnClickListener {
             val (hour, minute) = showTimePicker()
             mTimePicker = TimePickerDialog(
-               contextFrag,R.style.MyTimePickerDialogTheme,
+                contextFrag, R.style.MyTimePickerDialogTheme,
                 { view, hourOfDay, minute ->
                     bindingDialog.tvEndTime.text = String.format("%d : %d", hourOfDay, minute)
                     endTime =
@@ -102,24 +105,21 @@ class Dialoge(private val contextFrag: Context): DialogFragment() {
         }
 
         bindingDialog.addAlertBtn.setOnClickListener {
+            listner.onClickSave()
             //get the data and set it into rv
             // get alert obj and pass it to viewmodel
             //val alert = Alert("", startDate, endDate, startTime, endTime, "Rain", "Azza")
-           // alertViewModel.insertAlert(alert)
+            // alertViewModel.insertAlert(alert)
             //checkEmptyList()
             // setWorker()
             dialog.dismiss()
-        }
 
-        builder = AlertDialog.Builder(requireContext())
-        builder.setView(bindingDialog.root)
+        }
         dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.show()
-        return super.onCreateView(inflater, container, savedInstanceState)
-
-
+        return dialog
     }
+
     private fun showTimePicker(): Pair<Int, Int> {
         val mcurrentTime = Calendar.getInstance()
         val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
@@ -127,4 +127,8 @@ class Dialoge(private val contextFrag: Context): DialogFragment() {
         return Pair(hour, minute)
     }
 
+
+    interface SaveAlertInterface {
+        fun onClickSave()
+    }
 }

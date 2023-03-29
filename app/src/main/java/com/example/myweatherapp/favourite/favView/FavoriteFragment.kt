@@ -147,7 +147,7 @@ class FavoriteFragment : Fragment(),OnFavClickListner,ConfirmDeleteInterface {
     override fun onDeleteClick(forecast: Forecast) {
         forecastRemove=forecast
         var dialog= ConfirmDialogFragment(this)
-        dialog.show(parentFragmentManager, "alertDialog")
+        dialog.show(childFragmentManager, "alertDialog")
 
 
 

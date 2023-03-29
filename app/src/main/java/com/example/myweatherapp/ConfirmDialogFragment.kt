@@ -1,44 +1,47 @@
 package com.example.myweatherapp
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.databinding.DataBindingUtil
 import com.example.myweatherapp.databinding.ConfirmDialogBinding
 
 
 class ConfirmDialogFragment(var listner : ConfirmDeleteInterface): AppCompatDialogFragment(){
-    private lateinit var builder: AlertDialog.Builder
-    private lateinit var bindingDialog: ConfirmDialogBinding
+
     private lateinit var dialog: AlertDialog
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
 
-        bindingDialog =
-            ConfirmDialogBinding.inflate(LayoutInflater.from(context), container, false)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        val binding = DataBindingUtil.inflate<ConfirmDialogBinding>(
+            LayoutInflater.from(context),
+            R.layout.confirm_dialog,
+            null,
+            false
+        )
+        builder.setView(binding.root)
+        dialog = builder.create()
 
-bindingDialog.cancelBtn.setOnClickListener {
-    dialog.dismiss()
-}
-        bindingDialog.deleteBtn.setOnClickListener {
+        binding.cancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        binding.deleteBtn.setOnClickListener {
             listner.onClick(true)
             dialog.dismiss()
         }
-        builder = AlertDialog.Builder(requireContext())
-        builder.setView(bindingDialog.root)
-        dialog = builder.create()
-        dialog.show()
+
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return dialog
     }
-}
+        }
+
 
 interface ConfirmDeleteInterface {
     fun onClick(confirmDelete:Boolean)
