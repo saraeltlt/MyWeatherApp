@@ -79,5 +79,6 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="delete_ex">Do you really want to delete this item? You can\'t undo this action</string>
+    <string name="removedFromAlerts">Removed From Alerts</string>
 
 </resources>
