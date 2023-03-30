@@ -1,21 +1,14 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.ui
 
-import android.content.res.Configuration
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.DisplayMetrics
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.ActivityMainBinding
-import com.example.myweatherapp.startPref.model.MyPref
 import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.Preferences
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

@@ -2,14 +2,16 @@ package com.example.myweatherapp.datasource.db
 
 import android.content.Context
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource private constructor(context: Context) : LocalSource{
-
+    val dp: WeatherDB= WeatherDB.getInstance(context)
     private val dao: WeatherDAO by lazy{
-        val dp: WeatherDB= WeatherDB.getInstance(context)
         dp.weatherDao()
+    }
+    private val daoAlert: AlertDAO by lazy{
+        dp.AlertDao()
     }
     companion object{
         @Volatile
@@ -45,16 +47,16 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource{
 
 
 
-    override suspend fun getAllAlerts(): Flow<List<Alert> >{
-        return dao.getAllAlerts()
+    override suspend fun getAllAlerts(): Flow<List<MyAlert> >{
+        return daoAlert.getAllAlerts()
     }
 
-    override suspend fun insertAlert(alert: Alert) {
-        dao.insertAlert(alert)
+    override suspend fun insertAlert(myAlert: MyAlert) {
+        daoAlert.insertAlert(myAlert)
     }
 
-    override suspend fun deleteAlert(alert: Alert) {
-        dao.deleteAlert(alert)
+    override suspend fun deleteAlert(myAlert: MyAlert) {
+        daoAlert.deleteAlert(myAlert)
     }
 
 

@@ -1,15 +1,12 @@
 package com.example.myweatherapp.home.homeviewmodel
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.location.GPSProvider
-import com.example.myweatherapp.utils.ApiState
+import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.utils.NetworkManager
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers

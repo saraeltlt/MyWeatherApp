@@ -2,9 +2,7 @@ package com.example.myweatherapp.datasource.db
 
 import androidx.room.*
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 
 
 @Dao
@@ -24,10 +22,5 @@ interface WeatherDAO {
 
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAlert(alert: Alert)
-    @Delete
-    fun deleteAlert(alert: Alert)
-    @Query("select* from alerts")
-    fun getAllAlerts(): Flow<List<Alert>>
+
 }

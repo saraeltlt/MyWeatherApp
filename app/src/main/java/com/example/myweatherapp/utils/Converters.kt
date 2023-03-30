@@ -1,15 +1,38 @@
 package com.example.myweatherapp.utils
 
 import androidx.room.TypeConverter
+import com.example.myweatherapp.model.Alert
 import com.example.myweatherapp.model.Current
 import com.example.myweatherapp.model.Daily
 import com.example.myweatherapp.model.Hourly
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class Converters {
+
+    @TypeConverter
+    fun stringToMyAlertList(value: String?): List<MyAlert?>? {
+        val listType = object : TypeToken<ArrayList<MyAlert?>?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun myAlertListToString(list: List<MyAlert?>?): String? {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+    @TypeConverter
+    fun stringToMyAlert(value: String?): MyAlert? {
+        return Gson().fromJson(value, MyAlert::class.java)
+    }
+
+    @TypeConverter
+    fun myAlertToString(value: MyAlert): String? {
+        return Gson().toJson(value)
+    }
+
 
     @TypeConverter
     fun stringToAlertList(value: String?): List<Alert?>? {
@@ -18,10 +41,25 @@ class Converters {
     }
 
     @TypeConverter
-    fun AlertListToString(list: List<Alert?>?): String? {
+    fun alertListToString(list: List<Alert?>?): String? {
         val gson = Gson()
         return gson.toJson(list)
     }
+    @TypeConverter
+    fun stringToAlert(value: String?): Alert? {
+        return Gson().fromJson(value, Alert::class.java)
+    }
+
+    @TypeConverter
+    fun alertToString(value: Alert): String? {
+        return Gson().toJson(value)
+    }
+
+
+
+
+
+
     @TypeConverter
     fun stringToCurrent(value: String?): Current? {
         return Gson().fromJson(value, Current::class.java)

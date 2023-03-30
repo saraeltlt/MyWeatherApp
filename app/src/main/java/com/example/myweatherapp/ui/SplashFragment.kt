@@ -1,8 +1,6 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.ui
 
-import android.app.Activity
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -10,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
+import com.example.myweatherapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

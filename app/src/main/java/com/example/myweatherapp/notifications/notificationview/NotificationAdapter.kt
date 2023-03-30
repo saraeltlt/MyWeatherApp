@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.CardNotificationsBinding
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 
 class NotificationAdapter (
     var action: OnNotifClickListner
 
-): ListAdapter<Alert, NotificationAdapter.ViewHolder>(AlertDiffUtil())  {
+): ListAdapter<MyAlert, NotificationAdapter.ViewHolder>(AlertDiffUtil())  {
     lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context=parent.context
@@ -41,5 +41,5 @@ class NotificationAdapter (
 }
 
 interface OnNotifClickListner {
-    fun onDeleteClick(alert: Alert)
+    fun onDeleteClick(alert: MyAlert)
 }

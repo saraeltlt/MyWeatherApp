@@ -2,7 +2,6 @@ package com.example.myweatherapp.favourite.favView
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,32 +10,27 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavAction
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myweatherapp.ConfirmDeleteInterface
-import com.example.myweatherapp.ConfirmDialogFragment
-import com.example.myweatherapp.DetailsFragment
+
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentFavoriteBinding
 import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.favourite.favViewModel.FavViewModelFactory
-import com.example.myweatherapp.location.MapsFragmentArgs
+import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationview.Dialoge
-import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
+import com.example.myweatherapp.ui.ConfirmDeleteInterface
+import com.example.myweatherapp.ui.ConfirmDialogFragment
 import com.example.myweatherapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class FavoriteFragment : Fragment(),OnFavClickListner,ConfirmDeleteInterface {
+class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
     private lateinit var binding:FragmentFavoriteBinding
     lateinit var viewModel: FavViewModel
     lateinit var factory: FavViewModelFactory

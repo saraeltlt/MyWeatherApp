@@ -1,14 +1,14 @@
 package com.example.myweatherapp.notifications.notificationview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 
-class AlertDiffUtil: DiffUtil.ItemCallback<Alert>() {
-    override fun areItemsTheSame(oldItem: Alert, newItem: Alert): Boolean {
+class AlertDiffUtil: DiffUtil.ItemCallback<MyAlert>() {
+    override fun areItemsTheSame(oldItem: MyAlert, newItem: MyAlert): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: Alert, newItem: Alert): Boolean {
+    override fun areContentsTheSame(oldItem: MyAlert, newItem: MyAlert): Boolean {
         return oldItem == newItem
     }
 }

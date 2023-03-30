@@ -5,7 +5,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.myweatherapp.startPref.model.MyPref
+import com.example.myweatherapp.model.MyPref
 import com.google.gson.Gson
 import java.util.*
 
@@ -28,12 +28,6 @@ object Preferences{
         return obj;
     }
      fun setLocale(lng: String, context: Context) {
-      /*  val res = context.resources
-        val metric = res.displayMetrics
-        val config = res.configuration
-        config.locale = Locale(lng)
-        res.updateConfiguration(config,metric)*/
-
          val localeNew = Locale(lng)
          Locale.setDefault(localeNew)
          val res: Resources = context.getResources()

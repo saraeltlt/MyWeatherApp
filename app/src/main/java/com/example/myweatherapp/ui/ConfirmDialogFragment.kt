@@ -1,4 +1,4 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.ui
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.databinding.DataBindingUtil
+import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.ConfirmDialogBinding
 
 

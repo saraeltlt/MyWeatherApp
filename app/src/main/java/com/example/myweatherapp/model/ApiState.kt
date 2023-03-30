@@ -1,6 +1,4 @@
-package com.example.myweatherapp.utils
-
-import com.example.myweatherapp.model.Forecast
+package com.example.myweatherapp.model
 
 sealed class ApiState{
     class Succcess(val data : Forecast): ApiState()

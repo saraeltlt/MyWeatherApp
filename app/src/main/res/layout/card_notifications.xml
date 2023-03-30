@@ -6,7 +6,7 @@
     <data>
         <variable
             name="alert"
-            type="com.example.myweatherapp.notifications.notificationmodel.Alert" />
+            type="com.example.myweatherapp.model.MyAlert" />
         <variable
             name="action"
             type="com.example.myweatherapp.notifications.notificationview.OnNotifClickListner" />

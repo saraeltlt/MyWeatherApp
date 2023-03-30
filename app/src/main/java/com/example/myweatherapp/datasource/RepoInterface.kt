@@ -1,7 +1,7 @@
 package com.example.myweatherapp.datasource
 
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -23,9 +23,9 @@ interface RepoInterface {
     suspend fun insertFav(forecast: Forecast)
     suspend fun deleteFav(forecast: Forecast)
 
-    suspend fun getAllAlerts(): Flow<List<Alert>>
-    suspend fun insertAlert(alert: Alert)
-    suspend fun deleteAlert(alert: Alert)
+    suspend fun getAllAlerts(): Flow<List<MyAlert>>
+    suspend fun insertAlert(myAlert: MyAlert)
+    suspend fun deleteAlert(myAlert: MyAlert)
 
 
 

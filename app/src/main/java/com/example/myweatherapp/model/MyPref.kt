@@ -1,4 +1,4 @@
-package com.example.myweatherapp.startPref.model
+package com.example.myweatherapp.model
 
 import com.google.android.gms.maps.model.LatLng
 

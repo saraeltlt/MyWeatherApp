@@ -11,21 +11,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myweatherapp.ConfirmDeleteInterface
-import com.example.myweatherapp.ConfirmDialogFragment
+
 import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
-import com.example.myweatherapp.favourite.favView.FavoriteFragment
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModelFactory
+import com.example.myweatherapp.ui.ConfirmDeleteInterface
+import com.example.myweatherapp.ui.ConfirmDialogFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 
 
-class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlertInterface, ConfirmDeleteInterface{
+class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlertInterface,
+    ConfirmDeleteInterface {
     private lateinit var binding: FragmentNotificationBinding
     private lateinit var dialog: Dialoge
     lateinit var viewModel: NotificationViewModel
@@ -54,7 +55,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
         binding.notifRecycler.adapter=adapter
         binding.notifRecycler.layoutManager= LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         viewModel = ViewModelProvider(this,factory).get(NotificationViewModel::class.java)
-        viewModel.alert.observe(viewLifecycleOwner, Observer{
+        viewModel.myAlert.observe(viewLifecycleOwner, Observer{
             if (it.isEmpty()){
                 binding.notifRecycler.visibility= View.GONE
                 binding.animationView.visibility= View.VISIBLE
@@ -83,7 +84,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
 
  }
 
-    override fun onDeleteClick(alert: Alert) {
+    override fun onDeleteClick(myAlert: MyAlert) {
      //   myalert=alert
         var dialog = ConfirmDialogFragment(this)
         dialog.show(childFragmentManager, "alertDialog")

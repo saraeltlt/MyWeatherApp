@@ -3,11 +3,9 @@ package com.example.myweatherapp.favourite.favViewModel
 import androidx.lifecycle.*
 import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
-import com.example.myweatherapp.utils.ApiState
+import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.utils.Constant
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

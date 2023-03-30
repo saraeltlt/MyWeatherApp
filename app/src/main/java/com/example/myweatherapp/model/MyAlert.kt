@@ -1,9 +1,9 @@
-package com.example.myweatherapp.notifications.notificationmodel
+package com.example.myweatherapp.model
 
 import androidx.room.*
 
-@Entity(tableName = "alerts")
-data class Alert(
+@Entity(tableName = "myAlerts")
+data class MyAlert(
     val description: String,
     val startDate: String,
     val endDate: String,

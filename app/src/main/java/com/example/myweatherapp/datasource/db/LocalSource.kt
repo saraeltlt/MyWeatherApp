@@ -1,9 +1,8 @@
 package com.example.myweatherapp.datasource.db
 
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 
 
 interface LocalSource {
@@ -16,8 +15,8 @@ interface LocalSource {
     suspend fun deleteFav(forecast: Forecast)
 
     //Alerts
-    suspend fun getAllAlerts(): Flow<List<Alert>>
-    suspend fun insertAlert(alert: Alert)
-    suspend fun deleteAlert(alert: Alert)
+    suspend fun getAllAlerts(): Flow<List<MyAlert>>
+    suspend fun insertAlert(myAlert: MyAlert)
+    suspend fun deleteAlert(myAlert: MyAlert)
 
 }

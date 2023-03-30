@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
-import com.example.myweatherapp.startPref.model.MyPref
+import com.example.myweatherapp.model.MyPref
 import com.example.myweatherapp.utils.Preferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

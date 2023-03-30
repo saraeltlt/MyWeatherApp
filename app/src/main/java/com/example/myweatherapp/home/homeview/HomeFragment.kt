@@ -21,6 +21,7 @@ import com.example.myweatherapp.databinding.FragmentHomeBinding
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
 import com.example.myweatherapp.location.GPSProvider
+import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.utils.*
 import com.google.android.gms.maps.model.LatLng

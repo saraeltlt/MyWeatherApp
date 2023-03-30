@@ -1,10 +1,9 @@
 package com.example.myweatherapp.datasource
 
-import android.content.SharedPreferences
 import com.example.myweatherapp.datasource.db.LocalSource
 import com.example.myweatherapp.datasource.network.RemoteSource
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.notifications.notificationmodel.Alert
+import com.example.myweatherapp.model.MyAlert
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -46,16 +45,16 @@ class Repository (
 
 
 
-    override suspend fun getAllAlerts(): Flow<List<Alert>> {
+    override suspend fun getAllAlerts(): Flow<List<MyAlert>> {
       return localSource.getAllAlerts()
     }
 
-    override suspend fun insertAlert(alert: Alert) {
-       localSource.insertAlert(alert)
+    override suspend fun insertAlert(myAlert: MyAlert) {
+       localSource.insertAlert(myAlert)
     }
 
-    override suspend fun deleteAlert(alert: Alert) {
-        localSource.deleteAlert(alert)
+    override suspend fun deleteAlert(myAlert: MyAlert) {
+        localSource.deleteAlert(myAlert)
     }
 
 
