@@ -22,6 +22,7 @@ import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.NetworkManager
 import com.example.myweatherapp.utils.loadImage
 import com.google.android.material.snackbar.Snackbar
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -59,10 +60,20 @@ fun setUI(it:Forecast){
     timeAdapter.submitList(it.hourly)
     var simpleDate = SimpleDateFormat("dd/M/yyyy")
     var currentDate = simpleDate.format(it.current.dt * 1000L)
-
     val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
-    val address=geocoder.getFromLocation(it.lat,it.lon,1)
-    binding.textLocation.text = address?.get(0)?.adminArea + " - " + address?.get(0)?.countryName
+    val addressList = try {
+        geocoder.getFromLocation(it.lat, it.lon, 1)
+    } catch (e: IOException) {
+        null
+    }
+
+    if (addressList == null || addressList.isEmpty()) {
+        binding.textLocation.text = it.timezone
+    } else {
+        val address = addressList[0]
+        binding.textLocation.text =
+            address.adminArea + " - " + address.countryName
+    }
     binding.textDate.text = currentDate.toString()
     loadImage(binding.imageDesc, it.current.weather[0].icon)
     binding.textTempNum.text = ceil(it.current.temp).toInt().toString()

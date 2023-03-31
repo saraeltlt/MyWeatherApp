@@ -125,12 +125,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
     private fun goToSearchLocation() {
         val searchLocation = binding.txtAddress.text.toString()
+
         val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
         var list: List<Address> = ArrayList()
         try {
             list = geocoder.getFromLocationName(searchLocation, 1) as List<Address>
         } catch (e: IOException) {
-            e.printStackTrace()
         }
         if (list.isNotEmpty()) {
             val update = CameraUpdateFactory.newLatLngZoom(
@@ -208,7 +208,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
             )
             binding.txtAddress.text.clear()
             binding.txtAddress.hint =
-                addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+                addresses?.get(0)?.subAdminArea + " - " +    addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
         } catch (e: java.lang.IndexOutOfBoundsException) {
             e.printStackTrace()
         } catch (e: IOException) {

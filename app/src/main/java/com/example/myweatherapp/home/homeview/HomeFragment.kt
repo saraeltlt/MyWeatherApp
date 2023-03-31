@@ -29,6 +29,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -178,13 +179,20 @@ class HomeFragment : Fragment() {
             var simpleDate = SimpleDateFormat("dd/M/yyyy")
             var currentDate = simpleDate.format(it.current.dt * 1000L)
             val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
-            val address = geocoder.getFromLocation(it.lat, it.lon, 1)
-            if (address != null && address.isNotEmpty()) {
-               binding.textLocation.text =
-                   address[0].adminArea + " - " + address[0].countryName
-             } else {
-                binding.textLocation.text = it.timezone
-            }
+           val addressList = try {
+               geocoder.getFromLocation(it.lat, it.lon, 1)
+        } catch (e: IOException) {
+            null
+        }
+
+        if (addressList == null || addressList.isEmpty()) {
+            binding.textLocation.text = it.timezone
+        } else {
+            val address = addressList[0]
+            binding.textLocation.text =
+                address.adminArea + " - " + address.countryName
+        }
+
             binding.textDate.text = currentDate.toString()
             loadImage(binding.imageDesc, it.current.weather[0].icon)
             binding.textTempNum.text = ceil(it.current.temp).toInt().toString()

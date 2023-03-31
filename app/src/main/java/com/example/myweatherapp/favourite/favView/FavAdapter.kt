@@ -12,6 +12,8 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.CardFavBinding
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.ForecastDiffUtil
+import com.example.myweatherapp.utils.Constant
+import java.io.IOException
 import java.util.*
 
 class FavAdapter (
@@ -32,12 +34,21 @@ class FavAdapter (
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val favItem=getItem(position)
-        val geocoder= Geocoder(context)
-      val address=geocoder.getFromLocation(favItem.lat,favItem.lon,1)
-        if (address!=null && address.isNotEmpty()) {
-            holder.binding.textLocation.text =
-                address[0].adminArea + " - " + address[0].countryName
+        val geocoder = Geocoder(context, Locale.forLanguageTag(Constant.myPref.appLanguage))
+        val addressList = try {
+            geocoder.getFromLocation(favItem.lat,favItem.lon,1)
+        } catch (e: IOException) {
+            null
         }
+
+        if (addressList == null || addressList.isEmpty()) {
+            holder.binding.textLocation.text = favItem.timezone
+        } else {
+            val address = addressList[0]
+            holder.binding.textLocation.text =
+                address.adminArea + " - " + address.countryName
+        }
+
         holder.binding.forecast=favItem
         holder.binding.action=action
     }
