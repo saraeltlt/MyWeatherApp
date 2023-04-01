@@ -67,27 +67,27 @@ class SettingFragment : Fragment() {
         //unites
         binding.btnMetric.setOnClickListener {
             Constant.myPref.appUnit="metric"
-            Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.metric} "  ,
+            Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.metric)} "  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
         }
         binding.btnStandard.setOnClickListener {
             Constant.myPref.appUnit="standard"
-            Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.standard} "  ,
+            Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.standard)}"  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
 
         }
        binding.btnImperia.setOnClickListener {
             Constant.myPref.appUnit="imperial"
-           Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.imperial} "  ,
+           Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.imperial)} "  ,
                Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 
         //location
          binding.btnGps.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                Snackbar.make(binding.root, R.string.internetDisconnected,
+                Snackbar.make(binding.root, requireContext().getResources().getString(R.string.internetDisconnected),
                     Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 binding.btnGps.isChecked=false
             }
@@ -116,7 +116,7 @@ class SettingFragment : Fragment() {
         }
         binding.btnMap.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                Snackbar.make(binding.root, R.string.internetDisconnected,
+                Snackbar.make(binding.root, requireContext().getResources().getString(R.string.internetDisconnected),
                     Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 binding.btnMap.isChecked=false
             }
