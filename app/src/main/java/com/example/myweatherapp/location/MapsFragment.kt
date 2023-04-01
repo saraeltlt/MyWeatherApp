@@ -207,8 +207,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
                 mMap!!.cameraPosition.target.longitude
             )
             binding.txtAddress.text.clear()
-            binding.txtAddress.hint =
-                addresses?.get(0)?.subAdminArea + " - " +    addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+            if ( addresses?.get(0)?.subAdminArea!=null) {
+                binding.txtAddress.hint =
+                    addresses?.get(0)?.subAdminArea + " - " + addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+            }else{
+                 addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+            }
         } catch (e: java.lang.IndexOutOfBoundsException) {
             e.printStackTrace()
         } catch (e: IOException) {

@@ -34,6 +34,9 @@ class ClientRemoteSource private constructor(context: Context) : RemoteSource {
          val response = obj.getCurrentWeatherByLatAndLon(lat,lon,lang,units)
         if (response.isSuccessful){
             forecast= response.body()!!
+            if (forecast.alerts==null){
+                forecast.alerts= listOf()
+            }
         }
         var stateFlow= MutableStateFlow(forecast) as StateFlow<Forecast>
         return stateFlow

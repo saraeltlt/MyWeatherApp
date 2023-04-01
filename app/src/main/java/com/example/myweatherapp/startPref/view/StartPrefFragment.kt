@@ -93,7 +93,7 @@ class StartPrefFragment : Fragment() {
                 handler.postDelayed({
                        binding.progressLayout.visibility= View.GONE
                      binding.obaqueBG.visibility= View.GONE
-                }, 1500)
+                }, 2200)
 
 
 

@@ -67,14 +67,21 @@ class SettingFragment : Fragment() {
         //unites
         binding.btnMetric.setOnClickListener {
             Constant.myPref.appUnit="metric"
+            Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.metric} "  ,
+                Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
         }
         binding.btnStandard.setOnClickListener {
             Constant.myPref.appUnit="standard"
+            Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.standard} "  ,
+                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
 
         }
        binding.btnImperia.setOnClickListener {
             Constant.myPref.appUnit="imperial"
+           Snackbar.make(binding.root, "${R.string.changeUnit} ${R.string.imperial} "  ,
+               Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 
         //location

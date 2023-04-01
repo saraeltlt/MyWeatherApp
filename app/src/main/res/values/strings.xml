@@ -80,5 +80,6 @@
     <string name="cancel">Cancel</string>
     <string name="delete_ex">Do you really want to delete this item? You can\'t undo this action</string>
     <string name="removedFromAlerts">Removed From Alerts</string>
+    <string name="changeUnit">"Units have been change to: "</string>
 
 </resources>

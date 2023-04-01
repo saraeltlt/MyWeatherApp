@@ -1,7 +1,7 @@
 package com.example.myweatherapp.model
-
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 import kotlinx.parcelize.Parcelize
 
@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Forecast(
-    val alerts: List<Alert>,
+    var alerts: List<Alert> = listOf(),
     val current: Current,
     val daily: List<Daily>,
     val hourly: List<Hourly>,
@@ -36,9 +36,12 @@ data class Current(
 ): Parcelable
 @Parcelize
 data class Alert(
-    val description: String,
-    val event: String,
-): Parcelable
+    val description: String="",
+    val event: String=""
+): Parcelable{
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}
 @Parcelize
 data class Daily(
     val clouds: Int,

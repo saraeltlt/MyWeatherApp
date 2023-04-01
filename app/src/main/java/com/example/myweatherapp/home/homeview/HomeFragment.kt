@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
 
         Constant.myPref=Preferences.getMyPref(requireContext())
         myLocation = Constant.myPref.myLocation
-        if(!Permissions.checkPremission(requireContext()) || myLocation==LatLng(0.0,0.0)){
+        if(!Permissions.checkPremission(requireContext()) && myLocation==LatLng(0.0,0.0)){
             hideUI()
             binding.txtGps.visibility=View.VISIBLE
             binding.animationView.visibility=View.VISIBLE
@@ -189,8 +189,14 @@ class HomeFragment : Fragment() {
             binding.textLocation.text = it.timezone
         } else {
             val address = addressList[0]
-            binding.textLocation.text =
-                address.adminArea + " - " + address.countryName
+            if (address.subAdminArea!=null){
+                binding.textLocation.text = address.subAdminArea+ " - " +
+                    address.adminArea + " - " + address.countryName
+            }
+            else {
+                binding.textLocation.text =
+                    address.adminArea + " - " + address.countryName
+            }
         }
 
             binding.textDate.text = currentDate.toString()

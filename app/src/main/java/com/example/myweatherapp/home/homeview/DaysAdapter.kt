@@ -38,12 +38,12 @@ class DaysAdapter (
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val day=getItem(position)
 
-      /*  if (getCurrentDayInt(dtToday)==getCurrentDayInt(day.dt)){
+        if (getCurrentDayInt(dtToday)==getCurrentDayInt(day.dt)){
             holder.binding.layoutDay.setBackgroundResource(R.drawable.gradient_card_bg)
             holder.binding.textDay.setTextColor(ContextCompat.getColor(context, R.color.light_blue))
             holder.binding.textWeather.setTextColor(ContextCompat.getColor(context, R.color.light_blue))
             holder.binding.textTemp.setTextColor(ContextCompat.getColor(context, R.color.light_blue))
-        }*/
+        }
 
         holder.binding.daily=day
         if(Constant.myPref.appUnit=="metric") {
