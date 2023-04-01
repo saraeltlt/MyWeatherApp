@@ -3,6 +3,7 @@ package com.example.myweatherapp.favourite.favView
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import android.os.RemoteException
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -35,19 +36,29 @@ class FavAdapter (
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val favItem=getItem(position)
         val geocoder = Geocoder(context, Locale.forLanguageTag(Constant.myPref.appLanguage))
-        val addressList = try {
-            geocoder.getFromLocation(favItem.lat,favItem.lon,1)
+         try {
+             val addressList = geocoder.getFromLocation(favItem.lat,favItem.lon,1)
+             if (addressList == null || addressList.isEmpty()) {
+                 holder.binding.textLocation.text = favItem.timezone
+             } else {
+                 val address = addressList[0]
+                 if (address.subAdminArea!=null){
+                     holder.binding.textLocation.text =address.subAdminArea+ " - "+
+                         address.adminArea + " - " + address.countryName
+                 }
+                 else {
+                     holder.binding.textLocation.text =
+                         address.adminArea + " - " + address.countryName
+                 }
+             }
+
         } catch (e: IOException) {
-            null
+             holder.binding.textLocation.text = favItem.timezone
+        }catch (e: RemoteException) {
+             holder.binding.textLocation.text = favItem.timezone
         }
 
-        if (addressList == null || addressList.isEmpty()) {
-            holder.binding.textLocation.text = favItem.timezone
-        } else {
-            val address = addressList[0]
-            holder.binding.textLocation.text =
-                address.adminArea + " - " + address.countryName
-        }
+
 
         holder.binding.forecast=favItem
         holder.binding.action=action

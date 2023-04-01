@@ -12,6 +12,7 @@ import android.location.LocationListener
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.os.RemoteException
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -216,6 +217,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
         } catch (e: java.lang.IndexOutOfBoundsException) {
             e.printStackTrace()
         } catch (e: IOException) {
+            e.printStackTrace()
+        }catch (e: RemoteException) {
             e.printStackTrace()
         }
     }

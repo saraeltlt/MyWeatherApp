@@ -1,6 +1,7 @@
 package com.example.myweatherapp.notifications.notificationview
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
+import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModelFactory
@@ -32,7 +34,9 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     lateinit var viewModel: NotificationViewModel
     lateinit var factory: NotificationViewModelFactory
     lateinit var adapter: NotificationAdapter
-
+    companion object{
+        var alertRemove: MyAlert?=null
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bottomNav=requireActivity().findViewById<BottomNavigationView>(R.id.bottomNav)
@@ -85,21 +89,22 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
  }
 
     override fun onDeleteClick(myAlert: MyAlert) {
-     //   myalert=alert
+        alertRemove=myAlert
         var dialog = ConfirmDialogFragment(this)
         dialog.show(childFragmentManager, "alertDialog")
     }
 
-    override fun onClickSave() {
-        //input alert
-        // viewModel.SaveAlert()
-    }
+
 
     override fun onClick(confirmDelete: Boolean) {
         if (confirmDelete) {
-           // viewModel.deleteAlert(myAlert)
+           viewModel.deleteAlert(alertRemove!!)
             Toast.makeText(requireContext(),R.string.removedFromAlerts, Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onClickSave(myAlert: MyAlert) {
+        viewModel.addAlert(myAlert)
     }
 
 }

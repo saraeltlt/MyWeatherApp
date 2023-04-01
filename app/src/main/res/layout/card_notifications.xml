@@ -15,122 +15,122 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="36dp"
         app:cardElevation="10dp">
 
-        <LinearLayout
-            android:id="@+id/alert_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:background="@drawable/gradient_card_bg"
-            android:orientation="vertical"
-            android:weightSum="3">
+            android:layout_weight="1"
+            android:background="@drawable/gradient_card_bg">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <ImageView
+                android:id="@+id/image_type"
+                android:layout_width="80dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/alarm_icon" />
+
+            <TextView
+                android:id="@+id/text_from_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:drawableLeft="@drawable/timer_start"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:text="2:20 AM"
+                android:textColor="@color/light_blue"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/text_to_time"
+                app:layout_constraintStart_toEndOf="@+id/image_type" />
 
-                <TextView
-                    android:id="@+id/text_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Rain Alert"
-                    android:textColor="@color/light_navy"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+            <TextView
 
-                <ImageButton
-                    android:id="@+id/btn_delete_alert"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:onClick="@{()->action.onDeleteClick(alert)}"
-                    app:srcCompat="@drawable/delete" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/text_to_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:drawableLeft="@drawable/timer_off"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:text="2:20 AM"
+                android:textColor="@color/light_blue"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_type" />
 
-                <TextView
-                    android:id="@+id/text_from_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/timer_start"
-                    android:gravity="center"
-                    android:paddingLeft="20dp"
-                    android:text="2:20 AM"
-                    android:textColor="@color/light_blue"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/text_from_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="3 september"
-                    android:textColor="@color/light_blue"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/text_from_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:gravity="center"
+                android:text="3 september"
+                android:textColor="@color/light_blue"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/text_to_date"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
+            <TextView
+                android:id="@+id/text_to_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="3 Feb"
+                android:textColor="@color/light_blue"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                    android:id="@+id/text_to_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/timer_off"
-                    android:gravity="center"
-                    android:paddingLeft="20dp"
-                    android:text="2:20 AM"
-                    android:textColor="@color/light_blue"
-                    android:textSize="20sp" />
+            <ImageButton
+                android:id="@+id/btn_delete_alert"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="@{()->action.onDeleteClick(alert)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/delete" />
 
-                <TextView
-                    android:id="@+id/text_to_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="3 Feb"
-                    android:textColor="@color/light_blue"
-                    android:textSize="20sp" />
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="-45dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Rain Alert"
+                android:textColor="@color/light_navy"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btn_delete_alert"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>

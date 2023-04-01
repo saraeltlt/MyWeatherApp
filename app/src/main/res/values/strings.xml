@@ -81,5 +81,6 @@
     <string name="delete_ex">Do you really want to delete this item? You can\'t undo this action</string>
     <string name="removedFromAlerts">Removed From Alerts</string>
     <string name="changeUnit">"Units have been change to: "</string>
+    <string name="complete">Please Fill the missing fields</string>
 
 </resources>

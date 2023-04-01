@@ -3,6 +3,7 @@ package com.example.myweatherapp.home.homeview
 import android.annotation.SuppressLint
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.RemoteException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -179,25 +180,29 @@ class HomeFragment : Fragment() {
             var simpleDate = SimpleDateFormat("dd/M/yyyy")
             var currentDate = simpleDate.format(it.current.dt * 1000L)
             val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
-           val addressList = try {
-               geocoder.getFromLocation(it.lat, it.lon, 1)
-        } catch (e: IOException) {
-            null
-        }
+           try {
+               val addressList =  geocoder.getFromLocation(it.lat, it.lon, 1)
+               if (addressList == null || addressList.isEmpty()) {
+                   binding.textLocation.text = it.timezone
+               } else {
+                   val address = addressList[0]
+                   if (address.subAdminArea!=null){
+                       binding.textLocation.text = address.subAdminArea+ " - " +
+                               address.adminArea + " - " + address.countryName
+                   }
+                   else {
+                       binding.textLocation.text =
+                           address.adminArea + " - " + address.countryName
+                   }
+               }
+        } catch (e: IOException ) {
+               binding.textLocation.text = it.timezone
 
-        if (addressList == null || addressList.isEmpty()) {
-            binding.textLocation.text = it.timezone
-        } else {
-            val address = addressList[0]
-            if (address.subAdminArea!=null){
-                binding.textLocation.text = address.subAdminArea+ " - " +
-                    address.adminArea + " - " + address.countryName
-            }
-            else {
-                binding.textLocation.text =
-                    address.adminArea + " - " + address.countryName
-            }
-        }
+        }catch (e: RemoteException) {
+               binding.textLocation.text = it.timezone
+           }
+
+
 
             binding.textDate.text = currentDate.toString()
             loadImage(binding.imageDesc, it.current.weather[0].icon)

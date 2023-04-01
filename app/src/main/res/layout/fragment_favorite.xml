@@ -78,10 +78,13 @@
             android:clickable="true"
 
 
+            android:tint="#FFF7F7"
             app:backgroundTint="@color/dark_orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/add" />
+            app:srcCompat="@drawable/add"
+            app:tint="@color/white"
+            />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"

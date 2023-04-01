@@ -4,13 +4,13 @@ import androidx.room.*
 
 @Entity(tableName = "myAlerts")
 data class MyAlert(
-    val description: String,
-    val startDate: String,
-    val endDate: String,
-    val startTime: String,
-    val endTime: String,
-    val event: String,
-    val type: String
+    var description: String,
+    var startDate: Long,
+    var endDate: Long,
+    var startTime: Long,
+    var endTime: Long,
+    var event: String,
+    var type: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
