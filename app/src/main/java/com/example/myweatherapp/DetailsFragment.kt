@@ -1,6 +1,7 @@
 package com.example.myweatherapp
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.RemoteException
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -57,8 +59,10 @@ class DetailsFragment : Fragment() {
 
         if (!NetworkManager.isInternetConnected()){
             setUI(args.currentWeather)
-            Snackbar.make(view, R.string.internetDisconnectedFav,
-                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
 
         }
         else{

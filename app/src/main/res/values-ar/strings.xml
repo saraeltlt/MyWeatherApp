@@ -40,7 +40,7 @@
     <string name="internetDisconnected">لا يوجد اتصال بالآنترنت</string>
     <string name="turnOnLocation">تشغيل الموقع الجغرافي</string>
     <string name="addedToFavorites">تم الإضافة إلى المفضلة</string>
-    <string name="removedFromFavorites">تم الازاله من المفضلة</string>
+    <string name="removedFromFavorites">تم الحذف من المفضلة</string>
     <string name="locationAlreadyInFavorites">"الموقع موجود بالفعل "</string>
     <string name="locationSelected">تم اختيا الموقع الجغرافي</string>
     <string name="locationIsAlreadySelected">الموقع موجود بالفعل</string>
@@ -64,7 +64,6 @@
     <string name="loading">الرجاء الانتظار، جاري التحميل...</string>
     <string name="wentWrong">حدث خطأ ما، يرجى إعادة تشغيل التطبيق</string>
     <string name="get_location">جاري الحصول على موقعك الحالي ..</string>
-
     <string name="metreـsec">متر/ثانية</string>
     <string name="milesـhour">ميل/ساعة</string>
     <string name="hpa">باسكال</string>
@@ -77,4 +76,8 @@
     <string name="delete">نعم، حذف</string>
     <string name="cancel">إلغاء</string>
     <string name="delete_ex">هل تريد حقًا حذف هذا العنصر؟ لا يمكنك التراجع عن هذا الإجراء</string>
+    <string name="removedFromAlerts">تم الحذف من التنبيهات</string>
+    <string name="changeUnit">" تم تغيير وحدة القياس إلى:  "</string>
+    <string name="complete">قم بملئ الخانات الفارغة</string>
+    <string name="openSittings">اذهب للإعدادت</string>
 </resources>

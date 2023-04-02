@@ -94,8 +94,10 @@ class SettingFragment : Fragment() {
         //location
          binding.btnGps.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                Snackbar.make(binding.root, requireContext().getResources().getString(R.string.internetDisconnected),
-                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
                 binding.btnGps.isChecked=false
             }
             else {
@@ -126,22 +128,19 @@ class SettingFragment : Fragment() {
         }
         binding.btnMap.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                Snackbar.make(binding.root, requireContext().getResources().getString(R.string.internetDisconnected),
-                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
                 binding.btnMap.isChecked=false
             }
             else {
                 if (!Permissions.checkPremission(requireContext())) {
                     flagFrom=false
                     requestPermission()
-                    /*Snackbar.make(
-                        binding.root, R.string.denied_prem,
-                        Snackbar.LENGTH_LONG
-                    ).setAction("Action", null).show()*/
                 }
                 else {
-                    val action =
-                        StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
+                    val action =SettingFragmentDirections.actionSettingFragmentToMapsFragment("sittings")
                     findNavController().navigate(action)
                 }
 

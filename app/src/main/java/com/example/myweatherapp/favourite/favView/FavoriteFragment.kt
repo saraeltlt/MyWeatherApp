@@ -89,10 +89,11 @@ class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
 
         binding.favFab.setOnClickListener {
         if (!NetworkManager.isInternetConnected()){
-            Snackbar.make(
-                view, R.string.internetDisconnectedFav,
-                Snackbar.LENGTH_LONG
-            ).setAction("Action", null).show()
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
+
         }
         else{
             if (!Permissions.checkPremission(requireContext())) {

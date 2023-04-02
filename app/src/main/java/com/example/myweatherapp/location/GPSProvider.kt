@@ -45,7 +45,4 @@ class GPSProvider(var context: Context) {
     }
 
 
-
-
-
 }
