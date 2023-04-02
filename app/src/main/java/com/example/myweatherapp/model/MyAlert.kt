@@ -5,10 +5,8 @@ import androidx.room.*
 @Entity(tableName = "myAlerts")
 data class MyAlert(
     var description: String,
-    var startDate: Long,
-    var endDate: Long,
-    var startTime: Long,
-    var endTime: Long,
+    var start: Long,
+    var end: Long,
     var event: String,
     var type: String,
     var myId: Int=0

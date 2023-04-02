@@ -44,10 +44,10 @@ class NotificationAdapter (
 
         }
         holder.binding.textTitle.text="${alertItem.event}  ${alertItem.type}"
-        holder.binding.textFromTime.text=timeFormate(alertItem.startTime)
-        holder.binding.textToTime.text=timeFormate(alertItem.endTime)
-        holder.binding.textFromDate.text=dateFormate(alertItem.startDate)
-        holder.binding.textToDate.text=dateFormate(alertItem.endDate)
+        holder.binding.textFromTime.text=timeFormate(alertItem.start)
+        holder.binding.textToTime.text=timeFormate(alertItem.end)
+        holder.binding.textFromDate.text=dateFormate(alertItem.start)
+        holder.binding.textToDate.text=dateFormate(alertItem.end)
         holder.binding.alert=alertItem
         holder.binding.action=action
     }

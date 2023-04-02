@@ -29,8 +29,15 @@ import java.util.concurrent.TimeUnit
 
 class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface): DialogFragment() {
     private lateinit var dialog: AlertDialog
-    private lateinit var mTimePicker: TimePickerDialog
-    private var myAlert = MyAlert("",0,0,0,0,"","")
+    val calendarToday = Calendar.getInstance()
+    val yearToday = calendarToday.get(Calendar.YEAR)
+    val monthToday = calendarToday.get(Calendar.MONTH)
+    val dayToday = calendarToday.get(Calendar.DAY_OF_MONTH)
+    val hourToday = calendarToday.get(Calendar.HOUR_OF_DAY)
+    val minuteToday = calendarToday.get(Calendar.MINUTE)
+    val calendarFrom = Calendar.getInstance()
+    val calendarTo = Calendar.getInstance()
+    private var myAlert = MyAlert("",0,0,"","")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         val bindingDialog = DataBindingUtil.inflate<AddAlertDialogBinding>(
@@ -46,70 +53,50 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
 
         //start date ........................................
         bindingDialog.tvStartDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
             val datePickerDialog = DatePickerDialog(
                 contextFrag,
-                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    bindingDialog.tvStartDate.text = "$dayOfMonth/${monthOfYear+1}/$year"
-                    val calendar = Calendar.getInstance()
-                    calendar.set(year,monthOfYear, dayOfMonth)
-                    myAlert.startDate = calendar.timeInMillis
-                    Log.e("dialoge","startDate->"+ myAlert.startDate )
-                    val selectedCalendar = Calendar.getInstance()
-                    selectedCalendar.timeInMillis = myAlert.startDate
-                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val selectedDate = dateFormat.format(selectedCalendar.time)
-                    Log.e("dialoge","startDate after ->"+ selectedDate)
-                    val selectedDay = selectedCalendar.get(Calendar.DAY_OF_MONTH)
-                    val selectedMonth = selectedCalendar.get(Calendar.MONTH) + 1
-                    val selectedYear = selectedCalendar.get(Calendar.YEAR)
+                DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    bindingDialog.tvStartDate.text = "$day/${month+1}/$year"
+                    calendarFrom.set(year,month, day)
+
                 },
-                year,
-                month,
-                day
+                yearToday,
+                monthToday,
+                dayToday
             )
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
             datePickerDialog.show()
         }
 
         //end date ........................................
         bindingDialog.tvEndDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(
                 contextFrag,
-                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    bindingDialog.tvEndDate.text = "$dayOfMonth/${monthOfYear+1}/$year"
-                    val calendar = Calendar.getInstance()
-                    calendar.set(year,monthOfYear, dayOfMonth)
-                    myAlert?.endDate = calendar.timeInMillis
+                DatePickerDialog.OnDateSetListener { view, year, month, day->
+                    bindingDialog.tvEndDate.text = "$day/${month+1}/$year"
+                    calendarTo.set(year,month, day)
                 },
-                year,
-                month,
-                day
+                yearToday,
+                monthToday,
+                dayToday
             )
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
             datePickerDialog.show()
         }
 
         //start time ........................................
         bindingDialog.tvStartTime.setOnClickListener {
-            val (hour, minute) = showTimePicker()
-            mTimePicker = TimePickerDialog(
+            val mTimePicker = TimePickerDialog(
                 contextFrag, R.style.MyTimePickerDialogTheme,
-                { view, hourOfDay, minute ->
-                    bindingDialog.tvStartTime.text = String.format("%d : %d ", hourOfDay, minute)
-                    val calendar = Calendar.getInstance()
-                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    calendar.set(Calendar.MINUTE, minute)
-                    calendar.set(Calendar.SECOND, 0)
-                    calendar.set(Calendar.MILLISECOND, 0)
-                    myAlert.startTime =calendar.timeInMillis
-                }, hour, minute, false
+                { view, hour, minute ->
+                    bindingDialog.tvStartTime.text = String.format("%d : %d ", hour, minute)
+                    calendarFrom.set(Calendar.HOUR_OF_DAY, hour)
+                    calendarFrom.set(Calendar.MINUTE, minute)
+                    calendarFrom.set(Calendar.SECOND, 0)
+                    calendarFrom.set(Calendar.MILLISECOND, 0)
+                }, hourToday, minuteToday, false
             )
             bindingDialog.tvStartTime.setOnClickListener {
                 mTimePicker.show()
@@ -118,19 +105,16 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
 
         //end time ........................................
         bindingDialog.tvEndTime.setOnClickListener {
-            val (hour, minute) = showTimePicker()
-            mTimePicker = TimePickerDialog(
+            val mTimePicker = TimePickerDialog(
                 contextFrag, R.style.MyTimePickerDialogTheme,
-                { view, hourOfDay, minute ->
-                    bindingDialog.tvEndTime.text = String.format("%d : %d", hourOfDay, minute)
-                    val calendar = Calendar.getInstance()
-                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    calendar.set(Calendar.MINUTE, minute)
-                    calendar.set(Calendar.SECOND, 0)
-                    calendar.set(Calendar.MILLISECOND, 0)
-                    myAlert.endTime =calendar.timeInMillis
+                { view, hour, minute ->
+                    bindingDialog.tvEndTime.text = String.format("%d : %d", hour, minute)
+                    calendarTo.set(Calendar.HOUR_OF_DAY, hour)
+                    calendarTo.set(Calendar.MINUTE, minute)
+                    calendarTo.set(Calendar.SECOND, 0)
+                    calendarTo.set(Calendar.MILLISECOND, 0)
 
-                }, hour, minute, false
+                }, hourToday, minuteToday, false
             )
             bindingDialog.tvEndTime.setOnClickListener {
                 mTimePicker.show()
@@ -183,17 +167,8 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 snackbar.show()
             }
 
-            else if (myAlert.startDate >=myAlert.endDate || myAlert.startDate<Calendar.getInstance().timeInMillis){
-                val snackbar =  Snackbar.make(
-                    bindingDialog.root, R.string.datInterval,
-                    Snackbar.LENGTH_LONG
-                )
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
-                snackbar.setTextColor(Color.WHITE)
-                snackbar.show()
+            else if (calendarFrom.timeInMillis >=calendarTo.timeInMillis || calendarFrom.timeInMillis<calendarToday.timeInMillis){
 
-            }
-                else if (myAlert.startTime > myAlert.endTime){
                 val snackbar =  Snackbar.make(
                     bindingDialog.root, R.string.timeInterval,
                     Snackbar.LENGTH_LONG
@@ -203,18 +178,11 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 snackbar.show()
 
             }
-                else if (myAlert.startDate==Calendar.getInstance().timeInMillis && myAlert.startTime< Calendar.getInstance().timeInMillis ){
-                val snackbar =  Snackbar.make(
-                    bindingDialog.root, R.string.timePassed,
-                    Snackbar.LENGTH_LONG
-                )
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
-                snackbar.setTextColor(Color.WHITE)
-                snackbar.show()
-            }
 
                 else{
                     myAlert.description= bindingDialog.tvDescription.text.toString()
+                    myAlert.start=calendarFrom.timeInMillis
+                     myAlert.end=calendarTo.timeInMillis
                     listner.onClickSave(myAlert)
                     dialog.dismiss()
                 }
@@ -225,15 +193,6 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         return dialog
     }
-
-
-    private fun showTimePicker(): Pair<Int, Int> {
-        val mcurrentTime = Calendar.getInstance()
-        val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
-        val minute = mcurrentTime.get(Calendar.MINUTE)
-        return Pair(hour, minute)
-    }
-
 
     interface SaveAlertInterface {
         fun onClickSave(myAlert: MyAlert)

@@ -146,7 +146,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     }
 
     override fun onClickSave(myAlert: MyAlert) {
-        myAlert.myId=generateUniqueIntValue(myAlert.endDate,myAlert.startDate,myAlert.description,myAlert.event)
+        myAlert.myId=generateUniqueIntValue(myAlert.end,myAlert.start,myAlert.description,myAlert.event)
         Log.e("haaa",myAlert.myId.toString())
         viewModel.addAlert(myAlert)
         if (Permissions.checkPremissionNotifications(requireContext())){
@@ -167,7 +167,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
         intent.putExtra("alert",myAlert.myId)
         Log.e("yarab",myAlert.toString())
         pendingIntent=PendingIntent.getBroadcast(requireContext(),myAlert.myId,intent,0)
-        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP,myAlert.startTime,pendingIntent)
+        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP,myAlert.start,pendingIntent)
       //  alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, myAlert.startTime, AlarmManager.INTERVAL_DAY,pendingIntent)
         Toast.makeText(requireContext(), "alert set succes",Toast.LENGTH_SHORT).show()
 
