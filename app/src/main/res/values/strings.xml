@@ -82,5 +82,6 @@
     <string name="removedFromAlerts">Removed From Alerts</string>
     <string name="changeUnit">"Units have been change to: "</string>
     <string name="complete">Please Fill the missing fields</string>
+    <string name="openSittings">Open Sittings</string>
 
 </resources>

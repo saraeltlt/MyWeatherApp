@@ -18,7 +18,7 @@ class StartPrefViewModel(val context: Context, var myGps: GPSProvider) : ViewMod
     }
     fun getLocationFromGPS (context: Context) {
        // myGps = GPSProvider(context)
-        myGps.getCurrentLocation()
+        myGps.getCurrentLocations()
         myGps.data.observe(context as LifecycleOwner) {
             _location.postValue(it)
         }

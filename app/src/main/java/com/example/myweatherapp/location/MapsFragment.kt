@@ -12,7 +12,6 @@ import android.location.LocationListener
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.os.RemoteException
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -74,16 +73,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
         }
         //---------------------------------------------------------
 
-        if (!checkPremission()) {
-            requestPermission()
-        }
-        else {
-
             if (savedInstanceState != null) {
                 mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY)
             }
             initMap()
-        }
+
 
         binding.button2.setOnClickListener {
             if (destination == "fav") {
@@ -162,16 +156,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
         try {
             val location = fusedClient!!.lastLocation
             location.addOnCompleteListener {
-                if (it.isSuccessful) {
+
                     val currentlocation = it.result as Location?
                     if (currentlocation != null) {
                         mMap!!.moveCamera(CameraUpdateFactory.
                         newLatLngZoom( LatLng(currentlocation.latitude, currentlocation.longitude),
                             DEFAULT_ZOOM))
                     }
-                } else {
-                    requestPermission()
-                }
+
             }
 
         } catch (e: Exception) {
@@ -186,9 +178,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
         binding.map.onResume()
         mMap = p0
-        if (!checkPremission()) {
-            requestPermission()
-        }
         mMap!!.setMyLocationEnabled(true)
         mMap!!.setOnCameraIdleListener(this)
         getCurrentLocation()
@@ -208,41 +197,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
                 mMap!!.cameraPosition.target.longitude
             )
             binding.txtAddress.text.clear()
-            if ( addresses?.get(0)?.subAdminArea!=null) {
-                binding.txtAddress.hint =
-                    addresses?.get(0)?.subAdminArea + " - " + addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
-            }else{
-                 addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
-            }
+            binding.txtAddress.hint =
+                addresses?.get(0)?.subAdminArea + " - " +    addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
         } catch (e: java.lang.IndexOutOfBoundsException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
-        }catch (e: RemoteException) {
-            e.printStackTrace()
         }
     }
 
-    private fun checkPremission(): Boolean {
-        val result = ActivityCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-        return result
-    }
 
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            context as Activity, arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ), Constant.LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
+
+
 }
 
 

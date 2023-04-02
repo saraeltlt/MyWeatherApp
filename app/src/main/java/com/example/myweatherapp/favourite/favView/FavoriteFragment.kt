@@ -1,12 +1,17 @@
 package com.example.myweatherapp.favourite.favView
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -81,26 +86,23 @@ class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
                     adapter.submitList(it)
                 }
         })
-        binding.favFab.setOnClickListener {
-            if (!Permissions.checkPremission(requireContext())) {
-                Permissions.requestPermission(requireContext())
-                Snackbar.make(
-                    binding.root, R.string.denied_prem,
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
-            }
-            else if (!NetworkManager.isInternetConnected()){
-                Snackbar.make(
-                    view, R.string.internetDisconnectedFav,
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
-            }
 
-            else {
+        binding.favFab.setOnClickListener {
+        if (!NetworkManager.isInternetConnected()){
+            Snackbar.make(
+                view, R.string.internetDisconnectedFav,
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null).show()
+        }
+        else{
+            if (!Permissions.checkPremission(requireContext())) {
+               requestPermission()
+            }else {
                 val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
                 findNavController().navigate(action)
             }
 
+        }
 
         }
 
@@ -152,8 +154,21 @@ class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 val action = FavoriteFragmentDirections.actionFavoriteFragmentToMapsFragment("fav")
                 findNavController().navigate(action)
-            } else {
-                Toast.makeText(requireContext(), "Location permission denied.", Toast.LENGTH_SHORT).show()
+            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION) ) {
+
+            }
+            else{
+                val snackbar = Snackbar.make(binding.root, R.string.denied_prem, Snackbar.LENGTH_LONG)
+                snackbar.setAction(R.string.openSittings) {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.fromParts("package", requireContext().packageName, null)
+                    requireContext().startActivity(intent)
+                }
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.dark_orange))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+
             }
         }
     }
@@ -164,6 +179,14 @@ class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
             Toast.makeText(requireContext(),R.string.removedFromFavorites,Toast.LENGTH_LONG).show()
         }
     }
+    private fun requestPermission() {
+        requestPermissions(arrayOf(
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION"
+        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
+    }
+
+
 }
 
 

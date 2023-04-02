@@ -2,11 +2,12 @@ package com.example.myweatherapp.utils
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
+import android.location.LocationManager
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
+
 
 object Permissions {
    fun checkPremission(context: Context):Boolean{
@@ -20,12 +21,15 @@ object Permissions {
                 ) == PackageManager.PERMISSION_GRANTED
         return result
     }
- fun requestPermission(context: Context) {
-        ActivityCompat.requestPermissions(context as Activity, arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
-    }
 
+
+
+
+ fun isLocationEnabled(context: Context):Boolean{
+        val locationManager: LocationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
 
 }

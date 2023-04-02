@@ -2,14 +2,20 @@ package com.example.myweatherapp.startPref.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -17,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentStartPrefBinding
 import com.example.myweatherapp.location.GPSProvider
@@ -39,6 +46,9 @@ import java.util.*
 class StartPrefFragment : Fragment() {
     private lateinit var binding: FragmentStartPrefBinding
     private var myLocation: LatLng? = null
+    var flagFrom :Boolean=false
+    val maxRequests = 2
+    var requestCount = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bottomNav=requireActivity().findViewById<BottomNavigationView>(R.id.bottomNav)
@@ -62,6 +72,7 @@ class StartPrefFragment : Fragment() {
         val factory = StartPrefViewModelFactory(requireContext(),  GPSProvider(requireContext()))
         val viewModel =
             ViewModelProvider(this, factory).get(StartPrefViewModel::class.java)
+        requestPermission()
 
         binding.btnEn.setOnClickListener {
             Constant.myPref.appLanguage="en"
@@ -81,22 +92,26 @@ class StartPrefFragment : Fragment() {
              /*   viewModel.location.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                     myLocation=it
                 })*/
-                binding.progressLayout.visibility= View.VISIBLE
-                binding.obaqueBG.visibility= View.VISIBLE
-             val myGps=  GPSProvider(requireContext())
-                myGps.getCurrentLocation()
-                myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                   myLocation=it
+                if(Permissions.checkPremission(requireContext())) {
+                    val myGps = GPSProvider(requireContext())
+                    myGps.getCurrentLocations()
+                    myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                        myLocation = it
 
-                })
-                val handler = Handler(Looper.getMainLooper())
-                handler.postDelayed({
-                       binding.progressLayout.visibility= View.GONE
-                     binding.obaqueBG.visibility= View.GONE
-                }, 2200)
+                    })
+                    binding.progressLayout.visibility = View.VISIBLE
+                    binding.obaqueBG.visibility = View.VISIBLE
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        binding.progressLayout.visibility = View.GONE
+                        binding.obaqueBG.visibility = View.GONE
+                    }, 2300)
 
 
-
+                }else{
+                    flagFrom=true
+                    requestPermission()
+                }
             }
         }
 
@@ -108,11 +123,12 @@ class StartPrefFragment : Fragment() {
             }
             else {
                 if (!Permissions.checkPremission(requireContext())) {
-                    Permissions.requestPermission(requireContext())
-                    Snackbar.make(
+                    flagFrom=false
+                    requestPermission()
+                    /*Snackbar.make(
                         binding.root, R.string.denied_prem,
                         Snackbar.LENGTH_LONG
-                    ).setAction("Action", null).show()
+                    ).setAction("Action", null).show()*/
                 }
                 else {
                     val action =
@@ -157,6 +173,14 @@ class StartPrefFragment : Fragment() {
 
         return view
     }
+
+    private fun requestPermission() {
+        requestPermissions(arrayOf(
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION"
+        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
+    }
+
     private fun onBoardingFinished(){
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
@@ -165,18 +189,52 @@ class StartPrefFragment : Fragment() {
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
+
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                val action =
-                    StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
-                findNavController().navigate(action)
-            } else {
-                Snackbar.make(
-                    binding.root, R.string.denied_prem,
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
+
+                if(flagFrom){
+                    val myGps = GPSProvider(requireContext())
+                    myGps.getCurrentLocations()
+                    myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                        myLocation = it
+
+                    })
+                    binding.progressLayout.visibility = View.VISIBLE
+                    binding.obaqueBG.visibility = View.VISIBLE
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        binding.progressLayout.visibility = View.GONE
+                        binding.obaqueBG.visibility = View.GONE
+                    }, 2300)
+                }else {
+                    val action =
+                        StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
+                    findNavController().navigate(action)
+                }
             }
+
+            else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION) ) {
+
+            }
+            else{
+                val snackbar = Snackbar.make(binding.root, R.string.denied_prem, Snackbar.LENGTH_LONG)
+                snackbar.setAction(R.string.openSittings) {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.fromParts("package", requireContext().packageName, null)
+                    requireContext().startActivity(intent)
+                }
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.dark_orange))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+
+            }
+
+
         }
+
     }
 }
 

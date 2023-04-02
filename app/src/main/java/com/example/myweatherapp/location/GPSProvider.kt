@@ -23,54 +23,10 @@ class GPSProvider(var context: Context) {
     private lateinit var fusedClient: FusedLocationProviderClient
     private var _data : MutableLiveData<LatLng> = MutableLiveData<LatLng>()
     val data: LiveData<LatLng> = _data
-    fun getCurrentLocation(){
-        if (checkPremission()){
-            if (isLocationEnabled()){
-                requestNewLocationData()
-            }
-            else{
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.fromParts("package", context.packageName, null)
-                context.startActivity(intent)
-            }
-        }
-        else{
-            requestPermission()
-
-        }
-
-
-        /*if (checkPremission()) {
-            requestNewLocationData()
-        }
-        else if (shouldShowRequestPermissionRationale(context as Activity,  Manifest.permission.ACCESS_FINE_LOCATION)
-            || shouldShowRequestPermissionRationale(context as Activity,     Manifest.permission.ACCESS_COARSE_LOCATION)
-        ) {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    intent.data = Uri.fromParts("package", context.packageName, null)
-                    context.startActivity(intent)
-        } else {
-                    requestPermission()
-        }*/
+    fun getCurrentLocations(){
+        requestNewLocationData()
     }
 
-    private fun checkPremission():Boolean{
-        val result = ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-        return result
-    }
-    private fun isLocationEnabled():Boolean{
-        val locationManager: LocationManager =
-            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-    }
     @SuppressLint("MissingPermission")
     fun requestNewLocationData(){
         val mLocationRequest = LocationRequest()
@@ -87,16 +43,6 @@ class GPSProvider(var context: Context) {
 
         }
     }
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(context as Activity, arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
-        if (!checkPremission()){
-
-        }
-    }
-
 
 
 

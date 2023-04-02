@@ -1,14 +1,21 @@
 package com.example.myweatherapp.home.homeview
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.os.RemoteException
+import android.provider.Settings
+import android.provider.SyncStateContract.Constants
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,6 +48,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModel:HomeViewModel
     lateinit var factory: HomeViewModelFactory
     lateinit var myLocation : LatLng
+    lateinit var vieew : View
 
 
 
@@ -63,8 +71,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false) as FragmentHomeBinding
-        binding.lifecycleOwner=this.viewLifecycleOwner
-        val view = binding.root
+        binding.lifecycleOwner=this
+        vieew = binding.root
 
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -76,44 +84,23 @@ class HomeFragment : Fragment() {
 
         Constant.myPref=Preferences.getMyPref(requireContext())
         myLocation = Constant.myPref.myLocation
-        if(!Permissions.checkPremission(requireContext()) && myLocation==LatLng(0.0,0.0)){
+        if(!Permissions.checkPremission(requireContext()) || myLocation==LatLng(0.0,0.0)){
             hideUI()
             binding.txtGps.visibility=View.VISIBLE
             binding.animationView.visibility=View.VISIBLE
         }
         else {
             hideUI()
-           getData(view)
+           getData(vieew)
         }
 
 
         binding.txtGps.setOnClickListener {
-            val myGps=  GPSProvider(requireContext())
-            myGps.getCurrentLocation()
-            if(!Permissions.checkPremission(requireContext())) {
-                Snackbar.make(
-                    binding.root, R.string.denied_prem,
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
-                hideUI()
-                binding.txtGps.visibility=View.VISIBLE
-                binding.animationView.visibility=View.VISIBLE
-            }
-            else {
-                myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            requestPermission()
 
-
-                    myLocation = it
-                    Constant.myPref.myLocation = myLocation
-                    Preferences.saveMyPref(Constant.myPref, requireContext())
-                    hideUI()
-                    getData(view)
-
-                })
-            }
         }
 
-        return view
+        return vieew
     }
     private fun getData(view:View){
         factory = HomeViewModelFactory(
@@ -258,7 +245,81 @@ class HomeFragment : Fragment() {
         binding.progressLayout.visibility = View.GONE
         binding.obaqueBG.visibility=View.GONE
     }
+   /* override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val myGps = GPSProvider(requireContext())
+                myGps.getCurrentLocations()
+                myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    myLocation = it
+                    Constant.myPref.myLocation = myLocation
+                    Preferences.saveMyPref(Constant.myPref, requireContext())
+                    hideUI()
+                    getData(vieew)
 
+                })
+            } else {
+                hideUI()
+                binding.txtGps.visibility=View.VISIBLE
+                binding.animationView.visibility=View.VISIBLE
+                Snackbar.make(
+                    binding.root, R.string.denied_prem,
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+            }
+        }
+    }*/
+
+   override fun onRequestPermissionsResult(
+       requestCode: Int,
+       permissions: Array<String>,
+       grantResults: IntArray
+   ) {
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+       when (requestCode) {
+           Constant.LOCATION_PERMISSION_REQUEST_CODE -> {
+               if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   val myGps = GPSProvider(requireContext())
+                   myGps.getCurrentLocations()
+                   myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                       myLocation = it
+                       Constant.myPref.myLocation = myLocation
+                       Preferences.saveMyPref(Constant.myPref, requireContext())
+                       hideUI()
+                       getData(vieew)
+                   })
+               } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION) ) {
+                   hideUI()
+                   binding.txtGps.visibility=View.VISIBLE
+                   binding.animationView.visibility=View.VISIBLE
+
+               }
+               else{
+                   val snackbar = Snackbar.make(binding.root, R.string.denied_prem, Snackbar.LENGTH_LONG)
+                   snackbar.setAction(R.string.openSittings) {
+                       val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                       intent.data = Uri.fromParts("package", requireContext().packageName, null)
+                       requireContext().startActivity(intent)
+                   }
+                   snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                   snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.dark_orange))
+                   snackbar.setTextColor(Color.WHITE)
+                   snackbar.show()
+
+               }
+
+           }
+       }
+   }
+
+    private fun requestPermission() {
+        requestPermissions(arrayOf(
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION"
+        ), Constant.LOCATION_PERMISSION_REQUEST_CODE)
+    }
 
 
 }
