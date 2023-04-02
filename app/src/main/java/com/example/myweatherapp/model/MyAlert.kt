@@ -10,7 +10,8 @@ data class MyAlert(
     var startTime: Long,
     var endTime: Long,
     var event: String,
-    var type: String
+    var type: String,
+    var myId: Int=0
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

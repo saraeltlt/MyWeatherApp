@@ -46,7 +46,7 @@ import java.util.*
 class StartPrefFragment : Fragment() {
     private lateinit var binding: FragmentStartPrefBinding
     private var myLocation: LatLng? = null
-    var flagFrom :Boolean=false
+    var flagFrom :Int=0
     val maxRequests = 2
     var requestCount = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,7 +109,7 @@ class StartPrefFragment : Fragment() {
 
 
                 }else{
-                    flagFrom=true
+                    flagFrom=1
                     requestPermission()
                 }
             }
@@ -123,7 +123,7 @@ class StartPrefFragment : Fragment() {
             }
             else {
                 if (!Permissions.checkPremission(requireContext())) {
-                    flagFrom=false
+                    flagFrom=2
                     requestPermission()
                     /*Snackbar.make(
                         binding.root, R.string.denied_prem,
@@ -194,7 +194,7 @@ class StartPrefFragment : Fragment() {
 
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                if(flagFrom){
+                if(flagFrom==1){
                     val myGps = GPSProvider(requireContext())
                     myGps.getCurrentLocations()
                     myGps.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -208,10 +208,12 @@ class StartPrefFragment : Fragment() {
                         binding.progressLayout.visibility = View.GONE
                         binding.obaqueBG.visibility = View.GONE
                     }, 2300)
-                }else {
+                    flagFrom=0
+                }else if (flagFrom==2){
                     val action =
                         StartPrefFragmentDirections.actionStartPrefFragmentToMapsFragment("start")
                     findNavController().navigate(action)
+                    flagFrom=0
                 }
             }
 

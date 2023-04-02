@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myweatherapp.R
@@ -127,13 +129,6 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                     calendar.set(Calendar.SECOND, 0)
                     calendar.set(Calendar.MILLISECOND, 0)
                     myAlert.endTime =calendar.timeInMillis
-                    Log.e("dialoge","endTime->"+   myAlert.endTime )
-
-                    val selectedCalendar = Calendar.getInstance()
-                    selectedCalendar.timeInMillis =  myAlert.endTime
-                    val selectedHour = selectedCalendar.get(Calendar.HOUR_OF_DAY)
-                    val selectedMinute = selectedCalendar.get(Calendar.MINUTE)
-                    Log.e("dialoge","endTime after ->"+ selectedHour )
 
                 }, hour, minute, false
             )
@@ -152,7 +147,6 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
             ) {
                 val selectedItem: String = parent?.getItemAtPosition(position).toString()
                 myAlert.event=selectedItem
-                Toast.makeText(requireContext(), "Selected item: $selectedItem", Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -170,7 +164,6 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
             ) {
                 val selectedItem: String = parent?.getItemAtPosition(position).toString()
                 myAlert.type=selectedItem
-                Toast.makeText(requireContext(), "Selected item: $selectedItem", Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -181,10 +174,43 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
         //save alert
         bindingDialog.addAlertBtn.setOnClickListener {
             if (bindingDialog.tvDescription.text.toString().isEmpty() || bindingDialog.tvStartDate.text.toString().isEmpty()|| bindingDialog.tvEndDate.text.toString().isEmpty()|| bindingDialog.tvStartTime.text.toString().isEmpty() || bindingDialog.tvEndTime.text.toString().isEmpty()){
-                Snackbar.make(
+                val snackbar =  Snackbar.make(
                     bindingDialog.root, R.string.complete,
                     Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
+                )
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+            }
+
+            else if (myAlert.startDate >=myAlert.endDate || myAlert.startDate<Calendar.getInstance().timeInMillis){
+                val snackbar =  Snackbar.make(
+                    bindingDialog.root, R.string.datInterval,
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+
+            }
+                else if (myAlert.startTime > myAlert.endTime){
+                val snackbar =  Snackbar.make(
+                    bindingDialog.root, R.string.timeInterval,
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+
+            }
+                else if (myAlert.startDate==Calendar.getInstance().timeInMillis && myAlert.startTime< Calendar.getInstance().timeInMillis ){
+                val snackbar =  Snackbar.make(
+                    bindingDialog.root, R.string.timePassed,
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
             }
 
                 else{

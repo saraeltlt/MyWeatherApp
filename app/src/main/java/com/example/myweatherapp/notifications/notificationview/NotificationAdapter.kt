@@ -66,9 +66,7 @@ fun dateFormate(date : Long): String{
     return dateFormat.format(selectedCalendar.time)
 }
 fun timeFormate(time : Long): String{
-    val selectedCalendar = Calendar.getInstance()
-    selectedCalendar.timeInMillis = time
-    val selectedHour = selectedCalendar.get(Calendar.HOUR_OF_DAY)
-    val selectedMinute = selectedCalendar.get(Calendar.MINUTE)
-    return "${selectedHour} : ${selectedMinute}"
+    val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    val timeF = format.format(time)
+    return timeF
 }

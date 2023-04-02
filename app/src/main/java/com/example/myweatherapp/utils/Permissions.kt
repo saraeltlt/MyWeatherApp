@@ -21,6 +21,18 @@ object Permissions {
                 ) == PackageManager.PERMISSION_GRANTED
         return result
     }
+    fun checkPremissionNotifications(context: Context):Boolean{
+        val result = ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.SYSTEM_ALERT_WINDOW
+        ) == PackageManager.PERMISSION_GRANTED
+        return result
+    }
+
+
 
 
 
