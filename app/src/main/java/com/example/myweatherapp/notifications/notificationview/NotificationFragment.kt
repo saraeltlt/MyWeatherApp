@@ -167,6 +167,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
         intent.putExtra("alert",myAlert.myId)
         Log.e("yarab",myAlert.toString())
         pendingIntent=PendingIntent.getBroadcast(requireContext(),myAlert.myId,intent,0)
+       // alarmManager.set
         alarmManager!!.setExact(AlarmManager.RTC_WAKEUP,myAlert.start,pendingIntent)
       //  alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, myAlert.startTime, AlarmManager.INTERVAL_DAY,pendingIntent)
         Toast.makeText(requireContext(), "alert set succes",Toast.LENGTH_SHORT).show()
