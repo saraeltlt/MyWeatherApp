@@ -103,7 +103,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("fox", name, importance).apply {
+            val channel = NotificationChannel("sara", name, importance).apply {
                 description = descriptionText
             }
             // Register the channel with the system
@@ -147,7 +147,6 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
 
     override fun onClickSave(myAlert: MyAlert) {
         myAlert.myId=generateUniqueIntValue(myAlert.end,myAlert.start,myAlert.description,myAlert.event)
-        Log.e("haaa",myAlert.myId.toString())
         viewModel.addAlert(myAlert)
         if (Permissions.checkPremissionNotifications(requireContext())){
             setAlarm(myAlert)
@@ -161,18 +160,29 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     }
 
     private fun setAlarm(myAlert: MyAlert) {
+
+        val diffInMillis =myAlert.end-myAlert.start
+        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
+        Log.e("sara",days)
+        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
         alertSet=myAlert
         alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
-        intent.putExtra("alert",myAlert.myId)
-        Log.e("yarab",myAlert.toString())
-        pendingIntent=PendingIntent.getBroadcast(requireContext(),myAlert.myId,intent,0)
-       // alarmManager.set
-        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP,myAlert.start,pendingIntent)
-      //  alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, myAlert.startTime, AlarmManager.INTERVAL_DAY,pendingIntent)
-        Toast.makeText(requireContext(), "alert set succes",Toast.LENGTH_SHORT).show()
 
-        removeNotifcationAfter(myAlert)
+        val interval:Long = 1 * 1 * 60 * 1000 //24 HRS
+        // NEHSEB EL AYAM KAM YOUM
+        for (i in 0..7) {
+            intent.putExtra("alert",myAlert.myId+i)
+            pendingIntent=PendingIntent.getBroadcast(requireContext(),myAlert.myId+i,intent,0)
+            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, (myAlert.start+(i*interval)), pendingIntent)
+
+            // removeNotifcationAfter(myAlert) // HANDLE TOO (TIME)
+        }
+
+        //REMOVE FROM DATA BASE
+
+
+
 
     }
 

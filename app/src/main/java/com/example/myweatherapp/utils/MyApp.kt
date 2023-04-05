@@ -10,13 +10,12 @@ import com.example.myweatherapp.datasource.db.ConcreteLocalSource
 import com.example.myweatherapp.datasource.network.ClientRemoteSource
 
 
-class MyApp : Application() {
+class APP : Application() {
 
     companion object {
 
         private var localDataSource: ConcreteLocalSource? = null
         private var remoteDataSource: ClientRemoteSource? = null
-        private var sharedPreferences : SharedPreferences? = null
         private val repository by lazy { Repository( remoteDataSource!!,
             localDataSource!!) }
 
@@ -29,13 +28,7 @@ class MyApp : Application() {
             return repository!!
         }
 
-        @Synchronized
-        fun getInstanceSharedPreferences(): SharedPreferences {
-            if (sharedPreferences == null) {
-                throw IllegalStateException("SharedPreferences not initialized")
-            }
-            return sharedPreferences!!
-        }
+
 
     }
 

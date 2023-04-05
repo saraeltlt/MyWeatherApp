@@ -9,13 +9,15 @@ import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.MyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class NotificationViewModel(private val _repo : RepoInterface): ViewModel() {
+class NotificationViewModel(): ViewModel() {
+    private val _repo =MyApp.getInstanceRepository()
     private var _My_alert : MutableLiveData<List<MyAlert>> =MutableLiveData<List<MyAlert>>()
     val myAlert: LiveData<List<MyAlert>> = _My_alert
     private var _stateFlow = MutableStateFlow<ApiState>(ApiState.Loading)
