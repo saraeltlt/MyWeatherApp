@@ -1,6 +1,7 @@
 package com.example.myweatherapp
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -17,6 +18,7 @@ import com.example.myweatherapp.datasource.Repository
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
 import com.example.myweatherapp.model.ApiState
+import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.ui.MainActivity
 import com.example.myweatherapp.utils.Constant
@@ -71,6 +73,7 @@ class AlarmReceiver : WakefulBroadcastReceiver(){
 
     }
 }
+
 class RemoveNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getIntExtra("notificationId", -1)
