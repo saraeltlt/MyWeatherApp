@@ -36,6 +36,8 @@ import com.example.myweatherapp.utils.Permissions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlertInterface,
@@ -47,6 +49,10 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     lateinit var adapter: NotificationAdapter
     var alarmManager: AlarmManager?=null
     var pendingIntent: PendingIntent ?=null
+   // val interval:Long = 24 * 60 * 60 * 1000 //1day
+     val interval:Long = 1 * 3 * 60 * 1000 //3mins
+
+    var reqCode:Int=0
     companion object{
         var alertRemove: MyAlert?=null
         var alertSet: MyAlert?=null
@@ -137,7 +143,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
 
     private fun cancelAlarm(alertRemove: MyAlert) {
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
-        pendingIntent=PendingIntent.getBroadcast(requireContext(),alertRemove.myId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent=PendingIntent.getBroadcast(requireContext(),reqCode,intent,PendingIntent.FLAG_UPDATE_CURRENT)
         if (alarmManager==null){
             alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         }
@@ -160,50 +166,45 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     }
 
     private fun setAlarm(myAlert: MyAlert) {
-
+        alertSet=myAlert
         val diffInMillis =myAlert.end-myAlert.start
         val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
-        Log.e("sara",days)
-        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
-        alertSet=myAlert
         alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
 
-        val interval:Long = 1 * 1 * 60 * 1000 //24 HRS
-        // NEHSEB EL AYAM KAM YOUM
-        for (i in 0..7) {
-            intent.putExtra("alert",myAlert.myId+i)
-            pendingIntent=PendingIntent.getBroadcast(requireContext(),myAlert.myId+i,intent,0)
-            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, (myAlert.start+(i*interval)), pendingIntent)
 
-            // removeNotifcationAfter(myAlert) // HANDLE TOO (TIME)
+        for (day in 0..days) {
+            reqCode=myAlert.myId+day.toInt()
+            intent.putExtra("alert",reqCode)
+            intent.putExtra("alert2",myAlert.event)
+            intent.putExtra("alert3",myAlert.type)
+           // intent.putExtra("alert3",myAlert)
+            pendingIntent=PendingIntent.getBroadcast(requireContext(),reqCode,intent,0)
+            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, (myAlert.start+(day*interval)), pendingIntent)
+            removeNotifcationAfter(myAlert,day)
         }
-
-        //REMOVE FROM DATA BASE
-
-
-
 
     }
 
-    private fun removeNotifcationAfter(myAlert: MyAlert) {
+    private fun removeNotifcationAfter(myAlert: MyAlert,i:Long) {
         val removeNotificationIntent = Intent(requireContext(), RemoveNotificationReceiver::class.java)
-        removeNotificationIntent.putExtra("notificationId",myAlert.myId)
+        removeNotificationIntent.putExtra("notificationId",myAlert.myId+i.toInt())
 
         val removeNotificationPendingIntent = PendingIntent.getBroadcast(
             requireContext(),
-            myAlert.myId,
+            myAlert.myId+i.toInt(),
             removeNotificationIntent,
             0
         )
+        val delayInMillis = getTimeDiff(myAlert.start,myAlert.end)
 
-        val delayInMillis = 1 * 60 * 1000L // 5 minutes
         alarmManager!!.setExact(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + delayInMillis,
+            (myAlert.start+(i*interval))+delayInMillis,
             removeNotificationPendingIntent
         )
     }
+
 
     private fun requestPermission() {
         requestPermissions(arrayOf(
@@ -228,5 +229,24 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
         val hash = digest.digest(input.toByteArray(StandardCharsets.UTF_8))
         val truncatedHash = hash.copyOfRange(0, 4) // Truncate hash to 4 bytes
         return truncatedHash.fold(0) { acc, byte -> (acc shl 8) + (byte.toInt() and 0xff) }
+    }
+    fun getTimeDiff(from:Long, to:Long): Long {
+        var calendarFrom= Calendar.getInstance()
+        calendarFrom.timeInMillis=from
+        var hours: Int = calendarFrom.get(Calendar.HOUR_OF_DAY)
+        var minutes: Int = calendarFrom.get(Calendar.MINUTE)
+        calendarFrom= Calendar.getInstance()
+        calendarFrom.set(Calendar.HOUR_OF_DAY, hours)
+        calendarFrom.set(Calendar.MINUTE, minutes)
+        //.....
+        var calendarTo= Calendar.getInstance()
+        calendarTo.timeInMillis=to
+        hours = calendarTo.get(Calendar.HOUR_OF_DAY)
+        minutes = calendarTo.get(Calendar.MINUTE)
+        calendarTo= Calendar.getInstance()
+        calendarTo.set(Calendar.HOUR_OF_DAY, hours)
+        calendarTo.set(Calendar.MINUTE, minutes)
+        //......
+        return calendarTo.timeInMillis - calendarFrom.timeInMillis
     }
 }

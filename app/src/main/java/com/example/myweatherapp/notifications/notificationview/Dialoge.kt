@@ -167,7 +167,7 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 snackbar.show()
             }
 
-            else if (calendarFrom.timeInMillis >=calendarTo.timeInMillis || calendarFrom.timeInMillis<calendarToday.timeInMillis){
+            /*else if (calendarFrom.timeInMillis >=calendarTo.timeInMillis || calendarFrom.timeInMillis<calendarToday.timeInMillis){
 
                 val snackbar =  Snackbar.make(
                     bindingDialog.root, R.string.timeInterval,
@@ -177,7 +177,7 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
 
-            }
+            }*/
 
                 else{
                     myAlert.description= bindingDialog.tvDescription.text.toString()
@@ -185,7 +185,7 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                      myAlert.end=calendarTo.timeInMillis
                     listner.onClickSave(myAlert)
                     dialog.dismiss()
-                }
+               }
 
         }
 

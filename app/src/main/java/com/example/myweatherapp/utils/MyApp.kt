@@ -10,7 +10,7 @@ import com.example.myweatherapp.datasource.db.ConcreteLocalSource
 import com.example.myweatherapp.datasource.network.ClientRemoteSource
 
 
-class APP : Application() {
+class MyApp : Application() {
 
     companion object {
 
@@ -39,7 +39,6 @@ class APP : Application() {
         localDataSource = ConcreteLocalSource.getInstance(this)
         remoteDataSource = ClientRemoteSource.getInstance(this)
         NetworkManager.init(this)
-
 
     }
 }

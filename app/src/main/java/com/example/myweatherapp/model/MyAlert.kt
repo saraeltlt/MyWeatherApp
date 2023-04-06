@@ -2,6 +2,7 @@ package com.example.myweatherapp.model
 
 import androidx.room.*
 
+
 @Entity(tableName = "myAlerts")
 data class MyAlert(
     var description: String,
@@ -9,8 +10,6 @@ data class MyAlert(
     var end: Long,
     var event: String,
     var type: String,
+    @PrimaryKey
     var myId: Int=0
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
+): java.io.Serializable
