@@ -147,7 +147,14 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 id: Long
             ) {
                 val selectedItem: String = parent?.getItemAtPosition(position).toString()
-                myAlert.type=selectedItem
+                if (selectedItem== context?.getResources()?.getString(R.string.notifications)){
+                        myAlert.type="n"
+                    }
+                if (selectedItem== context?.getResources()?.getString(R.string.alert)){
+                    myAlert.type="a"
+                }
+                Log.e("SE", myAlert.type)
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -81,4 +81,17 @@
     <string name="complete">قم بملئ الخانات الفارغة</string>
     <string name="openSittings">اذهب للإعدادت</string>
     <string name="timeInterval">من فضلك اختر فترة زمنية صالحة</string>
+
+
+
+    <string name="no_aler">لا يوجد تنبيهات، الطقس صاف </string>
+    <string name="connProblem"> فشل الاتصال </string>
+    <string name="connProblemDesc">لا يمكن الحصول على حالة الطقس ، مشكلة في الاتصال بالخادم </string>
+    <string name="alert_detect">"تم العثور على التنبيه "</string>
+    <string name="no">"لا "</string>
+    <string name="alert_but">" تنبيه، ولكن  "</string>
+    <string name="heat_advisory">موجه حر </string>
+    <string name="storm">عاصفة </string>
+    <string name="heat">حراره </string>
+    <string name="alert">تنبيه</string>
 </resources>

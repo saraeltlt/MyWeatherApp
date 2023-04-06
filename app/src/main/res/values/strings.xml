@@ -83,8 +83,18 @@
     <string name="changeUnit">"Units have been change to: "</string>
     <string name="complete">Please Fill the missing fields</string>
     <string name="openSittings">Open Sittings</string>
-    <string name="channel_name">channelName</string>
-    <string name="channel_description">channelDesc</string>
+    <string name="heat_advisory">Heat Advisory</string>
+    <string name="storm">Storm</string>
+    <string name="heat">Heat</string>
+    <string name="alert">Alert</string>
+    <string name="channel_name" translatable="false">channelName</string>
+    <string name="channel_description" translatable="false">channelDesc</string>
     <string name="timeInterval">Please choose a valid time and date ranges</string>
+    <string name="no_aler">There are no alerts. The weather is clear</string>
+    <string name="connProblem">Connection Faild</string>
+    <string name="connProblemDesc">Can\'t get weather status,problem connecting to the server</string>
+    <string name="alert_detect">"Alert is detected "</string>
+    <string name="no">"No "</string>
+    <string name="alert_but">" alert, but "</string>
 
 </resources>
