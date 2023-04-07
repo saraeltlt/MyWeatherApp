@@ -7,27 +7,20 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.AddAlertDialogBinding
-import com.example.myweatherapp.databinding.ConfirmDialogBinding
 import com.example.myweatherapp.model.MyAlert
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
-class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface): DialogFragment() {
+class NotificationsDialog(private val contextFrag: Context, val listner : SaveAlertInterface): DialogFragment() {
     private lateinit var dialog: AlertDialog
     val calendarToday = Calendar.getInstance()
     val yearToday = calendarToday.get(Calendar.YEAR)
@@ -130,7 +123,19 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 id: Long
             ) {
                 val selectedItem: String = parent?.getItemAtPosition(position).toString()
-                myAlert.event=selectedItem
+                 if (selectedItem== context?.getResources()?.getString(R.string.rain)){
+                    myAlert.event="rain"
+                }
+               else if (selectedItem== context?.getResources()?.getString(R.string.storm)){
+                    myAlert.event="storm"
+                }
+                else if (selectedItem== context?.getResources()?.getString(R.string.heat_advisory)){
+                    myAlert.event="heat advisory"
+                }
+                else if (selectedItem== context?.getResources()?.getString(R.string.heat)){
+                    myAlert.event="heat"
+                }
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -150,10 +155,10 @@ class Dialoge(private val contextFrag: Context, val listner : SaveAlertInterface
                 if (selectedItem== context?.getResources()?.getString(R.string.notifications)){
                         myAlert.type="n"
                     }
-                if (selectedItem== context?.getResources()?.getString(R.string.alert)){
+                else if (selectedItem== context?.getResources()?.getString(R.string.alert)){
                     myAlert.type="a"
                 }
-                Log.e("SE", myAlert.type)
+
 
             }
 

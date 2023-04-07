@@ -3,32 +3,26 @@
 package com.example.myweatherapp
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Context.WINDOW_SERVICE
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
-import android.os.PowerManager
-import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
 import com.example.myweatherapp.model.ApiState
-import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.ui.MainActivity
 import com.example.myweatherapp.utils.Constant
@@ -37,79 +31,54 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class AlarmReceiver : WakefulBroadcastReceiver(){
-    private val viewModel: NotificationViewModel by lazy {NotificationViewModel() }
+class AlarmReceiver : WakefulBroadcastReceiver() {
+    private val viewModel: NotificationViewModel by lazy { NotificationViewModel() }
     val myLocation = Constant.myPref.myLocation
+    var windowManager:WindowManager?=null
+    var mediaPlayer:MediaPlayer?=null
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("MissingPermission", "InvalidWakeLockTag")
     override fun onReceive(context: Context, intent: Intent) {
-        val alertId=intent.getIntExtra("alert",-1)
-        Log.e("SE",alertId.toString())
-       val alertEvent=intent.getStringExtra("alert2")
-        Log.e("SE", alertEvent!!)
-        val alertType=intent.getStringExtra("alert3")
-        Log.e("SE", alertType!!)
+        val alertId = intent.getIntExtra("alert", -1)
+        val alertEvent = intent.getStringExtra("alert2")
+        val alertType = intent.getStringExtra("alert3")
+        val alertCancelFlag =intent.getIntExtra( "removeAlertFlag", -1)
+        Log.e("SE", alertCancelFlag.toString())
 
         /*val alert=intent.getSerializableExtra("alert1") as MyAlert
         Log.e("SE",alert.event)*/
 
         var i = Intent(context, MainActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        var pendingIntent: PendingIntent = PendingIntent.getActivity(context,alertId, i,0)
-        if (NetworkManager.isInternetConnected()) {
-            if (alertType=="n") {
-                CoroutineScope(Dispatchers.IO).launch {
-                    var result = viewModel.getAlertRemote()
-                    viewModel.stateFlow.collectLatest { result ->
-                        when (result) {
-                            is ApiState.Loading -> {
-                                Log.e("SE", "loading...")
-                            }
-                            is ApiState.Failure -> {
-                                var builder = NotificationCompat.Builder(context, "sara")
-                                    .setSmallIcon(R.drawable.rain)
-                                    .setLargeIcon(BitmapFactory. decodeResource (context.getResources() , R.drawable.server_error))
-                                    .setContentTitle(context.getResources().getString(R.string.connProblem))
-                                    .setContentText(context.getResources().getString(R.string.connProblemDesc))
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                    .setAutoCancel(true)
-                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                    .setContentIntent(pendingIntent)
-                                val notificationManeger = NotificationManagerCompat.from(context)
-                                notificationManeger.notify(alertId, builder.build())
-                            }
-                            is ApiState.Succcess -> {
-                                //empty list
-                              if (result.data.alerts.isEmpty()) {
-                                    var builder = NotificationCompat.Builder(context, "sara")
-                                        .setSmallIcon(R.drawable.rain)
-                                        .setLargeIcon(BitmapFactory. decodeResource (context.getResources() , R.drawable.rain))
-                                        .setContentTitle(alertEvent)
-                                        .setContentText(context.getResources().getString(R.string.no_aler))
-                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                        .setAutoCancel(true)
-                                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setContentIntent(pendingIntent)
-                                    val notificationManeger =
-                                        NotificationManagerCompat.from(context)
-                                    notificationManeger.notify(alertId, builder.build())
+        var pendingIntent: PendingIntent = PendingIntent.getActivity(context, alertId, i, 0)
+            if (alertType == "n") {
+                if (NetworkManager.isInternetConnected()) {
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        var result = viewModel.getAlertRemote()
+                        viewModel.stateFlow.collectLatest { result ->
+                            when (result) {
+                                is ApiState.Loading -> {
+                                    Log.e("SE", "loading...")
                                 }
-                                //same alert
-                               else if (result.data.alerts[0].event == alertEvent) {
+                                is ApiState.Failure -> {
                                     var builder = NotificationCompat.Builder(context, "sara")
                                         .setSmallIcon(R.drawable.rain)
                                         .setLargeIcon(
                                             BitmapFactory.decodeResource(
                                                 context.getResources(),
-                                                R.drawable.rain
+                                                R.drawable.server_error
                                             )
                                         )
-                                        .setContentTitle(alertEvent)
-                                        .setContentText(alertEvent+  context.getResources().getString(R.string.alert_detect))
+                                        .setContentTitle(
+                                            context.getResources().getString(R.string.connProblem)
+                                        )
+                                        .setContentText(
+                                            context.getResources()
+                                                .getString(R.string.connProblemDesc)
+                                        )
                                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                         .setAutoCancel(true)
                                         .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -119,86 +88,178 @@ class AlarmReceiver : WakefulBroadcastReceiver(){
                                         NotificationManagerCompat.from(context)
                                     notificationManeger.notify(alertId, builder.build())
                                 }
+                                is ApiState.Succcess -> {
+                                    //empty list
+                                    if (result.data.alerts.isEmpty()) {
+                                        var builder = NotificationCompat.Builder(context, "sara")
+                                            .setSmallIcon(R.drawable.rain)
+                                            .setLargeIcon(
+                                                BitmapFactory.decodeResource(
+                                                    context.getResources(),
+                                                    R.drawable.rain
+                                                )
+                                            )
+                                            .setContentTitle(alertEvent)
+                                            .setContentText(
+                                                context.getResources().getString(R.string.no_aler)
+                                            )
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                            .setAutoCancel(true)
+                                            .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
+                                    }
+                                    //same alert
+                                    else if (result.data.alerts[0].event == alertEvent) {
+                                        var builder = NotificationCompat.Builder(context, "sara")
+                                            .setSmallIcon(R.drawable.rain)
+                                            .setLargeIcon(
+                                                BitmapFactory.decodeResource(
+                                                    context.getResources(),
+                                                    R.drawable.rain
+                                                )
+                                            )
+                                            .setContentTitle(alertEvent)
+                                            .setContentText(
+                                                alertEvent + context.getResources()
+                                                    .getString(R.string.alert_detect)
+                                            )
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                            .setAutoCancel(true)
+                                            .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
+                                    }
 
-                                //different alert
-                                else {
-                                    var builder = NotificationCompat.Builder(context, "sara")
-                                        .setSmallIcon(R.drawable.rain)
-                                        //.setLargeIcon()
-                                        .setContentTitle(alertType)
-                                        .setContentText(context.getResources().getString(R.string.no) +alertType+context.getResources().getString(R.string.alert_but) +result.data.current.weather[0].description+ context.getResources().getString(R.string.alert_detect))
-                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                        .setAutoCancel(true)
-                                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setContentIntent(pendingIntent)
-                                    val notificationManeger =
-                                        NotificationManagerCompat.from(context)
-                                    notificationManeger.notify(alertId, builder.build())
+                                    //different alert
+                                    else {
+                                        var builder = NotificationCompat.Builder(context, "sara")
+                                            .setSmallIcon(R.drawable.rain)
+                                            //.setLargeIcon()
+                                            .setContentTitle(alertType)
+                                            .setContentText(
+                                                context.getResources()
+                                                    .getString(R.string.no) + alertType + context.getResources()
+                                                    .getString(R.string.alert_but) + result.data.current.weather[0].description + context.getResources()
+                                                    .getString(R.string.alert_detect)
+                                            )
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                            .setAutoCancel(true)
+                                            .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
+                                    }
+
                                 }
-
                             }
                         }
+
+
                     }
-
-
+                }
+                else {
+                    var builder = NotificationCompat.Builder(context, "sara")
+                        .setSmallIcon(R.drawable.rain)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.wifi))
+                        .setContentTitle( context.getResources().getString(R.string.NoInter))
+                        .setContentText(context.getResources().getString(R.string.NoInterDetail))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent)
+                    val notificationManeger = NotificationManagerCompat.from(context)
+                    notificationManeger.notify(alertId, builder.build())
                 }
             }
-            else if (alertType=="a"){
-                CoroutineScope(Dispatchers.Main ).launch {
-                    alertFire(context)
-                }
+            else if (alertType == "a") {
+                    alertFire(context, alertCancelFlag)
             }
-        }
-        else{
-            var builder = NotificationCompat.Builder(context, "sara")
-                .setSmallIcon(R.drawable.rain)
-                .setLargeIcon(BitmapFactory. decodeResource (context.getResources() , R.drawable.wifi))
-                .setContentTitle("No Internet connection")
-                .setContentText("can't get the weather status, check your internet connection")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-            val notificationManeger = NotificationManagerCompat.from(context)
-            notificationManeger.notify(alertId, builder.build())
-        }
+
 
     }
 
-    private suspend fun alertFire(context: Context) {
-        val mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
+    private fun alertFire(context: Context, alertCancelFlag: Int) {
 
-        val view: View = LayoutInflater.from(context).inflate(R.layout.empty, null, false)
-        /* val dismissBtn = view.findViewById(R.id.btnDismissAlarm) as Button
-         val textView = view.findViewById(R.id.descriptionAlarm) as TextView*/
-        val layoutParams =
-            WindowManager.LayoutParams(
+        val view: View = LayoutInflater.from(context).inflate(R.layout.dialog_layout, null, false)
+        /*val dismissBtn = view.findViewById(R.id.dissmiss) as Button
+        val textTitle = view.findViewById(R.id.titleText) as TextView
+        val textdetails = view.findViewById(R.id.detailsText) as TextView*/
+/*
+        if (NetworkManager.isInternetConnected()) {
+            if (result.data.alerts.isEmpty()) {
+                textTitle.text= alertEvent
+                textdetails.text=context.getResources().getString(R.string.no_aler)
+
+            }
+            else if (result.data.alerts[0].event == alertEvent) {
+                textTitle.text= alertEvent
+                textdetails.text=  alertEvent + context.getResources().getString(R.string.alert_detect)
+            }
+            else {
+                textTitle.text= alertEvent
+                textdetails.text= context.getResources()
+                    .getString(R.string.no) + alertType + context.getResources()
+                    .getString(R.string.alert_but) + result.data.current.weather[0].description + context.getResources()
+                    .getString(R.string.alert_detect)
+
+            }
+        }
+        //no internet
+        else{
+            textTitle.text=context.getResources().getString(R.string.NoInter)
+            textdetails.text=context.getResources().getString(R.string.NoInterDetail)
+        }*/
+
+        windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
+
+        if (alertCancelFlag==1){
+            mediaPlayer?.release()
+            mediaPlayer?.stop()
+            windowManager?.removeView(view)
+        }
+        else {
+            Log.e("SE", alertCancelFlag.toString())
+            // set the window parameters
+            val windowParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                } else {
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+                },
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 PixelFormat.TRANSLUCENT
-
             )
-        layoutParams.gravity = Gravity.TOP
+            windowParams.gravity = Gravity.TOP
 
-        val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
 
-        withContext(Dispatchers.Main) {
-            windowManager.addView(view, layoutParams)
+            windowManager?.addView(view, windowParams)
             view.visibility = View.VISIBLE
-            // textView.text = message
+
+
+            mediaPlayer?.start()
+            mediaPlayer?.isLooping = true
         }
 
-        mediaPlayer.start()
-        mediaPlayer.isLooping = true
-        /* dismissBtn.setOnClickListener {
-             mediaPlayer?.release()
-             windowManager.removeView(view)
-         }
-         repository.deleteAlert(entityAlert)*/
+       /* dismissBtn.setOnClickListener {
+            mediaPlayer?.release()
+            mediaPlayer?.stop()
+            windowManager?.removeView(view)
+        }*/
+
+
     }
 }
 class RemoveNotificationReceiver : BroadcastReceiver() {

@@ -1,6 +1,5 @@
 package com.example.myweatherapp.notifications.notificationview
 
-import android.app.Activity
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,7 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,10 +38,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlertInterface,
+class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDialog.SaveAlertInterface,
     ConfirmDeleteInterface {
     private lateinit var binding: FragmentNotificationBinding
-    private lateinit var dialog: Dialoge
+    private lateinit var dialog: NotificationsDialog
     lateinit var viewModel: NotificationViewModel
     lateinit var factory: NotificationViewModelFactory
     lateinit var adapter: NotificationAdapter
@@ -119,7 +117,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     }
 
     fun   showAlertDialog(){
-     dialog= Dialoge(requireContext(),this)
+     dialog= NotificationsDialog(requireContext(),this)
      dialog.show(parentFragmentManager, "alertDialog")
 
  }
@@ -188,9 +186,33 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
            // intent.putExtra("alert3",myAlert)
             pendingIntent=PendingIntent.getBroadcast(requireContext(),reqCode,intent,0)
             alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, (myAlert.start+(day*interval)), pendingIntent)
-            removeNotifcationAfter(myAlert,day)
+            if (myAlert.type=="n") {
+                removeNotifcationAfter(myAlert, day)
+            }
+            else{
+                removeAlertAfter(myAlert, day)
+            }
+
         }
 
+    }
+
+    private fun removeAlertAfter(myAlert: MyAlert, day: Long) {
+        val removeAlertIntent = Intent(requireContext(), AlarmReceiver::class.java)
+        removeAlertIntent.putExtra("removeAlertFlag",1)
+        val removeAlertPendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            myAlert.myId+day.toInt()+80,
+            removeAlertIntent,
+            0
+        )
+        val delayInMillis = getTimeDiff(myAlert.start,myAlert.end)
+
+        alarmManager!!.setExact(
+            AlarmManager.RTC_WAKEUP,
+            (myAlert.start+(day*interval))+delayInMillis,
+            removeAlertPendingIntent
+        )
     }
 
     private fun removeNotifcationAfter(myAlert: MyAlert,i:Long) {
@@ -230,6 +252,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
             setAlarm(alertSet!!)
         }
     }
+
     fun generateUniqueIntValue(a: Long, b: Long, str: String, strType:String): Int {
         val input = "$a$b$str$strType"
         val digest = MessageDigest.getInstance("SHA-256")

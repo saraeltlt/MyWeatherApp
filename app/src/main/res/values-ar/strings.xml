@@ -94,4 +94,7 @@
     <string name="storm">عاصفة </string>
     <string name="heat">حراره </string>
     <string name="alert">تنبيه</string>
+    <string name="dismiss">تجاهل</string>
+    <string name="NoInter">لا يوجد اتصال بالآنتزنت </string>
+    <string name="NoInterDetail">لا يمكن الحصول على حالة الطقس، يرجى التحقق من اتصال الإنترنت</string>
 </resources>

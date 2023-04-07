@@ -32,18 +32,20 @@ class NotificationAdapter (
 
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val alertItem=getItem(position)
-        if (alertItem.type=="Alarm"){
+        if (alertItem.type=="a"){
             val drawable = ContextCompat.getDrawable(context, R.drawable.alarm_icon)
             val bitmap = (drawable as BitmapDrawable).bitmap
             holder.binding.imageType.setImageBitmap(bitmap)
-
-        }else{
+            holder.binding.textTitle.text="${alertItem.event} "+context.getResources().getString(R.string.alert )
+        }
+        else{
             val drawable = ContextCompat.getDrawable(context, R.drawable.notifi_icon)
             val bitmap = (drawable as BitmapDrawable).bitmap
             holder.binding.imageType.setImageBitmap(bitmap)
+            holder.binding.textTitle.text="${alertItem.event} "+context.getResources().getString(R.string.notifications )
 
         }
-        holder.binding.textTitle.text="${alertItem.event}  ${alertItem.type}"
+
         holder.binding.textFromTime.text=timeFormate(alertItem.start)
         holder.binding.textToTime.text=timeFormate(alertItem.end)
         holder.binding.textFromDate.text=dateFormate(alertItem.start)

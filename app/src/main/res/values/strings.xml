@@ -95,6 +95,9 @@
     <string name="connProblemDesc">Can\'t get weather status,problem connecting to the server</string>
     <string name="alert_detect">"Alert is detected "</string>
     <string name="no">"No "</string>
-    <string name="alert_but">" alert, but "</string>
+    <string name="alert_but"> alert, but </string>
+    <string name="dismiss">Dismiss</string>
+    <string name="NoInter">No Internet Connection</string>
+    <string name="NoInterDetail">can\'t get the weather status, check your internet connection</string>
 
 </resources>

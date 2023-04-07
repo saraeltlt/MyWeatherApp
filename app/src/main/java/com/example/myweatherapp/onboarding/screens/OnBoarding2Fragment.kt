@@ -1,13 +1,11 @@
 package com.example.myweatherapp.onboarding.screens
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +29,7 @@ class OnBoarding2Fragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_on_boarding2, container, false)
         val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
 
-        val button = view.findViewById<Button>(R.id.next2)
+        val button = view.findViewById<Button>(R.id.dissmiss)
         button.setOnClickListener {
             viewPager?.currentItem=2
 

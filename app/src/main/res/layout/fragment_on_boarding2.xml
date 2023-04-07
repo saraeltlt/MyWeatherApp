@@ -9,7 +9,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next2"
+        android:id="@+id/dissmiss"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 

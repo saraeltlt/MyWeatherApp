@@ -2,10 +2,10 @@
 <resources>
 
     <string-array name="events_options">
+        <item>@string/rain</item>
         <item>@string/storm</item>
         <item>@string/heat_advisory</item>
         <item>@string/heat</item>
-        <item>@string/rain</item>
         <item>@string/snow</item>
         <item>@string/fog</item>
         <item>@string/thunderstorm</item>
