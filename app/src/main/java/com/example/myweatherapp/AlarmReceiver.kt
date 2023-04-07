@@ -7,14 +7,20 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.WINDOW_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -31,6 +37,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AlarmReceiver : WakefulBroadcastReceiver(){
     private val viewModel: NotificationViewModel by lazy {NotificationViewModel() }
@@ -76,7 +83,7 @@ class AlarmReceiver : WakefulBroadcastReceiver(){
                             }
                             is ApiState.Succcess -> {
                                 //empty list
-                              if (result.data.alerts[0].event == null) {
+                              if (result.data.alerts.isEmpty()) {
                                     var builder = NotificationCompat.Builder(context, "sara")
                                         .setSmallIcon(R.drawable.rain)
                                         .setLargeIcon(BitmapFactory. decodeResource (context.getResources() , R.drawable.rain))
@@ -138,32 +145,9 @@ class AlarmReceiver : WakefulBroadcastReceiver(){
                 }
             }
             else if (alertType=="a"){
-                // create and show the alert dialog
-                val alertDialog = AlertDialog.Builder(context)
-                    .setTitle("My Alert Dialog")
-                    .setMessage("This is my custom alert dialog")
-                    .setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-
-                // create a MediaPlayer object to play the alarm sound
-                val mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
-                //mediaPlayer. = true
-
-                // show the dialog as a system alert window
-               //  or TYPE_APPLICATION_PANEL
-                alertDialog.window?.setType(WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY)
-                alertDialog.show()
-
-                // start playing the alarm sound
-                mediaPlayer.start()
-
-                // ensure that the device stays awake during the alarm
-                /*val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-                val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakefulAlertDialogReceiver")
-                wakeLock.acquire(10 * 60 * 1000L /* 10 minutes */)*/
-
+                CoroutineScope(Dispatchers.Main ).launch {
+                    alertFire(context)
+                }
             }
         }
         else{
@@ -181,6 +165,40 @@ class AlarmReceiver : WakefulBroadcastReceiver(){
             notificationManeger.notify(alertId, builder.build())
         }
 
+    }
+
+    private suspend fun alertFire(context: Context) {
+        val mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
+
+        val view: View = LayoutInflater.from(context).inflate(R.layout.empty, null, false)
+        /* val dismissBtn = view.findViewById(R.id.btnDismissAlarm) as Button
+         val textView = view.findViewById(R.id.descriptionAlarm) as TextView*/
+        val layoutParams =
+            WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT
+
+            )
+        layoutParams.gravity = Gravity.TOP
+
+        val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
+
+        withContext(Dispatchers.Main) {
+            windowManager.addView(view, layoutParams)
+            view.visibility = View.VISIBLE
+            // textView.text = message
+        }
+
+        mediaPlayer.start()
+        mediaPlayer.isLooping = true
+        /* dismissBtn.setOnClickListener {
+             mediaPlayer?.release()
+             windowManager.removeView(view)
+         }
+         repository.deleteAlert(entityAlert)*/
     }
 }
 class RemoveNotificationReceiver : BroadcastReceiver() {

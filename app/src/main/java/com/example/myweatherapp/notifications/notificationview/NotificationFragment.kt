@@ -49,10 +49,9 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     lateinit var adapter: NotificationAdapter
     var alarmManager: AlarmManager?=null
     var pendingIntent: PendingIntent ?=null
+    var days:Long=0
    // val interval:Long = 24 * 60 * 60 * 1000 //1day
      val interval:Long = 1 * 3 * 60 * 1000 //3mins
-
-    var reqCode:Int=0
     companion object{
         var alertRemove: MyAlert?=null
         var alertSet: MyAlert?=null
@@ -143,11 +142,19 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
 
     private fun cancelAlarm(alertRemove: MyAlert) {
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
-        pendingIntent=PendingIntent.getBroadcast(requireContext(),reqCode,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+
         if (alarmManager==null){
             alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         }
-        alarmManager!!.cancel(pendingIntent)
+        for (i in 0..days) {
+            pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                alertRemove.myId+i.toInt(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            alarmManager!!.cancel(pendingIntent)
+        }
 
     }
 
@@ -168,13 +175,13 @@ class NotificationFragment : Fragment() , OnNotifClickListner, Dialoge.SaveAlert
     private fun setAlarm(myAlert: MyAlert) {
         alertSet=myAlert
         val diffInMillis =myAlert.end-myAlert.start
-        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
+       days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
         alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
 
 
         for (day in 0..days) {
-            reqCode=myAlert.myId+day.toInt()
+           var reqCode=myAlert.myId+day.toInt()
             intent.putExtra("alert",reqCode)
             intent.putExtra("alert2",myAlert.event)
             intent.putExtra("alert3",myAlert.type)
