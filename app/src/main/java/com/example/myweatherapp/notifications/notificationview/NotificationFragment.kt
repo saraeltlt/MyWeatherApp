@@ -190,7 +190,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
                 removeNotifcationAfter(myAlert, day)
             }
             else{
-                removeAlertAfter(myAlert, day)
+                //removeAlertAfter(myAlert, day)
             }
 
         }
