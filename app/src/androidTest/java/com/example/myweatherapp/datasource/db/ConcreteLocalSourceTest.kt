@@ -95,6 +95,7 @@ class ConcreteLocalSourceTest {
 
     @Before
     fun createLocalSource() {
+        generateDummyData()
         val context = ApplicationProvider.getApplicationContext<Context>()
         localSource = ConcreteLocalSource.getInstance(context)
     }

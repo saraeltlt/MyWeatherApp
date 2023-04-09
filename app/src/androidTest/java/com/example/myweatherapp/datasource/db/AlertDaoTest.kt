@@ -17,6 +17,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -28,12 +29,15 @@ class AlertDaoTest {
 
 
     fun generateDummyData(){
-       alert = MyAlert(
+
+        val calendarFrom = Calendar.getInstance()
+        calendarFrom.set(2022,1,1,12,0,0)
+        val calendarTo = Calendar.getInstance()
+        calendarTo.set(2023,4,2,10,0,0)
+        alert = MyAlert(
             description = "Test Alert",
-            startDate = "2022-01-01",
-            endDate = "2022-01-01",
-            startTime = "10:00",
-            endTime = "12:00",
+            start = calendarTo.timeInMillis,
+            end = calendarFrom.timeInMillis,
             event = "Test Event",
             type = "Test Type"
         )
@@ -66,10 +70,8 @@ class AlertDaoTest {
         // Verify that the alert was inserted correctly
         assertEquals(1, allAlerts?.size)
         assertEquals(alert.description, allAlerts?.get(0)?.description)
-        assertEquals(alert.startDate, allAlerts?.get(0)?.startDate)
-        assertEquals(alert.endDate, allAlerts?.get(0)?.endDate)
-        assertEquals(alert.startTime, allAlerts?.get(0)?.startTime)
-        assertEquals(alert.endTime, allAlerts?.get(0)?.endTime)
+        assertEquals(alert.start, allAlerts?.get(0)?.start)
+        assertEquals(alert.end, allAlerts?.get(0)?.end)
         assertEquals(alert.event, allAlerts?.get(0)?.event)
         assertEquals(alert.type, allAlerts?.get(0)?.type)
     }
