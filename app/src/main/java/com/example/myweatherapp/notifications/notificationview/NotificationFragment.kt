@@ -19,11 +19,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myweatherapp.AlarmReceiver
 import com.example.myweatherapp.R
-import com.example.myweatherapp.RemoveNotificationReceiver
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
 import com.example.myweatherapp.model.MyAlert
+import com.example.myweatherapp.notifications.AlarmReceiver
+import com.example.myweatherapp.notifications.RemoveNotificationReceiver
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModelFactory
 import com.example.myweatherapp.ui.ConfirmDeleteInterface
@@ -153,7 +153,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
     }
 
     private fun cancelAlarm(alertRemove: MyAlert) {
-        val intent =Intent(requireContext(),AlarmReceiver::class.java)
+        val intent =Intent(requireContext(), AlarmReceiver::class.java)
 
         if (alarmManager==null){
             alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager

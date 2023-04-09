@@ -5,8 +5,11 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -16,6 +19,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.AddAlertDialogBinding
 import com.example.myweatherapp.model.MyAlert
+import com.example.myweatherapp.utils.Constant
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -187,6 +191,10 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                     myAlert.start=calendarFrom.timeInMillis
                      myAlert.end=calendarTo.timeInMillis
                     listner.onClickSave(myAlert)
+                if (myAlert.type=="a" && !Settings.canDrawOverlays(context)) {
+                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context?.packageName))
+                        startActivityForResult(intent,Constant.REQUEST_CODE)
+                }
                     dialog.dismiss()
                }
 

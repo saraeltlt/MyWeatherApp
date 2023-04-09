@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.myweatherapp
+package com.example.myweatherapp.notifications
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
+import com.example.myweatherapp.R
 import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.ui.MainActivity
