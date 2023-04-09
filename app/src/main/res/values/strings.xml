@@ -99,5 +99,12 @@
     <string name="dismiss">Dismiss</string>
     <string name="NoInter">No Internet Connection</string>
     <string name="NoInterDetail">can\'t get the weather status, check your internet connection</string>
+    <string name="showerRain">shower rain</string>
+    <string name="fewClouds">few clouds</string>
+    <string name="scatteredClouds">scattered clouds</string>
+    <string name="brokenClouds">broken clouds</string>
+    <string name="mist">mist</string>
+
+
 
 </resources>

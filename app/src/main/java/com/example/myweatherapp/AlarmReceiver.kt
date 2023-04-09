@@ -44,10 +44,11 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
     @SuppressLint("MissingPermission", "InvalidWakeLockTag")
     override  fun onReceive(context: Context, intent: Intent) {
         val alertId = intent.getIntExtra("alert", -1)
-        val alertEvent = intent.getStringExtra("alert2")
+        var alertEvent = intent.getStringExtra("alert2")
+           alertEvent=getEvent(context,alertEvent)
         val alertType = intent.getStringExtra("alert3")
         val alertCancelFlag =intent.getIntExtra( "removeAlertFlag", -1)
-        Log.e("SE", alertCancelFlag.toString())
+
 
         /*val alert=intent.getSerializableExtra("alert1") as MyAlert
         Log.e("SE",alert.event)*/
@@ -290,7 +291,7 @@ class RemoveAlertReceiver : BroadcastReceiver() {
         windowManager?.removeView(view)
     }
 }
-/*fun getEvent(context: Context, selectedItem: String?):String{
+fun getEvent(context: Context, selectedItem: String?):String{
     if (selectedItem== context?.getResources()?.getString(R.string.rain)){
         return "rain"
     }
@@ -334,5 +335,5 @@ class RemoveAlertReceiver : BroadcastReceiver() {
         return "mist"
     }
     return selectedItem!!
-}*/
+}
 

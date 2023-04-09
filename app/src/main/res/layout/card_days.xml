@@ -45,9 +45,9 @@
             <ImageView
 
                 android:id="@+id/image_weather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="98dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="104dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -59,6 +59,7 @@
                 android:id="@+id/text_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:gravity="left"
                 android:text="Light Snow"
                 android:textSize="16sp"

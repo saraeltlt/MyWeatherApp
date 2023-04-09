@@ -11,6 +11,11 @@
         <item>@string/thunderstorm</item>
         <item>@string/cloud</item>
         <item>@string/wind</item>
+        <item>@string/showerRain</item>
+        <item>@string/fewClouds</item>
+        <item>@string/scatteredClouds</item>
+        <item>@string/brokenClouds</item>
+        <item>@string/mist</item>
     </string-array>
     <string-array name="sound_type_array">
         <item>@string/notifications</item>

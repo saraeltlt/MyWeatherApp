@@ -82,7 +82,11 @@
     <string name="openSittings">اذهب للإعدادت</string>
     <string name="timeInterval">من فضلك اختر فترة زمنية صالحة</string>
 
-
+    <string name="showerRain">مطر خفيف</string>
+    <string name="fewClouds">سحب قليلة</string>
+    <string name="scatteredClouds">سحب متفرقة</string>
+    <string name="brokenClouds">سحب متفكرة</string>
+    <string name="mist">ضباب</string>
 
     <string name="no_aler">لا يوجد تنبيهات، الطقس صاف </string>
     <string name="connProblem"> فشل الاتصال </string>

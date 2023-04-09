@@ -123,18 +123,9 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                 id: Long
             ) {
                 val selectedItem: String = parent?.getItemAtPosition(position).toString()
-                 if (selectedItem== context?.getResources()?.getString(R.string.rain)){
-                    myAlert.event="rain"
-                }
-               else if (selectedItem== context?.getResources()?.getString(R.string.storm)){
-                    myAlert.event="storm"
-                }
-                else if (selectedItem== context?.getResources()?.getString(R.string.heat_advisory)){
-                    myAlert.event="heat advisory"
-                }
-                else if (selectedItem== context?.getResources()?.getString(R.string.heat)){
-                    myAlert.event="heat"
-                }
+
+                    myAlert.event=selectedItem
+
 
             }
 
@@ -179,7 +170,7 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                 snackbar.show()
             }
 
-            /*else if (calendarFrom.timeInMillis >=calendarTo.timeInMillis || calendarFrom.timeInMillis<calendarToday.timeInMillis){
+            else if (calendarFrom.timeInMillis >=calendarTo.timeInMillis || calendarFrom.timeInMillis<calendarToday.timeInMillis){
 
                 val snackbar =  Snackbar.make(
                     bindingDialog.root, R.string.timeInterval,
@@ -189,7 +180,7 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
 
-            }*/
+            }
 
                 else{
                     myAlert.description= bindingDialog.tvDescription.text.toString()
