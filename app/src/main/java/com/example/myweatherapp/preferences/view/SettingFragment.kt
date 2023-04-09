@@ -75,7 +75,7 @@ class SettingFragment : Fragment() {
             )} "  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null)
             snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.light_navy
+                R.color.navy
             ))
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
@@ -88,7 +88,7 @@ class SettingFragment : Fragment() {
             )}"  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null)
             snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.light_navy
+                R.color.navy
             ))
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
@@ -104,7 +104,7 @@ class SettingFragment : Fragment() {
            )} "  ,
                Snackbar.LENGTH_LONG).setAction("Action", null)
            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-               R.color.light_navy
+               R.color.navy
            ))
            snackbar.setTextColor(Color.WHITE)
            snackbar.show()
@@ -116,7 +116,7 @@ class SettingFragment : Fragment() {
                 val snackbar = Snackbar.make(binding.root,
                     R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.light_navy
+                    R.color.navy
                 ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
@@ -153,7 +153,7 @@ class SettingFragment : Fragment() {
                 val snackbar = Snackbar.make(binding.root,
                     R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.light_navy
+                    R.color.navy
                 ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
@@ -266,7 +266,7 @@ class SettingFragment : Fragment() {
                     requireContext().startActivity(intent)
                 }
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.light_navy
+                    R.color.navy
                 ))
                 snackbar.setActionTextColor(ContextCompat.getColor(requireContext(),
                     R.color.dark_orange
