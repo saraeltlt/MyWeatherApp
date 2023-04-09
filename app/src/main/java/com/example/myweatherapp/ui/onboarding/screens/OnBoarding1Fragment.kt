@@ -1,4 +1,4 @@
-package com.example.myweatherapp.onboarding.screens
+package com.example.myweatherapp.ui.onboarding.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
+import com.example.myweatherapp.model.MyPref
+import com.example.myweatherapp.utils.Preferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class OnBoarding2Fragment : Fragment() {
+class OnBoarding1Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bottomNav=requireActivity().findViewById<BottomNavigationView>(R.id.bottomNav)
@@ -26,12 +28,13 @@ class OnBoarding2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_on_boarding2, container, false)
+        val view = inflater.inflate(R.layout.fragment_on_boarding1, container, false)
         val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
-
-        val button = view.findViewById<Button>(R.id.dissmiss)
+        val myPref = MyPref()
+        Preferences.saveMyPref(myPref,requireContext())
+        val button = view.findViewById<Button>(R.id.next)
         button.setOnClickListener {
-            viewPager?.currentItem=2
+            viewPager?.currentItem=1
 
         }
         return view

@@ -1,4 +1,4 @@
-package com.example.myweatherapp.onboarding
+package com.example.myweatherapp.ui.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myweatherapp.R
-import com.example.myweatherapp.onboarding.screens.OnBoarding1Fragment
-import com.example.myweatherapp.onboarding.screens.OnBoarding2Fragment
-import com.example.myweatherapp.onboarding.screens.OnBoarding3Fragment
+import com.example.myweatherapp.ui.onboarding.screens.OnBoarding1Fragment
+import com.example.myweatherapp.ui.onboarding.screens.OnBoarding2Fragment
+import com.example.myweatherapp.ui.onboarding.screens.OnBoarding3Fragment
 
 
 class ViewPagerFragment : Fragment() {

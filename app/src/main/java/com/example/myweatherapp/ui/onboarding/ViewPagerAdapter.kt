@@ -1,4 +1,4 @@
-package com.example.myweatherapp.onboarding
+package com.example.myweatherapp.ui.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
