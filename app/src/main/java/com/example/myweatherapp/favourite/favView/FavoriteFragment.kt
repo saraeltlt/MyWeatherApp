@@ -177,7 +177,10 @@ class FavoriteFragment : Fragment(),OnFavClickListner, ConfirmDeleteInterface {
     override fun onClick(confirmDelete: Boolean) {
         if (confirmDelete){
             viewModel.deleteFav(forecastRemove!!)
-            Toast.makeText(requireContext(),R.string.removedFromFavorites,Toast.LENGTH_LONG).show()
+            val snackbar = Snackbar.make(binding.root, R.string.removedFromFavorites, Snackbar.LENGTH_SHORT)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_toast))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
         }
     }
     private fun requestPermission() {

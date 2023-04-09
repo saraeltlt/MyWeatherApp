@@ -31,7 +31,8 @@
     <string name="thunderstorm">Thunderstorm</string>
     <string name="sound_type">Sound Type</string>
     <string name="add_alert">Add Alert / Notification: </string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
@@ -107,6 +108,7 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="display">Display over apps permission denied</string>
+    <string name="checkUnit">Check your internet connection to apply the changes</string>
 
 
 </resources>

@@ -103,4 +103,6 @@
     <string name="NoInterDetail">لا يمكن الحصول على حالة الطقس، يرجى التحقق من اتصال الإنترنت</string>
     <string name="off">شغّل</string>
     <string name="on">أطفئ</string>
+    <string name="display">تم رفض إذن العرض امام التطبيقات</string>
+    <string name="checkUnit">تحقق من اتصالك بالإنترنت لتطبيق التغييرات</string>
 </resources>

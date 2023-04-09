@@ -69,45 +69,83 @@ class SettingFragment : Fragment() {
         }
         //unites
         binding.btnMetric.setOnClickListener {
-            Constant.myPref.appUnit="metric"
-            val snackbar=Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
-                R.string.metric
-            )} "  ,
-                Snackbar.LENGTH_LONG).setAction("Action", null)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.light_toast
-            ))
+            var snackbar :Snackbar?=null
+                if (!NetworkManager.isInternetConnected()) {
+               snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+            }
+            else{
+            Constant.myPref.appUnit = "metric"
+             snackbar = Snackbar.make(
+                binding.root,
+                "${requireContext().getResources().getString(R.string.changeUnit)} \n ${
+                    requireContext().getResources().getString(
+                        R.string.metric
+                    )
+                } ",
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null)
+
+        }
+            snackbar.view.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.light_toast
+                )
+            )
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
 
         }
+
         binding.btnStandard.setOnClickListener {
-            Constant.myPref.appUnit="standard"
-            val snackbar= Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
-                R.string.standard
-            )}"  ,
-                Snackbar.LENGTH_LONG).setAction("Action", null)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+            var snackbar :Snackbar?=null
+            if (!NetworkManager.isInternetConnected()) {
+                snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+            }
+            else {
+                Constant.myPref.appUnit = "standard"
+                 snackbar = Snackbar.make(
+                    binding.root,
+                    "${requireContext().getResources().getString(R.string.changeUnit)} \n ${
+                        requireContext().getResources().getString(
+                            R.string.standard
+                        )
+                    }",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+            }
+            snackbar!!.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
                 R.color.light_toast
             ))
-            snackbar.setTextColor(Color.WHITE)
-            snackbar.show()
+            snackbar!!.setTextColor(Color.WHITE)
+            snackbar!!.show()
 
 
         }
        binding.btnImperia.setOnClickListener {
-            Constant.myPref.appUnit="imperial"
+           var snackbar :Snackbar?=null
+           if (!NetworkManager.isInternetConnected()) {
+               snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+           }
+           else {
+               Constant.myPref.appUnit = "imperial"
 
 
-           val snackbar=Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
-               R.string.imperial
-           )} "  ,
-               Snackbar.LENGTH_LONG).setAction("Action", null)
-           snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+               snackbar = Snackbar.make(
+                   binding.root,
+                   "${requireContext().getResources().getString(R.string.changeUnit)} \n ${
+                       requireContext().getResources().getString(
+                           R.string.imperial
+                       )
+                   } ",
+                   Snackbar.LENGTH_LONG
+               ).setAction("Action", null)
+           }
+           snackbar!!.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
                R.color.light_toast
            ))
-           snackbar.setTextColor(Color.WHITE)
-           snackbar.show()
+           snackbar!!.setTextColor(Color.WHITE)
+           snackbar!!.show()
         }
 
         //location
