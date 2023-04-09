@@ -12,6 +12,36 @@
         android:layout_height="match_parent"
         android:background="?android:attr/colorPrimary">
 
+        <View
+            android:id="@+id/obaqueBG3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/navy"
+            android:elevation="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchNoti"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:checked="true"
+            android:elevation="20dp"
+            android:textColor="@color/dark_orange"
+            android:textOff="off"
+            android:textOn="on"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:showText="true"
+            app:track="@drawable/track" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/notif_fab"
             android:layout_width="wrap_content"
@@ -56,12 +86,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notif_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="64dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/switchNoti" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
