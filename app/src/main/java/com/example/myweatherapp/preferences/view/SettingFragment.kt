@@ -72,6 +72,7 @@ class SettingFragment : Fragment() {
             var snackbar :Snackbar?=null
                 if (!NetworkManager.isInternetConnected()) {
                snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+                    initialChecks()
             }
             else{
             Constant.myPref.appUnit = "metric"
@@ -101,6 +102,7 @@ class SettingFragment : Fragment() {
             var snackbar :Snackbar?=null
             if (!NetworkManager.isInternetConnected()) {
                 snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+                initialChecks()
             }
             else {
                 Constant.myPref.appUnit = "standard"
@@ -126,6 +128,7 @@ class SettingFragment : Fragment() {
            var snackbar :Snackbar?=null
            if (!NetworkManager.isInternetConnected()) {
                snackbar = Snackbar.make(binding.root, R.string.checkUnit, Snackbar.LENGTH_LONG)
+               initialChecks()
            }
            else {
                Constant.myPref.appUnit = "imperial"
