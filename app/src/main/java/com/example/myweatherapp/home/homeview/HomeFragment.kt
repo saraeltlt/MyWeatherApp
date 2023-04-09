@@ -191,7 +191,8 @@ class HomeFragment : Fragment() {
 
 
             binding.textDate.text = currentDate.toString()
-            loadImage(binding.imageDesc, it.current.weather[0].icon)
+            //loadImage(binding.imageDesc, it.current.weather[0].icon)
+        binding.imageDesc.setImageResource(MyIcons.mapIcon[it.current.weather[0].icon]!!)
             binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
 
         //units

@@ -55,150 +55,150 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
         var i = Intent(context, MainActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         var pendingIntent: PendingIntent = PendingIntent.getActivity(context, alertId, i, 0)
-                if (NetworkManager.isInternetConnected()) {
+        if ( Constant.myPref.alarmFlag==true) {
+            if (NetworkManager.isInternetConnected()) {
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        var result = viewModel.getAlertRemote()
-                        viewModel.stateFlow.collectLatest { result ->
-                            when (result) {
-                                is ApiState.Loading -> {
-                                    Log.e("SE", "loading...")
-                                }
-                                is ApiState.Failure -> {
-                                    var builder = NotificationCompat.Builder(context, "sara")
-                                        .setSmallIcon(R.drawable.rain)
-                                        .setLargeIcon(
-                                            BitmapFactory.decodeResource(
-                                                context.getResources(),
-                                                R.drawable.server_error
-                                            )
+                CoroutineScope(Dispatchers.IO).launch {
+                    var result = viewModel.getAlertRemote()
+                    viewModel.stateFlow.collectLatest { result ->
+                        when (result) {
+                            is ApiState.Loading -> {
+                                Log.e("SE", "loading...")
+                            }
+                            is ApiState.Failure -> {
+                                var builder = NotificationCompat.Builder(context, "sara")
+                                    .setSmallIcon(R.drawable.rain)
+                                    .setLargeIcon(
+                                        BitmapFactory.decodeResource(
+                                            context.getResources(),
+                                            R.drawable.server_error
                                         )
-                                        .setContentTitle(
-                                            context.getResources().getString(R.string.connProblem)
-                                        )
-                                        .setContentText(
-                                            context.getResources()
-                                                .getString(R.string.connProblemDesc)
-                                        )
-                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                        .setAutoCancel(true)
-                                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setContentIntent(pendingIntent)
-                                    val notificationManeger =
-                                        NotificationManagerCompat.from(context)
-                                    notificationManeger.notify(alertId, builder.build())
-                                }
-                                is ApiState.Succcess -> {
-                                    if (alertType == "n") {
-                                        //empty list
-                                        if (result.data.alerts.isEmpty()) {
-                                            var builder =
-                                                NotificationCompat.Builder(context, "sara")
-                                                    .setSmallIcon(R.drawable.rain)
-                                                    .setLargeIcon(
-                                                        BitmapFactory.decodeResource(
-                                                            context.getResources(),
-                                                            R.drawable.rain
-                                                        )
+                                    )
+                                    .setContentTitle(
+                                        context.getResources().getString(R.string.connProblem)
+                                    )
+                                    .setContentText(
+                                        context.getResources()
+                                            .getString(R.string.connProblemDesc)
+                                    )
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setAutoCancel(true)
+                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                    .setContentIntent(pendingIntent)
+                                val notificationManeger =
+                                    NotificationManagerCompat.from(context)
+                                notificationManeger.notify(alertId, builder.build())
+                            }
+                            is ApiState.Succcess -> {
+                                if (alertType == "n") {
+                                    //empty list
+                                    if (result.data.alerts.isEmpty()) {
+                                        var builder =
+                                            NotificationCompat.Builder(context, "sara")
+                                                .setSmallIcon(R.drawable.rain)
+                                                .setLargeIcon(
+                                                    BitmapFactory.decodeResource(
+                                                        context.getResources(),
+                                                        R.drawable.rain
                                                     )
-                                                    .setContentTitle(alertEvent)
-                                                    .setContentText(
-                                                        context.getResources()
-                                                            .getString(R.string.no_aler)
-                                                    )
-                                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                                    .setAutoCancel(true)
-                                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                                    .setContentIntent(pendingIntent)
-                                            val notificationManeger =
-                                                NotificationManagerCompat.from(context)
-                                            notificationManeger.notify(alertId, builder.build())
-                                        }
-                                        //same alert
-                                        else if (result.data.alerts[0].event == alertEvent) {
-                                            var builder =
-                                                NotificationCompat.Builder(context, "sara")
-                                                    .setSmallIcon(R.drawable.rain)
-                                                    .setLargeIcon(
-                                                        BitmapFactory.decodeResource(
-                                                            context.getResources(),
-                                                            R.drawable.rain
-                                                        )
-                                                    )
-                                                    .setContentTitle(alertEvent)
-                                                    .setContentText(
-                                                        alertEvent + context.getResources()
-                                                            .getString(R.string.alert_detect)
-                                                    )
-                                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                                    .setAutoCancel(true)
-                                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                                    .setContentIntent(pendingIntent)
-                                            val notificationManeger =
-                                                NotificationManagerCompat.from(context)
-                                            notificationManeger.notify(alertId, builder.build())
-                                        }
-
-                                        //different alert
-                                        else {
-                                            var builder =
-                                                NotificationCompat.Builder(context, "sara")
-                                                    .setSmallIcon(R.drawable.rain)
-                                                    //.setLargeIcon()
-                                                    .setContentTitle(alertType)
-                                                    .setContentText(
-                                                        context.getResources()
-                                                            .getString(R.string.no) + alertType + context.getResources()
-                                                            .getString(R.string.alert_but) + result.data.current.weather[0].description + context.getResources()
-                                                            .getString(R.string.alert_detect)
-                                                    )
-                                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                                    .setAutoCancel(true)
-                                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                                    .setContentIntent(pendingIntent)
-                                            val notificationManeger =
-                                                NotificationManagerCompat.from(context)
-                                            notificationManeger.notify(alertId, builder.build())
-                                        }
+                                                )
+                                                .setContentTitle(alertEvent)
+                                                .setContentText(
+                                                    context.getResources()
+                                                        .getString(R.string.no_aler)
+                                                )
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setAutoCancel(true)
+                                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                                .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
                                     }
-                                    else if(alertType=="a"){
-                                        alertFire(context, result, alertEvent, alertType)
+                                    //same alert
+                                    else if (result.data.alerts[0].event == alertEvent) {
+                                        var builder =
+                                            NotificationCompat.Builder(context, "sara")
+                                                .setSmallIcon(R.drawable.rain)
+                                                .setLargeIcon(
+                                                    BitmapFactory.decodeResource(
+                                                        context.getResources(),
+                                                        R.drawable.rain
+                                                    )
+                                                )
+                                                .setContentTitle(alertEvent)
+                                                .setContentText(
+                                                    alertEvent + context.getResources()
+                                                        .getString(R.string.alert_detect)
+                                                )
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setAutoCancel(true)
+                                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                                .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
                                     }
 
+                                    //different alert
+                                    else {
+                                        var builder =
+                                            NotificationCompat.Builder(context, "sara")
+                                                .setSmallIcon(R.drawable.rain)
+                                                //.setLargeIcon()
+                                                .setContentTitle(alertType)
+                                                .setContentText(
+                                                    context.getResources()
+                                                        .getString(R.string.no) + alertType + context.getResources()
+                                                        .getString(R.string.alert_but) + result.data.current.weather[0].description + context.getResources()
+                                                        .getString(R.string.alert_detect)
+                                                )
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setAutoCancel(true)
+                                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                                .setContentIntent(pendingIntent)
+                                        val notificationManeger =
+                                            NotificationManagerCompat.from(context)
+                                        notificationManeger.notify(alertId, builder.build())
+                                    }
+                                } else if (alertType == "a") {
+                                    alertFire(context, result, alertEvent, alertType)
                                 }
+
                             }
                         }
-
-
                     }
 
 
-            }
-                else {
-                      var builder = NotificationCompat.Builder(context, "sara")
-                          .setSmallIcon(R.drawable.rain)
-                          .setLargeIcon(
-                              BitmapFactory.decodeResource(
-                                  context.getResources(),
-                                  R.drawable.wifi
-                              )
-                          )
-                          .setContentTitle(context.getResources().getString(R.string.NoInter))
-                          .setContentText(context.getResources().getString(R.string.NoInterDetail))
-                          .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                          .setAutoCancel(true)
-                          .setDefaults(NotificationCompat.DEFAULT_ALL)
-                          .setPriority(NotificationCompat.PRIORITY_HIGH)
-                          .setContentIntent(pendingIntent)
-                      val notificationManeger = NotificationManagerCompat.from(context)
-                      notificationManeger.notify(alertId, builder.build())
-
-
                 }
+
+
+            } else {
+                var builder = NotificationCompat.Builder(context, "sara")
+                    .setSmallIcon(R.drawable.rain)
+                    .setLargeIcon(
+                        BitmapFactory.decodeResource(
+                            context.getResources(),
+                            R.drawable.wifi
+                        )
+                    )
+                    .setContentTitle(context.getResources().getString(R.string.NoInter))
+                    .setContentText(context.getResources().getString(R.string.NoInterDetail))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setContentIntent(pendingIntent)
+                val notificationManeger = NotificationManagerCompat.from(context)
+                notificationManeger.notify(alertId, builder.build())
+
+
+            }
+        }
 
 
 
@@ -290,4 +290,49 @@ class RemoveAlertReceiver : BroadcastReceiver() {
         windowManager?.removeView(view)
     }
 }
+/*fun getEvent(context: Context, selectedItem: String?):String{
+    if (selectedItem== context?.getResources()?.getString(R.string.rain)){
+        return "rain"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.storm)){
+        return "storm"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.heat_advisory)){
+        return "heat advisory"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.heat)){
+        return "heat"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.snow)){
+        return "snow"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.fog)){
+        return "fog"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.thunderstorm)){
+        return "thunderstorm"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.cloud)){
+        return "cloud"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.wind)){
+        return "wind"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.showerRain)){
+        return "shower rain"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.fewClouds)){
+        return "few clouds"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.scatteredClouds)){
+        return "scattered Clouds"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.brokenClouds)){
+        return "broken Clouds"
+    }
+    else if (selectedItem== context?.getResources()?.getString(R.string.mist)){
+        return "mist"
+    }
+    return selectedItem!!
+}*/
 

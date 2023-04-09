@@ -31,6 +31,7 @@ import com.example.myweatherapp.ui.ConfirmDialogFragment
 import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.utils.Permissions
+import com.example.myweatherapp.utils.Preferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -60,6 +61,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
         bottomNav.visibility= View.VISIBLE
         val viewLine=requireActivity().findViewById<View>(R.id.viewLine)
         viewLine.visibility= View.VISIBLE
+        binding.obaqueBG3.visibility= View.GONE
     }
 
     override fun onCreateView(
@@ -96,7 +98,19 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
             showAlertDialog()
         }
 
+        binding.switchNoti.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Constant.myPref.alarmFlag=true
+                Preferences.saveMyPref(Constant.myPref,requireContext())
+                binding.obaqueBG3.visibility= View.GONE
 
+            }
+            else {
+                Constant.myPref.alarmFlag=false
+                Preferences.saveMyPref(Constant.myPref,requireContext())
+                binding.obaqueBG3.visibility= View.VISIBLE
+            }
+        }
 
         return view
     }

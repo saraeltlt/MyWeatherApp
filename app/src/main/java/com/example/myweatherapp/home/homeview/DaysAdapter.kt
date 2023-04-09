@@ -14,6 +14,7 @@ import com.example.myweatherapp.databinding.CardDaysBinding
 import com.example.myweatherapp.model.Daily
 import com.example.myweatherapp.model.DailyDiffUtil
 import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.MyIcons
 import java.lang.Math.ceil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,6 +56,7 @@ class DaysAdapter (
         }
         holder.binding.textWeather.text= day.weather[0].description
         holder.binding.textDay.text=getCurrentDay(day.dt)
+        holder.binding.imageWeather.setImageResource(MyIcons.mapIcon[day.weather.get(0).icon]!!)
     }
 
     class ViewHolder(val binding: CardDaysBinding) : RecyclerView.ViewHolder(binding.root)

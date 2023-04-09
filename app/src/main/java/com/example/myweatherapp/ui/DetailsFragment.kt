@@ -1,11 +1,10 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.RemoteException
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,19 +18,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myweatherapp.DetailsFragmentArgs
+import com.example.myweatherapp.DetailsFragmentDirections
+import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentDetailsBinding
-import com.example.myweatherapp.databinding.FragmentHomeBinding
-import com.example.myweatherapp.databinding.FragmentSettingBinding
 import com.example.myweatherapp.home.homeview.DaysAdapter
 import com.example.myweatherapp.home.homeview.TimeAdapter
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModel
 import com.example.myweatherapp.home.homeviewmodel.HomeViewModelFactory
 import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
-import com.example.myweatherapp.utils.Constant
-import com.example.myweatherapp.utils.MyApp
-import com.example.myweatherapp.utils.NetworkManager
-import com.example.myweatherapp.utils.loadImage
+import com.example.myweatherapp.utils.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
@@ -60,7 +57,9 @@ class DetailsFragment : Fragment() {
         if (!NetworkManager.isInternetConnected()){
             setUI(args.currentWeather)
             val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                R.color.light_navy
+            ))
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
 
@@ -134,7 +133,8 @@ fun setUI(it:Forecast){
     }
 
     binding.textDate.text = currentDate.toString()
-    loadImage(binding.imageDesc, it.current.weather[0].icon)
+    //loadImage(binding.imageDesc, it.current.weather[0].icon)
+    binding.imageDesc.setImageResource(MyIcons.mapIcon[it.current.weather[0].icon]!!)
     binding.textTempNum.text = ceil(it.current.temp).toInt().toString()
     binding.textTempUnits.text = "°C"   //if Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
     binding.textDesc.text = it.current.weather[0].description

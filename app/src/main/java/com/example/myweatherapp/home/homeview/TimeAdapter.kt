@@ -13,6 +13,7 @@ import com.example.myweatherapp.model.Hourly
 
 import com.example.myweatherapp.favourite.favView.HoursDiffUtil
 import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.MyIcons
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,6 +45,7 @@ var dtToday:Int
         }
 
         holder.binding.textTime.text=getCurrentTime(hour.dt)
+        holder.binding.imageTime.setImageResource(MyIcons.mapIcon[hour.weather.get(0).icon]!!)
     }
 
     class ViewHolder(val binding: CardTimesBinding) : RecyclerView.ViewHolder(binding.root)
