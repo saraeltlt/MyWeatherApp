@@ -7,12 +7,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,6 +36,7 @@ import com.example.myweatherapp.utils.MyApp
 import com.example.myweatherapp.utils.Permissions
 import com.example.myweatherapp.utils.Preferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.*
@@ -148,8 +151,10 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
     override fun onClick(confirmDelete: Boolean) {
         if (confirmDelete) {
            viewModel.deleteAlert(alertRemove!!)
-            Toast.makeText(requireContext(),R.string.removedFromAlerts, Toast.LENGTH_LONG).show()
-            cancelAlarm(alertRemove!!)
+            val snackbar = Snackbar.make(binding.root, R.string.removedFromAlerts, Snackbar.LENGTH_SHORT)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_toast))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
         }
     }
 
@@ -191,14 +196,18 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
        days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
         alarmManager=   requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent =Intent(requireContext(),AlarmReceiver::class.java)
-
+        // intent.putExtra("alert",myAlert)
 
         for (day in 0..days) {
            var reqCode=myAlert.myId+day.toInt()
             intent.putExtra("alert",reqCode)
             intent.putExtra("alert2",myAlert.event)
             intent.putExtra("alert3",myAlert.type)
-           // intent.putExtra("alert3",myAlert)
+            if (day ==days){
+                intent.putExtra("remove",myAlert.myId)
+            }
+
+
             pendingIntent=PendingIntent.getBroadcast(requireContext(),reqCode,intent,0)
             alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, (myAlert.start+(day*interval)), pendingIntent)
             if (myAlert.type=="n") {
@@ -232,6 +241,9 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
     private fun removeNotifcationAfter(myAlert: MyAlert,i:Long) {
         val removeNotificationIntent = Intent(requireContext(), RemoveNotificationReceiver::class.java)
         removeNotificationIntent.putExtra("notificationId",myAlert.myId+i.toInt())
+        if (i ==days){
+            removeNotificationIntent.putExtra("remove",myAlert.myId)
+        }
 
         val removeNotificationPendingIntent = PendingIntent.getBroadcast(
             requireContext(),

@@ -1,5 +1,8 @@
 package com.example.myweatherapp.utils
 
+import android.media.MediaPlayer
+import android.view.View
+import android.view.WindowManager
 import com.example.myweatherapp.R
 import com.example.myweatherapp.model.MyPref
 
@@ -8,6 +11,9 @@ object Constant {
     const val LOCATION_PERMISSION_REQUEST_CODE = 2000
     const val REQUEST_CODE = 4004
     var myPref = MyPref()
+    var windowManager: WindowManager?=null
+    var mediaPlayer: MediaPlayer?=null
+    val view: View?=null
 
 }
 class MyIcons{

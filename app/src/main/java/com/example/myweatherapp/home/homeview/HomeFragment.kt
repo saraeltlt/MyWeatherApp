@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
 
         Constant.myPref=Preferences.getMyPref(requireContext())
         myLocation = Constant.myPref.myLocation
-        if(!Permissions.checkPremission(requireContext()) || myLocation==LatLng(0.0,0.0)){
+        if(!Permissions.checkPremission(requireContext()) /*|| myLocation==LatLng(0.0,0.0)*/){
             hideUI()
             binding.txtGps.visibility=View.VISIBLE
             binding.animationView.visibility=View.VISIBLE
@@ -119,8 +119,8 @@ class HomeFragment : Fragment() {
                 }
                 else {
                     setUiData(it)
-                   val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
-                   snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                   val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_LONG)
+                   snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_toast))
                    snackbar.setTextColor(Color.WHITE)
                    snackbar.show()
                }

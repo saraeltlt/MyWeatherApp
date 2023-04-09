@@ -75,7 +75,7 @@ class SettingFragment : Fragment() {
             )} "  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null)
             snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.navy
+                R.color.light_toast
             ))
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
@@ -88,7 +88,7 @@ class SettingFragment : Fragment() {
             )}"  ,
                 Snackbar.LENGTH_LONG).setAction("Action", null)
             snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.navy
+                R.color.light_toast
             ))
             snackbar.setTextColor(Color.WHITE)
             snackbar.show()
@@ -104,7 +104,7 @@ class SettingFragment : Fragment() {
            )} "  ,
                Snackbar.LENGTH_LONG).setAction("Action", null)
            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-               R.color.navy
+               R.color.light_toast
            ))
            snackbar.setTextColor(Color.WHITE)
            snackbar.show()
@@ -114,9 +114,9 @@ class SettingFragment : Fragment() {
          binding.btnGps.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
                 val snackbar = Snackbar.make(binding.root,
-                    R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                    R.string.internetDisconnected, Snackbar.LENGTH_INDEFINITE)
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.navy
+                    R.color.light_toast
                 ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
@@ -151,9 +151,9 @@ class SettingFragment : Fragment() {
         binding.btnMap.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
                 val snackbar = Snackbar.make(binding.root,
-                    R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                    R.string.internetDisconnected, Snackbar.LENGTH_INDEFINITE)
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.navy
+                    R.color.light_toast
                 ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
@@ -266,7 +266,7 @@ class SettingFragment : Fragment() {
                     requireContext().startActivity(intent)
                 }
                 snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.navy
+                    R.color.light_toast
                 ))
                 snackbar.setActionTextColor(ContextCompat.getColor(requireContext(),
                     R.color.dark_orange

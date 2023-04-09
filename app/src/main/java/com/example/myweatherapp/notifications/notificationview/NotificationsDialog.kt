@@ -185,7 +185,7 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                 snackbar.show()
 
             }
-          if (myAlert.type=="a" && !Settings.canDrawOverlays(context)) {
+         else  if (myAlert.type=="a" && !Settings.canDrawOverlays(context)) {
 
 
                 val snackbar = Snackbar.make(bindingDialog.root, R.string.display, Snackbar.LENGTH_LONG)
@@ -193,7 +193,7 @@ class NotificationsDialog(private val contextFrag: Context, val listner : SaveAl
                     val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context?.packageName))
                     startActivityForResult(intent,Constant.REQUEST_CODE)
                 }
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_toast))
                 snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.dark_orange))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()

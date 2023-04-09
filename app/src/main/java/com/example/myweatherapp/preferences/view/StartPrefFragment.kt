@@ -150,7 +150,13 @@ class StartPrefFragment : Fragment() {
 
        binding.btnSavePreferences.setOnClickListener {
            if (binding.radioGroupLang.getCheckedRadioButtonId() == -1 || binding.radioGroupLoc.getCheckedRadioButtonId()==-1)
-           {
+           {val snackbar = Snackbar.make(binding.root,
+               R.string.select_all, Snackbar.LENGTH_LONG)
+               snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                   R.color.navy
+               ))
+               snackbar.setTextColor(Color.WHITE)
+               snackbar.show()
                Snackbar.make(view, R.string.select_all,
                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
            }

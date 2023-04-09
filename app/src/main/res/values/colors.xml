@@ -3,6 +3,7 @@
 
     <color name="navy">#032a4d</color>
     <color name="light_navy">#023461</color>
+    <color name="light_toast">#155A98</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue">#CAE1EF</color>
     <color name="light_xl_blue">#c1e8ff</color>

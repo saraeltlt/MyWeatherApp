@@ -6,11 +6,13 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.WINDOW_SERVICE
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -35,9 +37,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-var windowManager:WindowManager?=null
-var mediaPlayer:MediaPlayer?=null
-val view: View?=null
 class AlarmReceiver : WakefulBroadcastReceiver() {
     private val viewModel: NotificationViewModel by lazy { NotificationViewModel() }
     val myLocation = Constant.myPref.myLocation
@@ -49,6 +48,9 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
         var alertEvent = intent.getStringExtra("alert2")
            alertEvent=getEvent(context,alertEvent)
         val alertType = intent.getStringExtra("alert3")
+        val alertRemove = intent.getIntExtra("remove", -1)
+
+
 
 
 
@@ -199,6 +201,12 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
 
             }
         }
+        if (alertEvent=="a"&&alertRemove!=-1){
+            var remove=MyAlert("",0,0,"","",alertRemove)
+            viewModel.deleteAlert(remove)
+        }
+
+
 
 
 
@@ -240,7 +248,8 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
             textdetails.text=context.getResources().getString(R.string.NoInterDetail)
         }
 
-
+        val windowManager=context.getSystemService(WINDOW_SERVICE) as WindowManager
+        val mediaPlayer=MediaPlayer.create(context, R.raw.alarm)
 
             // set the window parameters
             val windowParams = WindowManager.LayoutParams(
@@ -256,10 +265,12 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
             )
             windowParams.gravity = Gravity.TOP
 
+
         withContext(Dispatchers.Main) {
             windowManager?.addView(view, windowParams)
             view.visibility = View.VISIBLE
         }
+
 
 
             mediaPlayer?.start()
@@ -268,7 +279,7 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
 
         dismissBtn.setOnClickListener {
             mediaPlayer?.release()
-            windowManager?.removeView(view)
+            windowManager.removeView(view)
         }
 
 
@@ -276,16 +287,25 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
 
 }
 class RemoveNotificationReceiver : BroadcastReceiver() {
+    private val viewModel: NotificationViewModel by lazy { NotificationViewModel() }
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getIntExtra("notificationId", -1)
         val  notificationManeger = NotificationManagerCompat.from(context)
         notificationManeger.cancel(notificationId)
+
+        val alertRemove = intent.getIntExtra("remove", -1)
+        if (alertRemove!=-1){
+            var remove=MyAlert("",0,0,"","",alertRemove)
+            viewModel.deleteAlert(remove)
+
+        }
     }
+
 }
 class RemoveAlertReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        mediaPlayer?.release()
-        windowManager?.removeView(view)
+        //mediaPlayer?.release()
+       // windowManager?.removeView(view)
     }
 }
 fun getEvent(context: Context, selectedItem: String?):String{

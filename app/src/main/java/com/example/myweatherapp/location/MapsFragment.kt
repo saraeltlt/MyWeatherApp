@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -20,6 +21,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -27,6 +29,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentMapsBinding
 import com.example.myweatherapp.favourite.favView.FavoriteFragmentDirections
 import com.example.myweatherapp.utils.Constant
+import com.example.myweatherapp.utils.NetworkManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
@@ -80,21 +84,32 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
 
         binding.button2.setOnClickListener {
-            if (destination == "fav") {
-                val action =
-                    MapsFragmentDirections.actionMapsFragmentToFavoriteFragment(myLocation)
-                findNavController().navigate(action)
-            } else if (args.from == "start") {
-                val action =
-                    MapsFragmentDirections.actionMapsFragmentToStartPrefFragment(myLocation)
-                findNavController().navigate(action)
-            }else if (args.from=="sittings"){
-                val action = MapsFragmentDirections.actionMapsFragmentToSettingFragment(myLocation)
-                findNavController().navigate(action)
+            if (NetworkManager.isInternetConnected()) {
+                if (destination == "fav") {
+                    val action =
+                        MapsFragmentDirections.actionMapsFragmentToFavoriteFragment(myLocation)
+                    findNavController().navigate(action)
+                } else if (args.from == "start") {
+                    val action =
+                        MapsFragmentDirections.actionMapsFragmentToStartPrefFragment(myLocation)
+                    findNavController().navigate(action)
+                } else if (args.from == "sittings") {
+                    val action =
+                        MapsFragmentDirections.actionMapsFragmentToSettingFragment(myLocation)
+                    findNavController().navigate(action)
+                }
+
             }
-
+            else{
+                val snackbar = Snackbar.make(binding.root, R.string.internetDisconnected, Snackbar.LENGTH_LONG)
+                snackbar.view.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(),
+                    R.color.light_toast
+                ))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+            }
         }
-
 
         return binding.root
     }
@@ -119,21 +134,33 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
     }
 
     private fun goToSearchLocation() {
-        val searchLocation = binding.txtAddress.text.toString()
-
-        val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
-        var list: List<Address> = ArrayList()
-        try {
-            list = geocoder.getFromLocationName(searchLocation, 1) as List<Address>
-        } catch (e: IOException) {
+        if (!NetworkManager.isInternetConnected()) {
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnected, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(
+                ContextCompat.getColor(requireContext(),
+                    R.color.light_toast
+                ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
         }
-        if (list.isNotEmpty()) {
-            val update = CameraUpdateFactory.newLatLngZoom(
-                LatLng(list[0].latitude, list[0].longitude),
-                DEFAULT_ZOOM
-            )
-            mMap?.animateCamera(update)
+        else {
+            val searchLocation = binding.txtAddress.text.toString()
 
+            val geocoder =
+                Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
+            var list: List<Address> = ArrayList()
+            try {
+                list = geocoder.getFromLocationName(searchLocation, 1) as List<Address>
+            } catch (e: IOException) {
+            }
+            if (list.isNotEmpty()) {
+                val update = CameraUpdateFactory.newLatLngZoom(
+                    LatLng(list[0].latitude, list[0].longitude),
+                    DEFAULT_ZOOM
+                )
+                mMap?.animateCamera(update)
+
+            }
         }
 
     }
@@ -152,57 +179,99 @@ class MapsFragment : Fragment(), OnMapReadyCallback ,  GoogleMap.OnCameraIdleLis
 
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
-        fusedClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        try {
-            val location = fusedClient!!.lastLocation
-            location.addOnCompleteListener {
+        if (!NetworkManager.isInternetConnected()) {
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnected, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(
+                ContextCompat.getColor(requireContext(),
+                    R.color.light_toast
+                ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
+        }
+        else {
+            fusedClient = LocationServices.getFusedLocationProviderClient(requireContext())
+            try {
+                val location = fusedClient!!.lastLocation
+                location.addOnCompleteListener {
 
                     val currentlocation = it.result as Location?
                     if (currentlocation != null) {
-                        mMap!!.moveCamera(CameraUpdateFactory.
-                        newLatLngZoom( LatLng(currentlocation.latitude, currentlocation.longitude),
-                            DEFAULT_ZOOM))
+                        mMap!!.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(currentlocation.latitude, currentlocation.longitude),
+                                DEFAULT_ZOOM
+                            )
+                        )
                     }
 
+                }
+
+            } catch (e: Exception) {
+                Log.e("error", e.toString())
+
             }
-
-        } catch (e: Exception) {
-            Log.e("error", e.toString())
-
         }
 
     }
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
-
-        binding.map.onResume()
-        mMap = p0
-        mMap!!.setMyLocationEnabled(true)
-        mMap!!.setOnCameraIdleListener(this)
-        getCurrentLocation()
+        if (!NetworkManager.isInternetConnected()) {
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnected, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(
+                ContextCompat.getColor(requireContext(),
+                    R.color.light_toast
+                ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
+        }
+        else {
+            binding.map.onResume()
+            mMap = p0
+            mMap!!.setMyLocationEnabled(true)
+            mMap!!.setOnCameraIdleListener(this)
+            getCurrentLocation()
+        }
     }
 
     override fun onCameraIdle() {
-        var addresses: List<Address>? = null
-        val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
-        try {
-            addresses = geocoder.getFromLocation(
-                mMap!!.cameraPosition.target.latitude,
-                mMap!!.cameraPosition.target.longitude,
-                1
-            )
-            myLocation = LatLng(
-                mMap!!.cameraPosition.target.latitude,
-                mMap!!.cameraPosition.target.longitude
-            )
-            binding.txtAddress.text.clear()
-            binding.txtAddress.hint =
-                addresses?.get(0)?.subAdminArea + " - " +    addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
-        } catch (e: java.lang.IndexOutOfBoundsException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        if (!NetworkManager.isInternetConnected()) {
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnected, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(
+                ContextCompat.getColor(requireContext(),
+                    R.color.light_toast
+                ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
+        }
+        else {
+            var addresses: List<Address>? = null
+            val geocoder =
+                Geocoder(requireContext(), Locale.forLanguageTag(Constant.myPref.appLanguage))
+            try {
+                addresses = geocoder.getFromLocation(
+                    mMap!!.cameraPosition.target.latitude,
+                    mMap!!.cameraPosition.target.longitude,
+                    1
+                )
+                myLocation = LatLng(
+                    mMap!!.cameraPosition.target.latitude,
+                    mMap!!.cameraPosition.target.longitude
+                )
+                binding.txtAddress.text.clear()
+                if ( addresses?.get(0)?.subAdminArea != null) {
+                    binding.txtAddress.hint =
+                        addresses?.get(0)?.subAdminArea + " - " + addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+                }else{
+                    binding.txtAddress.hint =
+                addresses?.get(0)?.adminArea + " - " + addresses?.get(0)?.countryName
+
+                }
+            } catch (e: java.lang.IndexOutOfBoundsException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 

@@ -43,24 +43,29 @@ class DetailsFragment : Fragment() {
        var saveFavLocation:LatLng= LatLng(0.0,0.0)
    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (!NetworkManager.isInternetConnected()){
+            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                R.color.light_toast
+            ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
+
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_details,container,false) as FragmentDetailsBinding
         binding.lifecycleOwner=this
-        val view = binding.root
+
         val args by navArgs<DetailsFragmentArgs>()
 
         if (!NetworkManager.isInternetConnected()){
             setUI(args.currentWeather)
-            val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.light_navy
-            ))
-            snackbar.setTextColor(Color.WHITE)
-            snackbar.show()
-
         }
         else{
             var factory = HomeViewModelFactory(
@@ -89,6 +94,7 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
+        val view = binding.root
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing=false
             val action = DetailsFragmentDirections.actionDetailsFragmentSelf(args.currentWeather)
