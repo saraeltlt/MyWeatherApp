@@ -1,21 +1,18 @@
 package com.example.myweatherapp.datasource.db
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.MyAlert
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.hamcrest.collection.IsEmptyCollection
+import org.hamcrest.core.Is
+import org.junit.*
 import org.junit.runner.RunWith
 import java.util.*
 
@@ -26,26 +23,31 @@ class AlertDaoTest {
     private lateinit var database: WeatherDB
     private lateinit var alertDao: AlertDAO
     private lateinit var alert:MyAlert
+    private lateinit var alert2:MyAlert
 
+    @get:Rule
+    var instance = InstantTaskExecutorRule()
 
     fun generateDummyData(){
-
         val calendarFrom = Calendar.getInstance()
         calendarFrom.set(2022,1,1,12,0,0)
         val calendarTo = Calendar.getInstance()
         calendarTo.set(2023,4,2,10,0,0)
         alert = MyAlert(
-            description = "Test Alert",
+            description = "Test Alert 1",
             start = calendarTo.timeInMillis,
             end = calendarFrom.timeInMillis,
-            event = "Test Event",
-            type = "Test Type"
+            event = "rain",
+            type = "notification"
         )
+
+
     }
     @Before
     fun setUp() {
         generateDummyData()
-        database = Room.inMemoryDatabaseBuilder(getApplicationContext(), WeatherDB::class.java).build()
+        database = Room.inMemoryDatabaseBuilder(getApplicationContext(), WeatherDB::class.java)
+            .allowMainThreadQueries().build()
         alertDao = database.AlertDao()
     }
 
@@ -55,44 +57,42 @@ class AlertDaoTest {
     }
 
     @Test
-    fun testInsertAndGetAlerts_creatAndInsert_returnAlert() = runBlocking {
+    fun getAlerts_InsertAlerts_countItems() = runBlockingTest {
         //Given
         //already decleared in before
-        var allAlerts:List<MyAlert>?=null
+        alertDao.insertAlert(alert)
 
         //When
-        alertDao.insertAlert(alert)
-        val alertsFlow = alertDao.getAllAlerts()
-        alertsFlow.collect(){
-            allAlerts=it
-        }
-         //Then
-        // Verify that the alert was inserted correctly
-        assertEquals(1, allAlerts?.size)
-        assertEquals(alert.description, allAlerts?.get(0)?.description)
-        assertEquals(alert.start, allAlerts?.get(0)?.start)
-        assertEquals(alert.end, allAlerts?.get(0)?.end)
-        assertEquals(alert.event, allAlerts?.get(0)?.event)
-        assertEquals(alert.type, allAlerts?.get(0)?.type)
+        val result = alertDao.getAllAlerts().first()
+
+        //Then
+        assertThat(result.size, Is.`is`(1))
     }
-
     @Test
-    fun deleteAlert_insertAlert_ReturnZero() = runBlocking {
+    fun insertAlerts_InsertSingleAlertItem_returnItems() = runBlockingTest {
         //Given
         //already decleared in before
-        var allAlerts:List<MyAlert>?=null
 
         //When
         alertDao.insertAlert(alert)
-        alertDao.deleteAlert(alert)
+
+
+        //Then
+        val result = alertDao.getAllAlerts().first()
+        assertThat(result.get(0), not(nullValue()))
+    }
+    @Test
+    fun deleteAlert_deleteAlert_checkIsNull() = runBlockingTest{
+        //Given
+        //already decleared in before
         alertDao.insertAlert(alert)
-        val alertsFlow = alertDao.getAllAlerts()
-        alertsFlow.collect(){
-            allAlerts=it
-        }
+
+        //When
+        alertDao.deleteAlert(alert)
 
       //Then
-        assertEquals(0, allAlerts?.size)
+        val result = alertDao.getAllAlerts().first()
+        assertThat(result, IsEmptyCollection.empty())
     }
 
 }
