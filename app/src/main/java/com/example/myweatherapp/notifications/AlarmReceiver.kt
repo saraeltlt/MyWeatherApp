@@ -24,6 +24,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
 import com.example.myweatherapp.R
 import com.example.myweatherapp.model.ApiState
+import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.ui.MainActivity
 import com.example.myweatherapp.utils.Constant
@@ -48,11 +49,8 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
         var alertEvent = intent.getStringExtra("alert2")
            alertEvent=getEvent(context,alertEvent)
         val alertType = intent.getStringExtra("alert3")
-        val alertCancelFlag =intent.getIntExtra( "removeAlertFlag", -1)
 
 
-        /*val alert=intent.getSerializableExtra("alert1") as MyAlert
-        Log.e("SE",alert.event)*/
 
         var i = Intent(context, MainActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -242,8 +240,7 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
             textdetails.text=context.getResources().getString(R.string.NoInterDetail)
         }
 
-        windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
+
 
             // set the window parameters
             val windowParams = WindowManager.LayoutParams(
@@ -288,7 +285,6 @@ class RemoveNotificationReceiver : BroadcastReceiver() {
 class RemoveAlertReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         mediaPlayer?.release()
-        mediaPlayer?.stop()
         windowManager?.removeView(view)
     }
 }

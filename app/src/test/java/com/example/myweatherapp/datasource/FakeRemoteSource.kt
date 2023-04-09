@@ -1,15 +1,12 @@
 package com.example.myweatherapp.datasource
 
-import com.example.myweatherapp.datasource.db.LocalSource
 import com.example.myweatherapp.datasource.network.RemoteSource
 import com.example.myweatherapp.model.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 
 
-class FakeDataSource ( var favWeather: MutableList<Forecast> =  mutableListOf()): LocalSource, RemoteSource {
+class FakeRemoteSource (var favWeather: MutableList<Forecast> =  mutableListOf()):  RemoteSource {
 
     fun generateDummyData(): Forecast {
         val alert1 = Alert(
@@ -87,19 +84,7 @@ class FakeDataSource ( var favWeather: MutableList<Forecast> =  mutableListOf())
     }
     //local source under test
 
-    override suspend fun getAllFav(): Flow<List<Forecast>> = flow {
-        val _weather = favWeather.toList()
-        emit(_weather)
-    }
 
-
-    override suspend fun insertFavOrCurrent(forecast: Forecast) {
-        favWeather.add(forecast)
-    }
-
-    override suspend fun deleteFav(forecast: Forecast) {
-        favWeather.remove(forecast)
-    }
 
     //remote source under test
     override suspend fun getCurrentWeather(
@@ -110,31 +95,6 @@ class FakeDataSource ( var favWeather: MutableList<Forecast> =  mutableListOf())
     ): StateFlow<Forecast> {
         var stateFlow = MutableStateFlow(generateDummyData()) as StateFlow<Forecast>
         return stateFlow
-    }
-
-
-
-
-
-
-    override suspend fun getWeatherDataFromDB(): Flow<Forecast> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteCurrentWeather() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getAllAlerts(): Flow<List<MyAlert>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun insertAlert(myAlert: MyAlert) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAlert(myAlert: MyAlert) {
-        TODO("Not yet implemented")
     }
 
 

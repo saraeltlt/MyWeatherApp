@@ -23,8 +23,8 @@ import org.junit.runners.JUnit4
    private lateinit var forecast1:Forecast
    private lateinit var forecast2:Forecast
    private lateinit var repository: Repository
-   private lateinit var remoteSource: FakeDataSource
-   private lateinit var localSource: FakeDataSource
+   private lateinit var remoteSource: FakeRemoteSource
+   private lateinit var localSource: FakeLocalSource
    private lateinit var testDispatcher: TestCoroutineDispatcher
 
    @ExperimentalCoroutinesApi
@@ -161,8 +161,8 @@ import org.junit.runners.JUnit4
    fun setup() {
       testDispatcher = TestCoroutineDispatcher()
       generateDummyData()
-      remoteSource = FakeDataSource()
-      localSource = FakeDataSource()
+      remoteSource = FakeRemoteSource()
+      localSource = FakeLocalSource()
       repository = Repository(remoteSource, localSource)
    }
 

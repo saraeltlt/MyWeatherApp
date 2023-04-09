@@ -1,17 +1,16 @@
-package com.example.myweatherapp.favourite.favViewModel
+package com.example.myweatherapp.viewmodel
 
 import com.example.myweatherapp.datasource.RepoInterface
-import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.MyAlert
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 
-class FakeTestRepo ( var favWeather: MutableList<Forecast>? = mutableListOf()):RepoInterface {
+class FakeTestRepo (): RepoInterface {
 
-
+    var favWeather: MutableList<Forecast>? = mutableListOf()
+    var alert: MutableList<MyAlert>? = mutableListOf()
     override suspend fun getAllFav(): Flow<List<Forecast>> = flow {
 
         val _weather = favWeather?.toList()
@@ -30,12 +29,25 @@ class FakeTestRepo ( var favWeather: MutableList<Forecast>? = mutableListOf()):R
 
 
 
+    override suspend fun getAllAlerts(): Flow<List<MyAlert>> = flow {
 
+        val _alert = alert?.toList()
+        if (_alert != null) {
+            emit(_alert)
+        }
+    }
+
+    override suspend fun insertAlert(myAlert: MyAlert) {
+        alert?.add(myAlert)
+    }
+
+    override suspend fun deleteAlert(myAlert: MyAlert) {
+       alert?.remove(myAlert)
+    }
 
 
 
     //rest of the repo
-
     override suspend fun getCurrentWeather(
         lat: Double,
         lon: Double,
@@ -52,19 +64,6 @@ class FakeTestRepo ( var favWeather: MutableList<Forecast>? = mutableListOf()):R
     }
 
     override suspend fun deleteCurrentWeather() {
-        TODO("Not yet implemented")
-    }
-
-
-    override suspend fun getAllAlerts(): Flow<List<MyAlert>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun insertAlert(myAlert: MyAlert) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAlert(myAlert: MyAlert) {
         TODO("Not yet implemented")
     }
 }

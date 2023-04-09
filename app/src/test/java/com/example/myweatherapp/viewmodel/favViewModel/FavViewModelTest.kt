@@ -1,7 +1,9 @@
-package com.example.myweatherapp.favourite.favViewModel
+package com.example.myweatherapp.viewmodel.favViewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.myweatherapp.MainDispatcherRule
+import com.example.myweatherapp.viewmodel.FakeTestRepo
+import com.example.myweatherapp.favourite.favViewModel.FavViewModel
 import com.example.myweatherapp.getOrAwaitValue
 import com.example.myweatherapp.model.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -169,7 +171,6 @@ class FavViewModelTest {
     @Test
     fun getAllFav_noInput_returnAll() = runBlockingTest {
         // Given
-        var expectedFavList = listOf(forecast1,forecast1)
         repo.insertFav(forecast1)
         repo.insertFav(forecast2)
 

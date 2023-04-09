@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.datasource.RepoInterface
+import com.example.myweatherapp.datasource.Repository
 import com.example.myweatherapp.model.ApiState
 import com.example.myweatherapp.model.Forecast
 import com.example.myweatherapp.model.MyAlert
@@ -16,8 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class NotificationViewModel(): ViewModel() {
-    private val _repo =MyApp.getInstanceRepository()
+class NotificationViewModel(val _repo: RepoInterface =MyApp.getInstanceRepository()): ViewModel() {
     private var _My_alert : MutableLiveData<List<MyAlert>> =MutableLiveData<List<MyAlert>>()
     val myAlert: LiveData<List<MyAlert>> = _My_alert
     private var _stateFlow = MutableStateFlow<ApiState>(ApiState.Loading)

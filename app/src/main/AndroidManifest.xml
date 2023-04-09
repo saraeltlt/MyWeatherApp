@@ -52,6 +52,7 @@
 
         </receiver>
         <receiver android:name=".notifications.RemoveNotificationReceiver" />
+        <receiver android:name=".notifications.RemoveAlertReceiver" />
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentNotificationBinding
 import com.example.myweatherapp.model.MyAlert
 import com.example.myweatherapp.notifications.AlarmReceiver
+import com.example.myweatherapp.notifications.RemoveAlertReceiver
 import com.example.myweatherapp.notifications.RemoveNotificationReceiver
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModel
 import com.example.myweatherapp.notifications.notificationviewmodel.NotificationViewModelFactory
@@ -204,7 +205,7 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
                 removeNotifcationAfter(myAlert, day)
             }
             else{
-                //removeAlertAfter(myAlert, day)
+                removeAlertAfter(myAlert, day)
             }
 
         }
@@ -212,11 +213,10 @@ class NotificationFragment : Fragment() , OnNotifClickListner, NotificationsDial
     }
 
     private fun removeAlertAfter(myAlert: MyAlert, day: Long) {
-        val removeAlertIntent = Intent(requireContext(), AlarmReceiver::class.java)
-        removeAlertIntent.putExtra("removeAlertFlag",1)
+        val removeAlertIntent = Intent(requireContext(), RemoveAlertReceiver::class.java)
         val removeAlertPendingIntent = PendingIntent.getBroadcast(
             requireContext(),
-            myAlert.myId+day.toInt()+80,
+            myAlert.myId+day.toInt(),
             removeAlertIntent,
             0
         )
