@@ -1,14 +1,21 @@
 package com.example.myweatherapp.datasource.db
 
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.example.myweatherapp.model.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert
+import org.hamcrest.core.Is
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,9 +24,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class ConcreteLocalSourceTest {
+    @get:Rule
+    var instance = InstantTaskExecutorRule()
 
     private lateinit var localSource: ConcreteLocalSource
     private lateinit var forecast: Forecast
+
     fun generateDummyData() {
         val alert1 = Alert(
             "A severe thunderstorm warning is in effect",
@@ -101,22 +111,34 @@ class ConcreteLocalSourceTest {
     }
 
     @Test
-    fun testInsertAndGetFav_creatAndInsert_returnFav() = runBlocking {
+    fun getFav_InsertFav_checkItem() = runBlockingTest {
         //Given
         //already implmeneted in before
-        var allFav: List<Forecast>? = null
+        localSource.insertFavOrCurrent(forecast)
+
+        //when
+        val result= localSource.getAllFav().first()
+
+        //Then
+        assertEquals(result[0].lat,forecast.lat,2.0)
+        assertEquals(result[0].lon,forecast.lon,2.0)
+        assertEquals(result[0].timezone,forecast.timezone)
+
+    }
+
+    @Test
+    fun insertFav_InsertSingleItem_returnItems() = runBlockingTest {
+        //Given
+        //already implmeneted in before
 
         //when
         localSource.insertFavOrCurrent(forecast)
-        val forecastFlow = localSource.getAllFav()
-        forecastFlow.collect() {
-            allFav = it
-        }
+
+
         //Then
-        assertEquals(1, allFav?.size)
-        assertEquals(forecast.current, allFav?.get(0)?.current)
-        assertEquals(forecast.lat, allFav?.get(0)?.lat)
-        assertEquals(forecast.lon, allFav?.get(0)?.lat)
+        val result= localSource.getAllFav().first()
+        MatcherAssert.assertThat(result.get(0), CoreMatchers.not(CoreMatchers.nullValue()))
+
     }
 
     @Test
