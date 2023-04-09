@@ -106,6 +106,7 @@
     <string name="mist">mist</string>
     <string name="off">Off</string>
     <string name="on">On</string>
+    <string name="display">Display over apps permission denied</string>
 
 
 </resources>
