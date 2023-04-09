@@ -1,4 +1,4 @@
-package com.example.myweatherapp.startPref.view
+package com.example.myweatherapp.preferences.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,17 +10,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 
@@ -28,8 +24,8 @@ import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentStartPrefBinding
 import com.example.myweatherapp.location.GPSProvider
 
-import com.example.myweatherapp.startPref.viewmodel.StartPrefViewModel
-import com.example.myweatherapp.startPref.viewmodel.StartPrefViewModelFactory
+import com.example.myweatherapp.preferences.viewmodel.StartPrefViewModel
+import com.example.myweatherapp.preferences.viewmodel.StartPrefViewModelFactory
 import com.example.myweatherapp.utils.Constant
 
 import com.example.myweatherapp.utils.NetworkManager
@@ -38,8 +34,6 @@ import com.example.myweatherapp.utils.Preferences
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import kotlinx.coroutines.delay
 import java.util.*
 
 

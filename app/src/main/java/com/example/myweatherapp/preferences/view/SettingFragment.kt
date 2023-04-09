@@ -1,4 +1,4 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.preferences.view
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,16 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.myweatherapp.databinding.FragmentNotificationBinding
+import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentSettingBinding
 import com.example.myweatherapp.location.GPSProvider
-import com.example.myweatherapp.startPref.view.StartPrefFragmentArgs
-import com.example.myweatherapp.startPref.view.StartPrefFragmentDirections
 import com.example.myweatherapp.utils.Constant
 import com.example.myweatherapp.utils.NetworkManager
 import com.example.myweatherapp.utils.Permissions
 import com.example.myweatherapp.utils.Preferences
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -46,7 +42,7 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding  = DataBindingUtil.inflate(inflater,R.layout.fragment_setting,container,false) as FragmentSettingBinding
+        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_setting,container,false) as FragmentSettingBinding
         binding.lifecycleOwner=this
         binding.progressLayout.visibility= View.GONE
         binding.obaqueBG.visibility= View.GONE
@@ -74,28 +70,54 @@ class SettingFragment : Fragment() {
         //unites
         binding.btnMetric.setOnClickListener {
             Constant.myPref.appUnit="metric"
-            Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.metric)} "  ,
-                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            val snackbar=Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
+                R.string.metric
+            )} "  ,
+                Snackbar.LENGTH_LONG).setAction("Action", null)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                R.color.light_navy
+            ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
 
         }
         binding.btnStandard.setOnClickListener {
             Constant.myPref.appUnit="standard"
-            Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.standard)}"  ,
-                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            val snackbar= Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
+                R.string.standard
+            )}"  ,
+                Snackbar.LENGTH_LONG).setAction("Action", null)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                R.color.light_navy
+            ))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.show()
 
 
         }
        binding.btnImperia.setOnClickListener {
             Constant.myPref.appUnit="imperial"
-           Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(R.string.imperial)} "  ,
-               Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
+
+           val snackbar=Snackbar.make(binding.root, "${requireContext().getResources().getString(R.string.changeUnit)} \n ${requireContext().getResources().getString(
+               R.string.imperial
+           )} "  ,
+               Snackbar.LENGTH_LONG).setAction("Action", null)
+           snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+               R.color.light_navy
+           ))
+           snackbar.setTextColor(Color.WHITE)
+           snackbar.show()
         }
 
         //location
          binding.btnGps.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                val snackbar = Snackbar.make(binding.root,
+                    R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                    R.color.light_navy
+                ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
                 binding.btnGps.isChecked=false
@@ -128,8 +150,11 @@ class SettingFragment : Fragment() {
         }
         binding.btnMap.setOnClickListener {
             if (!NetworkManager.isInternetConnected()){
-                val snackbar = Snackbar.make(binding.root, R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
+                val snackbar = Snackbar.make(binding.root,
+                    R.string.internetDisconnectedFav, Snackbar.LENGTH_INDEFINITE)
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                    R.color.light_navy
+                ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
                 binding.btnMap.isChecked=false
@@ -140,7 +165,8 @@ class SettingFragment : Fragment() {
                     requestPermission()
                 }
                 else {
-                    val action =SettingFragmentDirections.actionSettingFragmentToMapsFragment("sittings")
+                    val action =
+                        SettingFragmentDirections.actionSettingFragmentToMapsFragment("sittings")
                     findNavController().navigate(action)
                 }
 
@@ -239,8 +265,12 @@ class SettingFragment : Fragment() {
                     intent.data = Uri.fromParts("package", requireContext().packageName, null)
                     requireContext().startActivity(intent)
                 }
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_navy))
-                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.dark_orange))
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                    R.color.light_navy
+                ))
+                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(),
+                    R.color.dark_orange
+                ))
                 snackbar.setTextColor(Color.WHITE)
                 snackbar.show()
 

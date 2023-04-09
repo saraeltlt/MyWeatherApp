@@ -1,4 +1,4 @@
-package com.example.myweatherapp.startPref.viewmodel
+package com.example.myweatherapp.preferences.viewmodel
 
 
 import android.content.Context
@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myweatherapp.datasource.RepoInterface
 import com.example.myweatherapp.location.GPSProvider
 import com.google.android.gms.maps.model.LatLng
 

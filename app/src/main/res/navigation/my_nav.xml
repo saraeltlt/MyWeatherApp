@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.myweatherapp.SettingFragment"
+        android:name="com.example.myweatherapp.preferences.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -93,7 +93,7 @@
     </fragment>
     <fragment
         android:id="@+id/startPrefFragment"
-        android:name="com.example.myweatherapp.startPref.view.StartPrefFragment"
+        android:name="com.example.myweatherapp.preferences.view.StartPrefFragment"
         android:label="fragment_start_pref"
         tools:layout="@layout/fragment_start_pref" >
         <action

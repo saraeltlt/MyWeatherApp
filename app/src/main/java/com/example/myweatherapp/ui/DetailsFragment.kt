@@ -18,8 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myweatherapp.DetailsFragmentArgs
-import com.example.myweatherapp.DetailsFragmentDirections
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentDetailsBinding
 import com.example.myweatherapp.home.homeview.DaysAdapter

@@ -1,4 +1,4 @@
-package com.example.myweatherapp.startPref.viewmodel
+package com.example.myweatherapp.preferences.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
