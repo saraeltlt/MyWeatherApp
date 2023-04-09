@@ -2,6 +2,7 @@ package com.example.myweatherapp.datasource.db
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
@@ -10,9 +11,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import org.assertj.core.api.Assertions
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
+import org.hamcrest.collection.IsEmptyCollection
 import org.hamcrest.core.Is
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -111,51 +115,40 @@ class ConcreteLocalSourceTest {
     }
 
     @Test
-    fun getFav_InsertFav_checkItem() = runBlockingTest {
+    fun InsertAndGetFav_InsertFav_checkItem() = runBlockingTest {
         //Given
         //already implmeneted in before
-        localSource.insertFavOrCurrent(forecast)
 
-        //when
-        val result= localSource.getAllFav().first()
-
-        //Then
-        assertEquals(result[0].lat,forecast.lat,2.0)
-        assertEquals(result[0].lon,forecast.lon,2.0)
-        assertEquals(result[0].timezone,forecast.timezone)
-
-    }
-
-    @Test
-    fun insertFav_InsertSingleItem_returnItems() = runBlockingTest {
-        //Given
-        //already implmeneted in before
 
         //when
         localSource.insertFavOrCurrent(forecast)
-
+        val result= localSource.getAllFav().first()
 
         //Then
-        val result= localSource.getAllFav().first()
-        MatcherAssert.assertThat(result.get(0), CoreMatchers.not(CoreMatchers.nullValue()))
+        Assertions.assertThat(result).contains(forecast)
+        Assertions.assertThat(result[0].timezone).isEqualTo(forecast.timezone)
+
+
+
+        //return to original state
+        localSource.deleteFav(forecast)
+        //.........................
 
     }
 
+
     @Test
-    fun deleteFav_insertFav_ReturnZero() = runBlocking {
+    fun deleteFav_insertFav_ReturnZero() = runBlockingTest {
         //Given
         //already implmeneted in before
-        var allFav: List<Forecast>? = null
 
 
         //When
         localSource.insertFavOrCurrent(forecast)
         localSource.deleteFav(forecast)
-        val forecastFlow = localSource.getAllFav()
-        forecastFlow.collect() {
-            allFav = it
-        }
+
         //Then
-        assertEquals(0, allFav?.size)
+        val result = localSource.getAllFav().first()
+        Assertions.assertThat(result).doesNotContain(forecast)
     }
 }
