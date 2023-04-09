@@ -33,8 +33,8 @@
             android:checked="true"
             android:elevation="20dp"
             android:textColor="@color/dark_orange"
-            android:textOff="off"
-            android:textOn="on"
+            android:textOff="@string/off"
+            android:textOn="@string/on"
             android:thumb="@drawable/thumb"
             app:layout_constraintEnd_toEndOf="parent"
 

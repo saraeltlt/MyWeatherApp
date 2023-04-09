@@ -104,7 +104,8 @@
     <string name="scatteredClouds">scattered clouds</string>
     <string name="brokenClouds">broken clouds</string>
     <string name="mist">mist</string>
-
+    <string name="off">Off</string>
+    <string name="on">On</string>
 
 
 </resources>

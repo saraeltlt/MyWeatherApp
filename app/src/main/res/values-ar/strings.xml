@@ -101,4 +101,6 @@
     <string name="dismiss">تجاهل</string>
     <string name="NoInter">لا يوجد اتصال بالآنتزنت </string>
     <string name="NoInterDetail">لا يمكن الحصول على حالة الطقس، يرجى التحقق من اتصال الإنترنت</string>
+    <string name="off">شغّل</string>
+    <string name="on">أطفئ</string>
 </resources>
